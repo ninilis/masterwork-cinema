@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Идём в кино схема зала</title>
+    <!-- Bootstrap CSS (сетка и базовые стили) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Ваши стили -->
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="page-body">
+<header class="page-header">
+    <div class="container header-container">
+        <a href="index.html" class="logo">
+            ИДЁМ <span>В КИНО</span>
+        </a>
+        <!-- на hall.html кнопки войти нет, только лого -->
+    </div>
+</header>
+
+<main class="main-content">
+    <div class="container hall-container bg-beige-transparent">
+        <div class="hall-info">
+            <h1 class="hall-info__title">Название фильма</h1>
+            <p class="hall-info__time">18:30</p>
+            <p class="hall-info__hall">Зал №1</p>
+        </div>
+        <div class="hall-scheme" style="padding: 15px 30px;">
+            <!-- схема мест -->
+        </div>
+        <div class="text-center">
+            <button class="btn btn-booking">ЗАБРОНИРОВАТЬ</button>
+        </div>
+    </div>
+</main>
+<!-- Bootstrap JS (для бургера и модалок, если понадобятся) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Ваши скрипты -->
+<script src="static/js/client.js"></script>
+</body>
+</html>
+<main class="main-content">
+    <div class="container hall-container">
+        <div class="hall-info text-center">
+            <h1 class="hall-info__title">Название фильма</h1>
+            <p class="hall-info__time">18:30</p>
+            <p class="hall-info__hall">Зал №1</p>
+        </div>
+        <div class="hall-scheme">
+            <!-- Здесь будет схема мест (пока заглушка) -->
+            <div class="hall-scheme__row">
+                <div class="hall-scheme__place hall-scheme__place--standard"></div>
+                <div class="hall-scheme__place hall-scheme__place--standard"></div>
+                <div class="hall-scheme__place hall-scheme__place--vip"></div>
+                <!-- ... остальные места -->
+            </div>
+            <div class="hall-scheme__row">
+                <!-- ещё ряд -->
+            </div>
+            <!-- Легенда -->
+            <div class="hall-legend">
+                <span class="legend-item"><span class="legend-color legend-color--standard"></span> Свободно</span>
+                <span class="legend-item"><span class="legend-color legend-color--vip"></span> VIP</span>
+                <span class="legend-item"><span class="legend-color legend-color--taken"></span> Занято</span>
+                <span class="legend-item"><span class="legend-color legend-color--selected"></span> Выбрано</span>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary btn-booking" disabled>ЗАБРОНИРОВАТЬ</button>
+        </div>
+    </div>
+</main>

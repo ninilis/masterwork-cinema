@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Идём в кино билет</title>
+    <title>Идём в кино оплата</title>
     <!-- Bootstrap CSS (сетка и базовые стили) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Ваши стили -->
@@ -19,24 +19,24 @@
     </div>
 </header>
 <main class="main-content">
-    <div class="container ticket-container">
-        <div class="ticket-card bg-beige-transparent">
-            <h2 class="ticket-card__title">ЭЛЕКТРОННЫЙ БИЛЕТ</h2>
-            <hr class="ticket-card__divider">
-            <div class="ticket-card__details">
+    <div class="container payment-container">
+        <div class="payment-card bg-beige-transparent">
+            <h2 class="payment-card__title">ВЫ ВЫБРАЛИ БИЛЕТ</h2>
+            <hr class="payment-card__divider">
+            <div class="payment-card__details">
                 <p><span class="detail-label">Фильм:</span> <span class="detail-value" id="film-name">Название фильма</span></p>
                 <p><span class="detail-label">Места:</span> <span class="detail-value" id="selected-seats">5 ряд, 12 место</span></p>
                 <p><span class="detail-label">Зал:</span> <span class="detail-value" id="hall-name">Зал №1</span></p>
                 <p><span class="detail-label">Начало сеанса:</span> <span class="detail-value" id="start-time">18:30</span></p>
+                <p><span class="detail-label">Стоимость:</span> <span class="detail-value" id="total-price">350 ₽</span></p>
             </div>
-            <div class="ticket-card__qr">
-                <!-- Здесь будет QR-код -->
-                <div class="qr-placeholder">QR-код</div>
+            <div class="text-center">
+                <button class="btn btn-code">ПОЛУЧИТЬ КОД БРОНИРОВАНИЯ</button>
             </div>
-            <p class="ticket-card__footnote">
-                Покажите QR-код нашему контроллеру для подтверждения бронирования.
+            <p class="payment-card__footnote">
+                После оплаты билет будет доступен в этом окне, а также придёт вам на почту. Покажите QR-код нашему контролёру у входа в зал.
             </p>
-            <p class="ticket-card__wish">Приятного просмотра!</p>
+            <p class="payment-card__wish">Приятного просмотра!</p>
         </div>
     </div>
 </main>

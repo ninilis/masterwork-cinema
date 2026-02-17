@@ -1,0 +1,574 @@
+/* style.css */
+
+/* Подключение шрифта Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap');
+
+/* CSS-переменные (custom properties) */
+:root {
+    /* Цвета */
+    --color-primary: #16A6AF;        /* основной (кнопки, акценты) */
+    --color-accent: #C76F00;          /* оранжевый для заголовков билетов */
+    --color-bg-beige: rgba(241, 235, 230, 0.95); /* фон подложек */
+    --color-text-dark: #000;
+    --color-text-light: #fff;
+    --color-text-muted: #666;
+    --color-border: #ccc;              /* для разделителей */
+
+    /* Тени (из макета) */
+    --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
+
+    /* Шрифты */
+    --font-family: 'Roboto', sans-serif;
+    --font-weight-thin: 100;
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+
+    /* Размеры логотипа */
+    --logo-width: 212px;
+    --logo-height: 39px;
+    --logo-font-size: 34px;
+
+    /* Контейнер */
+    --container-max-width: 990px;
+
+    /* Кнопки */
+    --btn-height: 40px;
+    --btn-border-radius: 3px;
+
+    /* Календарь */
+    --calendar-day-width: 125px;
+    --calendar-day-height: 48px;
+
+    /* Карточка фильма */
+    --movie-card-height: 350px;
+    --poster-width: 125px;
+    --poster-height: 205px;
+
+    /* Отступы */
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 30px;
+}
+
+/* Сброс и базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.page-body {
+    background: url('../img/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    font-family: var(--font-family);
+    color: var(--color-text-dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    width: 100%;
+}
+
+/* Шапка (общая) */
+.page-header {
+    padding: 14px 0;
+    background: transparent;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Логотип */
+.logo {
+    display: block;
+    width: var(--logo-width);
+    height: var(--logo-height);
+    font-weight: var(--font-weight-black);
+    font-size: var(--logo-font-size);
+    line-height: var(--logo-height);
+    text-transform: uppercase;
+    color: var(--color-text-dark);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.logo span {
+    font-weight: var(--font-weight-thin);
+}
+
+/* Кнопка "Войти" (на index.html) */
+.btn-login {
+    width: 71px;
+    height: var(--btn-height);
+    background: var(--color-primary);
+    border-radius: var(--btn-border-radius);
+    border: none;
+    color: var(--color-text-light);
+    font-size: 14px;
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-default);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-login:hover {
+    opacity: 0.9;
+}
+
+/* Общий класс для бежево-прозрачных подложек */
+.bg-beige-transparent {
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+}
+
+/* -------------------- */
+/* Страница hall.html   */
+/* -------------------- */
+.hall-container {
+    max-width: var(--container-max-width);
+    margin: var(--spacing-lg) auto;
+    padding: 14px; /* по макету */
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+}
+
+.hall-info {
+    width: 419px; /* по макету */
+    height: 67px;
+    margin-bottom: 20px;
+}
+
+.hall-info__title {
+    font-size: 28px;
+    font-weight: var(--font-weight-bold);
+}
+
+.hall-info__time,
+.hall-info__hall {
+    font-size: 18px;
+}
+
+.hall-scheme {
+    width: 100%;
+    max-width: var(--container-max-width);
+    min-height: 376px; /* по макету */
+    padding: 15px 30px;
+    /* внутри будет flex/grid для рядов */
+}
+
+/* Легенда для схемы зала */
+.hall-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-color--standard { background-color: #ccc; }
+.legend-color--vip { background-color: gold; }
+.legend-color--taken { background-color: #666; }
+.legend-color--selected { background-color: #4caf50; }
+
+/* Кнопка бронирования (на hall.html) */
+.btn-booking {
+    width: 232px;
+    height: var(--btn-height);
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--btn-border-radius);
+    color: var(--color-text-light);
+    font-size: 16px;
+    font-weight: var(--font-weight-bold);
+    box-shadow: var(--shadow-default);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin: 20px auto;
+    display: block;
+}
+
+.btn-booking:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* -------------------- */
+/* Страница index.html  */
+/* -------------------- */
+/* Календарь */
+.calendar {
+    width: 100%;
+    max-width: var(--container-max-width);
+    height: 58px;
+    margin: 20px auto var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+}
+
+.calendar__days {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    justify-content: center;
+}
+
+.calendar__day {
+    width: var(--calendar-day-width);
+    height: var(--calendar-day-height);
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.calendar__day--today {
+    background: var(--color-accent);
+    color: var(--color-text-light);
+}
+
+.day-today {
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+}
+
+.calendar__arrow {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+/* Список фильмов */
+.movies-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.movie-card {
+    display: flex;
+    width: 100%;
+    max-width: var(--container-max-width);
+    height: var(--movie-card-height);
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.movie-card__poster {
+    width: var(--poster-width);
+    height: var(--poster-height);
+    margin: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+.movie-card__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-card__content {
+    flex: 1;
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.movie-card__title {
+    font-size: 24px;
+    font-weight: var(--font-weight-bold);
+}
+
+.movie-card__description {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.movie-card__duration {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.movie-card__sessions {
+    margin-top: auto; /* прижимаем к низу */
+}
+
+.movie-card__hall {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 7px;
+}
+
+.hall-name {
+    font-weight: var(--font-weight-bold);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.session-times {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+}
+
+.session-time {
+    width: 53px;
+    height: 33px;
+    background: var(--color-primary);
+    border-radius: var(--btn-border-radius);
+    color: var(--color-text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-default);
+    transition: opacity 0.2s;
+}
+
+.session-time--past {
+    opacity: 0.5;
+    background: #ccc;
+    pointer-events: none;
+}
+
+/* -------------------- */
+/* Страница payment.html */
+/* -------------------- */
+.payment-card {
+    max-width: var(--container-max-width);
+    margin: var(--spacing-lg) auto;
+    padding: var(--spacing-lg);
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+}
+
+.payment-card__title {
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: 22px;
+    line-height: 25px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.payment-card__divider {
+    border: none;
+    border-top: 2px dashed var(--color-border);
+    margin: 20px 0;
+}
+
+.payment-card__details p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: var(--font-weight-thin);
+    color: var(--color-text-muted);
+}
+
+.detail-value {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-dark);
+}
+
+.btn-code {
+    width: 337px;
+    height: var(--btn-height);
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--btn-border-radius);
+    color: var(--color-text-light);
+    font-size: 16px;
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    box-shadow: var(--shadow-default);
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-code:hover {
+    opacity: 0.9;
+}
+
+.payment-card__footnote {
+    font-size: 14px;
+    text-align: center;
+    color: var(--color-text-muted);
+    margin-top: 20px;
+}
+
+.payment-card__wish {
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+/* -------------------- */
+/* Страница ticket.html */
+/* -------------------- */
+.ticket-card {
+    max-width: var(--container-max-width);
+    margin: var(--spacing-lg) auto;
+    padding: var(--spacing-lg);
+    background: var(--color-bg-beige);
+    border-radius: 2px;
+}
+
+.ticket-card__title {
+    font-family: var(--font-family);
+    font-weight: var(--font-weight-bold);
+    font-size: 22px;
+    line-height: 25px;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ticket-card__divider {
+    border: none;
+    border-top: 2px dashed var(--color-border);
+    margin: 20px 0;
+}
+
+.ticket-card__details p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.ticket-card__qr {
+    display: flex;
+    justify-content: center;
+    margin: var(--spacing-lg) 0;
+}
+
+.qr-placeholder {
+    width: 150px;
+    height: 150px;
+    background: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.ticket-card__footnote {
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+}
+
+.ticket-card__wish {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* -------------------- */
+/* Адаптивность         */
+/* -------------------- */
+@media (max-width: 768px) {
+    :root {
+        --logo-width: 150px;
+        --logo-font-size: 24px;
+        --calendar-day-width: calc(14.28vw - 5px);
+        --movie-card-height: auto;
+        --poster-width: 100%;
+        --poster-height: auto;
+        --container-max-width: 100%;
+    }
+
+    .movie-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .movie-card__poster {
+        width: 100%;
+        height: auto;
+        margin: 0;
+    }
+
+    .movie-card__content {
+        padding: var(--spacing-md);
+    }
+
+    .calendar__days {
+        gap: 5px;
+    }
+
+    .calendar__day {
+        width: var(--calendar-day-width);
+        min-width: 50px;
+    }
+
+    .btn-booking {
+        width: 100%;
+        max-width: 232px;
+    }
+
+    .btn-code {
+        width: 100%;
+        max-width: 337px;
+    }
+
+    .hall-info {
+        width: 100%;
+        height: auto;
+    }
+
+    .hall-scheme {
+        padding: 10px;
+    }
+}
