@@ -1,0 +1,105 @@
+/* style.css */
+
+/* Подключение шрифта Roboto */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap');
+
+/* CSS-переменные (custom properties) */
+:root {
+    /* Цвета */
+    --color-primary: #16A6AF;
+    --color-hover: #19828a;/* основной (кнопки, акценты) */
+    --color-accent: #C76F00;          /* оранжевый для заголовков билетов */
+    --color-bg-beige: rgba(241, 235, 230, 0.95); /* фон подложек */
+    --color-text-dark: #000;
+    --color-text-light: #fff;
+    --color-text-muted: #666;
+    --color-border: #ccc;              /* для разделителей */
+    --color-hallback: #171D24;
+
+    /* Тени (из макета) */
+    --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
+
+    /* Шрифты */
+    --font-family: 'Roboto', sans-serif;
+    --font-weight-thin: 100;
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+
+    /* Размеры логотипа */
+    --logo-width: 212px;
+    --logo-height: 39px;
+    --logo-font-size: 34px;
+
+    /* Контейнер */
+    --container-max-width: 990px;
+
+    /* Кнопки */
+    --btn-height: 40px;
+    --btn-border-radius: 3px;
+
+    /* Календарь */
+    --calendar-day-width: 125px;
+    --calendar-day-height: 48px;
+
+    /* Карточка фильма */
+    --movie-card-height: 350px;
+    --poster-width: 125px;
+    --poster-height: 205px;
+
+    /* Отступы */
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 30px;
+}
+
+/* Сброс и базовые стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Административная панель */
+.page-body-admin {
+    background: #f8f9fa; /* светлый фон для админки */
+    color: #212529;
+}
+
+.film-item {
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: grab;
+    margin: 4px;
+}
+
+.hall-timeline {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.timeline-header {
+    padding: 10px;
+    background: #e9ecef;
+    font-weight: bold;
+}
+
+.timeline-slots {
+    min-height: 60px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.seance-block {
+    background: #16A6AF;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: grab;
+}

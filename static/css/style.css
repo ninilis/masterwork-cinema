@@ -14,6 +14,7 @@
     --color-text-light: #fff;
     --color-text-muted: #666;
     --color-border: #ccc;              /* для разделителей */
+    --color-hallback: #171D24;
 
     /* Тени (из макета) */
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
@@ -146,17 +147,22 @@
     font-weight: var(--font-weight-bold);
 }
 
-.hall-info__time,
+.hall-info__time {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
 .hall-info__hall {
     font-size: 18px;
+    font-weight: var(--font-weight-bold);
 }
 
 .hall-scheme {
     width: 100%;
     max-width: var(--container-max-width);
     min-height: 376px; /* по макету */
-    padding: 15px 30px;
     /* внутри будет flex/grid для рядов */
+    background-color: var(--color-hallback);
 }
 
 /* Легенда для схемы зала */
@@ -194,7 +200,7 @@
     border-radius: var(--btn-border-radius);
     color: var(--color-text-light);
     font-size: 16px;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-regular);
     box-shadow: var(--shadow-default);
     cursor: pointer;
     transition: opacity 0.2s;
@@ -522,3 +528,28 @@
     }
 }
 
+/* ГЕНЕРАЦИЯ ЗАЛА */
+.hall-scheme__place {
+    width: 40px;          /* ширина места */
+    height: 40px;         /* высота места */
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 2px;          /* небольшой отступ между местами */
+    transition: transform 0.1s;
+}
+
+.hall-scheme__place--standart { background-color: #ffffff; } /* белый */
+.hall-scheme__place--vip { background-color: #ffa500; }      /* оранжевый */
+.hall-scheme__place--taken { background-color: #000000; }    /* чёрный */
+.hall-scheme__place--disabled { background-color: #444; }    /* если есть */
+.hall-scheme__place--selected {
+    background-color: #16A6AF; /* голубой */
+    transform: scale(1.05);
+}
+
+.hall-scheme__row {
+    display: flex;
+    justify-content: center;
+    gap: 2px;          /* расстояние между местами */
+    margin-bottom: 2px;/* отступ между рядами */
+}
