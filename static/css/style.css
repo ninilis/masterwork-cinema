@@ -369,15 +369,18 @@
 /* -------------------- */
 /* Страница payment.html */
 /* -------------------- */
-.payment-card {
+.payment-card, .ticket-card {
     max-width: var(--container-max-width);
     margin: var(--spacing-lg) auto;
     padding: var(--spacing-lg);
     background: var(--color-bg-beige);
-    border-radius: 2px;
+    border-top: 4px dashed var(--color-accent);   /* пунктир сверху */
+    border-bottom: 4px dashed var(--color-accent);/* пунктир снизу */
+    border-left: none;   /* убираем боковые границы */
+    border-right: none;
 }
 
-.payment-card__title {
+.payment-card__title, .ticket-card__title {
     font-family: var(--font-family);
     font-weight: var(--font-weight-bold);
     font-size: 22px;
@@ -387,15 +390,12 @@
     margin-bottom: 20px;
 }
 
-.payment-card__divider {
-    border: none;
-    border-top: 2px dashed var(--color-border);
-    margin: 20px 0;
+.payment-card__divider, .ticket-card__divider {
+    border-top: 6px dotted var(--color-accent);
 }
 
-.payment-card__details p {
+.payment-card__details p, .ticket-card__details {
     font-size: 18px;
-    margin-bottom: 5px;
 }
 
 .detail-label {
@@ -416,7 +416,7 @@
     border-radius: var(--btn-border-radius);
     color: var(--color-text-light);
     font-size: 16px;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-regular);
     text-transform: uppercase;
     box-shadow: var(--shadow-default);
     margin: 20px auto;
@@ -429,55 +429,22 @@
     opacity: 0.9;
 }
 
-.payment-card__footnote {
+.payment-card__footnote, .ticket-card__footnote {
     font-size: 14px;
-    text-align: center;
     color: var(--color-text-muted);
     margin-top: 20px;
 }
 
-.payment-card__wish {
-    font-size: 16px;
-    text-align: center;
+.payment-card__wish, .ticket-card__wish {
+    font-size: 14px;
     font-weight: 500;
     margin-top: 10px;
+    color: var(--color-text-muted);
 }
 
 /* -------------------- */
 /* Страница ticket.html */
 /* -------------------- */
-.ticket-card {
-    max-width: var(--container-max-width);
-    margin: var(--spacing-lg) auto;
-    padding: var(--spacing-lg);
-    background: var(--color-bg-beige);
-    border-radius: 2px;
-}
-
-.ticket-card__title {
-    font-family: var(--font-family);
-    font-weight: var(--font-weight-bold);
-    font-size: 22px;
-    line-height: 25px;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.ticket-card__divider {
-    border: none;
-    border-top: 2px dashed var(--color-border);
-    margin: 20px 0;
-}
-
-.ticket-card__details p {
-    display: flex;
-    justify-content: space-between;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
 .ticket-card__qr {
     display: flex;
     justify-content: center;
@@ -485,8 +452,8 @@
 }
 
 .qr-placeholder {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     background: #fff;
     color: #000;
     display: flex;
@@ -496,18 +463,6 @@
     font-size: 14px;
 }
 
-.ticket-card__footnote {
-    text-align: center;
-    font-size: 14px;
-    color: var(--color-text-muted);
-    margin-bottom: 10px;
-}
-
-.ticket-card__wish {
-    text-align: center;
-    font-size: 16px;
-    font-weight: 500;
-}
 
 /* -------------------- */
 /* Адаптивность         */

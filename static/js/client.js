@@ -78,3 +78,39 @@ if (urlDate) {
 } else {
     renderCalendar(new Date()); // сегодня
 }
+
+
+// БИЛЕТЫ
+// static/js/client.js
+
+// ---------- СТРАНИЦА ПОДТВЕРЖДЕНИЯ (payment.html) ----------
+function initPayment() {
+    const ticketsJson = localStorage.getItem('lastTickets');
+    if (!ticketsJson) {
+        // Если данных нет – вероятно, прямой вход на страницу, перенаправляем на главную
+        window.location.href = 'index.html';
+        return;
+    }
+
+    const tickets = JSON.parse(ticketsJson);
+    if (tickets.length === 0) return;
+
+    // Берём первый билет для отображения (если их несколько, можно показывать сумму и список мест)
+    const ticket = tickets[0];
+
+    // Заполняем поля на странице
+    document.getElementById('film-name').textContent = ticket.ticket_filmname;
+    document.getElementById('selected-seats').textContent = `${ticket.ticket_row} ряд, ${ticket.ticket_place} место`;
+    document.getElementById('hall-name').textContent = ticket.ticket_hallname;
+    document.getElementById('start-time').textContent = ticket.ticket_time;
+    document.getElementById('total-price').textContent = ticket.ticket_price + ' ₽';
+
+    // Обработчик кнопки для перехода на страницу с QR-кодом
+    const btn = document.querySelector('.btn-code');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            window.location.href = 'ticket.html';
+        });
+    }
+}
+
