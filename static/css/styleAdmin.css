@@ -7,14 +7,28 @@
 :root {
     /* Цвета */
     --color-primary: #16A6AF;
-    --color-hover: #19828a;/* основной (кнопки, акценты) */
-    --color-accent: #C76F00;          /* оранжевый для заголовков билетов */
-    --color-bg-beige: rgba(241, 235, 230, 0.95); /* фон подложек */
+    --color-hover: #19828a;               /* основной (кнопки, акценты) */
+    --color-accent: #C76F00;               /* оранжевый для заголовков билетов */
+    --color-head: #63536C;                  /* фиолетовый для шапок админки */
+    --color-bg-beige: rgba(241, 235, 230, 0.95);   /* фон подложек */
+    --color-bg-admin: rgba(234, 233, 235, 0.95);
     --color-text-dark: #000;
     --color-text-light: #fff;
     --color-text-muted: #666;
-    --color-border: #ccc;              /* для разделителей */
-    --color-hallback: #171D24;
+    --color-border: #ccc;                    /* для разделителей */
+
+    /* Дополнительные цвета */
+    --color-white: #fff;
+    --color-gray-light: #e9ecef;
+    --color-gray-medium: #ced4da;
+    --color-gray-dark: #6c757d;
+    --color-gray-darker: #343a40;
+    --color-border-light: #dee2e6;
+    --color-bg-timeline: #f8f9fa;
+    --color-danger: #dc3545;
+    --color-danger-hover: #bd2130;
+    --color-vip: gold;
+    --color-vip-border: #b8860b;
 
     /* Тени (из макета) */
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
@@ -25,11 +39,14 @@
     --font-weight-regular: 400;
     --font-weight-bold: 700;
     --font-weight-black: 900;
+    --font-size-small: 0.9rem;
+    --font-size-normal: 1rem;
+    --font-size-large: 1.5rem;
+    --font-size-logo: 34px;
 
     /* Размеры логотипа */
     --logo-width: 212px;
     --logo-height: 39px;
-    --logo-font-size: 34px;
 
     /* Контейнер */
     --container-max-width: 990px;
@@ -48,9 +65,21 @@
     --poster-height: 205px;
 
     /* Отступы */
+    --spacing-xs: 5px;
     --spacing-sm: 10px;
     --spacing-md: 15px;
     --spacing-lg: 30px;
+
+    /* Радиусы скругления */
+    --border-radius-small: 3px;
+    --border-radius-medium: 4px;
+    --border-radius-large: 8px;
+
+    /* Специфические размеры */
+    --login-card-width: 480px;
+    --step-circle-size: 32px;
+    --steps-line-width: 40px;
+    --hall-scheme-place-size: 35px;
 }
 
 /* Сброс и базовые стили */
@@ -59,47 +88,265 @@
     padding: 0;
     box-sizing: border-box;
 }
-/* Административная панель */
+
+/* ---------- Административная панель ---------- */
 .page-body-admin {
-    background: #f8f9fa; /* светлый фон для админки */
-    color: #212529;
+    background: url('../img/backgroundAdmin.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #212529;                     /* можно вынести в переменную, если нужно */
+    font-family: var(--font-family);
 }
 
+.admin-subtitle {
+    color: var(--color-bg-admin);
+    font-size: var(--font-size-normal);
+    margin-top: var(--spacing-xs);
+    opacity: 0.9;
+}
+
+/* Карточка логина */
+.login-card {
+    width: var(--login-card-width);
+    background: var(--color-bg-admin);
+    border-radius: var(--border-radius-large);
+    overflow: hidden;
+    margin-top: 50px;                   /* можно вынести при необходимости */
+}
+
+.login-card__header {
+    background: var(--color-head);
+    color: var(--color-text-light);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-large);
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-align: center;
+}
+
+.login-card__body {
+    padding: 35px var(--spacing-lg);
+}
+
+.login-card__body .form-label {
+    color: var(--color-text-dark);
+    font-weight: var(--font-weight-regular);
+}
+
+/* Степпер */
+.admin-steps {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    margin-bottom: 50px;
+}
+
+.steps-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: var(--steps-line-width);
+    flex-shrink: 0;
+}
+
+.step-circle {
+    width: var(--step-circle-size);
+    height: var(--step-circle-size);
+    border-radius: 50%;
+    background: var(--color-head);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.step-line {
+    width: 2px;
+    flex: 1;
+    background: var(--color-head);
+    margin: var(--spacing-xs) 0;
+    min-height: 20px;
+}
+
+.steps-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Блоки админки */
+.admin-block {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius-large);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-default);
+}
+
+.admin-block__title {
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    background: var(--color-head);
+    margin: calc(-1 * var(--spacing-lg)) calc(-1 * var(--spacing-lg)) var(--spacing-lg) calc(-1 * var(--spacing-lg));
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+}
+
+/* Список залов */
+.halls-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.hall-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-medium);
+    padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.hall-name {
+    font-weight: 500;                    /* можно заменить на переменную при желании */
+}
+
+.btn-delete-hall {
+    background: none;
+    border: none;
+    color: var(--color-danger);
+    font-size: var(--font-size-large);
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 var(--spacing-xs);
+}
+
+.btn-delete-hall:hover {
+    color: var(--color-danger-hover);
+}
+
+/* Редактор схемы (в модалке или прямо в блоке) */
+.hall-scheme-editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: var(--color-gray-light);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-large);
+}
+
+.hall-scheme-editor__row {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: center;
+}
+
+.hall-scheme-editor__place {
+    width: var(--hall-scheme-place-size);
+    height: var(--hall-scheme-place-size);
+    border-radius: var(--border-radius-medium);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-medium);
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+.hall-scheme-editor__place--vip {
+    background: var(--color-vip);
+    border-color: var(--color-vip-border);
+}
+
+.hall-scheme-editor__place--disabled {
+    background: var(--color-gray-dark);
+    border-color: var(--color-gray-darker);
+    cursor: not-allowed;
+}
+
+.hall-scheme-editor__place--selected {
+    outline: 2px solid var(--color-primary);
+}
+
+.seat-type-demo {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-right: var(--spacing-sm);
+    cursor: default;
+}
+
+.seat-type-standart {
+    background: var(--color-gray-dark);
+}
+.seat-type-vip {
+    background: var(--color-vip);
+    color: var(--color-text-dark);
+}
+.seat-type-disabled {
+    background: var(--color-gray-darker);
+}
+
+/* Элементы для drag&drop */
 .film-item {
-    padding: 8px 12px;
-    background: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-medium);
+    border-radius: var(--border-radius-medium);
     cursor: grab;
-    margin: 4px;
+    user-select: none;
+    box-shadow: var(--shadow-default);
+}
+
+.film-item:active {
+    cursor: grabbing;
 }
 
 .hall-timeline {
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    background: #fff;
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius-medium);
+    background: var(--color-white);
+    margin-bottom: var(--spacing-sm);
 }
 
 .timeline-header {
-    padding: 10px;
-    background: #e9ecef;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-gray-light);
     font-weight: bold;
+    border-bottom: 1px solid var(--color-border-light);
 }
 
 .timeline-slots {
-    min-height: 60px;
-    padding: 10px;
+    min-height: 70px;
+    padding: var(--spacing-xs);
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: var(--spacing-xs);
+    background: var(--color-bg-timeline);
 }
 
 .seance-block {
-    background: #16A6AF;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 14px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-medium);
+    font-size: var(--font-size-small);
     cursor: grab;
+    box-shadow: var(--shadow-default);
+}
+
+.seance-block:active {
+    cursor: grabbing;
+    opacity: 0.8;
+}
+
+/* Кнопки */
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-hover);
+    border-color: var(--color-hover);
 }
