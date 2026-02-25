@@ -28,6 +28,9 @@ async function initIndex() {
         // Сеансы только в открытых залах
         const seances = data.seances.filter(s => openHallIds.includes(s.seance_hallid));
 
+        // Текущая выбранная дата (из URL или сегодня)
+        const currentDate = getParamFromURL('date') || getTodayDate();
+
         // Группируем сеансы по фильмам и залам
         const films = data.films.map(film => {
             const filmSeances = seances.filter(s => s.seance_filmid === film.id);
@@ -52,25 +55,21 @@ async function initIndex() {
             };
         }).filter(f => f.halls.length > 0);
 
-        // Рендерим календарь и фильмы
-        renderCalendar();
-        renderMovies(films, data);
+        // Рендерим календарь и фильмы, передавая текущую дату
+        renderCalendar(currentDate);
+        renderMovies(films, data, currentDate);
     } catch (e) {
         alert('Ошибка загрузки данных: ' + e.message);
     }
 }
 
 // Календарь
-function renderCalendar() {
+function renderCalendar(baseDateStr) {
     const calendarEl = document.querySelector('.calendar__days');
     if (!calendarEl) return;
 
-    // Определяем дату из URL или берём сегодня
-    const urlDate = getParamFromURL('date');
-    const baseDate = urlDate ? new Date(urlDate + 'T12:00:00') : new Date();
-
-    // Находим понедельник текущей недели
-    const dayOfWeek = baseDate.getDay(); // 0 - вс, 1 - пн ...
+    const baseDate = new Date(baseDateStr + 'T12:00:00');
+    const dayOfWeek = baseDate.getDay();
     const monday = new Date(baseDate);
     monday.setDate(baseDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
 
@@ -99,11 +98,9 @@ function renderCalendar() {
     });
     calendarEl.innerHTML = html;
 
-    // Обработчики кликов на дни
     document.querySelectorAll('.calendar__day').forEach(el => {
         el.addEventListener('click', () => {
             const selectedDate = el.dataset.date;
-            // Обновляем URL и перезагружаем страницу (или делаем плавное обновление)
             window.location.href = `index.html?date=${selectedDate}`;
         });
     });
@@ -134,7 +131,7 @@ function initCalendarArrows() {
 }
 
 // Отрисовка карточек фильмов
-function renderMovies(films, allData) {
+function renderMovies(films, allData, currentDate) {
     const container = document.querySelector('.movies-list');
     if (!container) return;
 
@@ -148,8 +145,7 @@ function renderMovies(films, allData) {
         let hallsHtml = '';
         film.halls.forEach(hall => {
             let timesHtml = hall.times.map(t => {
-                // Проверка, прошёл ли сеанс (упрощённо: сравниваем только время, если дата сегодня)
-                const isPast = checkIfPast(t.time); // можно доработать с учётом даты
+                const isPast = checkIfPast(t.time, currentDate);
                 return `<span class="session-time ${isPast ? 'session-time--past' : ''}" data-seance-id="${t.seanceId}">${t.time}</span>`;
             }).join('');
             hallsHtml += `
@@ -180,7 +176,6 @@ function renderMovies(films, allData) {
     });
     container.innerHTML = html;
 
-    // Обработчики на сеансы
     document.querySelectorAll('.session-time:not(.session-time--past)').forEach(el => {
         el.addEventListener('click', (e) => {
             const seanceId = e.target.dataset.seanceId;
@@ -190,13 +185,12 @@ function renderMovies(films, allData) {
     });
 }
 
-// Простейшая проверка, прошёл ли сеанс (только по времени, без учёта даты)
-function checkIfPast(time) {
+// Проверка, прошёл ли сеанс (с учётом даты и времени)
+function checkIfPast(time, dateStr) {
     const now = new Date();
     const [hours, minutes] = time.split(':').map(Number);
-    const seanceTime = new Date(now);
-    seanceTime.setHours(hours, minutes, 0, 0);
-    return now > seanceTime;
+    const seanceDate = new Date(dateStr + 'T' + time + ':00'); // полная дата+время
+    return now > seanceDate;
 }
 
 // ---------- СТРАНИЦА ВЫБОРА МЕСТ (hall.html) ----------
@@ -221,7 +215,6 @@ async function initHall() {
         document.querySelector('.hall-info__time').textContent = seance.seance_time;
         document.querySelector('.hall-info__hall').textContent = hall.hall_name;
 
-        // Сохраняем цены в глобальные переменные (доступны в других функциях)
         window.standardPrice = hall.hall_price_standart;
         window.vipPrice = hall.hall_price_vip;
 
@@ -257,7 +250,6 @@ function renderHallScheme(matrix) {
         container.appendChild(rowDiv);
     });
 
-    // Сброс стоимости и кнопки
     updateTotalPrice();
 }
 
@@ -321,7 +313,6 @@ function initPayment() {
     const tickets = JSON.parse(ticketsJson);
     if (tickets.length === 0) return;
 
-    // Берём первый билет для отображения (если несколько, можно суммировать)
     const ticket = tickets[0];
     document.getElementById('film-name').textContent = ticket.ticket_filmname;
     document.getElementById('selected-seats').textContent = `${ticket.ticket_row} ряд, ${ticket.ticket_place} место`;

@@ -14,14 +14,18 @@ class ApiClient {
      */
     async request(endpoint, method = 'GET', body = null) {
         const url = this.baseURL + endpoint;
-        const options = { method };
+        const options = {
+            method
+        };
 
         if (body) {
             if (body instanceof FormData) {
                 options.body = body;
             } else {
                 options.body = JSON.stringify(body);
-                options.headers = { 'Content-Type': 'application/json' };
+                options.headers = {
+                    'Content-Type': 'application/json'
+                };
             }
         }
 
