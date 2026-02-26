@@ -155,6 +155,7 @@
 .hall-info__hall {
     font-size: 18px;
     font-weight: var(--font-weight-bold);
+    margin: 0;
 }
 
 .hall-scheme {
@@ -163,6 +164,7 @@
     min-height: 376px; /* по макету */
     /* внутри будет flex/grid для рядов */
     background-color: var(--color-hallback);
+    margin-top: 40px;
 }
 
 /* Легенда для схемы зала */
@@ -265,6 +267,11 @@
 
 .calendar__day--today {
     background: var(--color-primary); /* полупрозрачный бирюзовый */
+}
+
+.calendar__day--selected {
+    background: var(--color-primary);
+    opacity: 0.8; /* или любой другой оттенок, можно совпадать с today */
 }
 
 .day-name {
@@ -469,6 +476,27 @@
     font-size: 14px;
 }
 
+/* ГЕНЕРАЦИЯ ЗАЛА */
+.hall-scheme__row {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+
+.hall-scheme__place {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hall-scheme__place--standart { background-color: #ffffff; }
+.hall-scheme__place--vip { background-color: #ffa500; }
+.hall-scheme__place--taken { background-color: #000000; }
+.hall-scheme__place--disabled { background-color: #444; }
+.hall-scheme__place--selected { background-color: #16A6AF; }}
+
 
 /* -------------------- */
 /* Адаптивность         */
@@ -519,37 +547,19 @@
     }
 
     .hall-info {
-        width: 100%;
-        height: auto;
+        width: 419px;
+        height: 67px;
+        margin-bottom: 30px; /* увеличено с 20px до 30px */
     }
 
     .hall-scheme {
-        padding: 10px;
+        width: 100%;
+        max-width: var(--container-max-width);
+        min-height: 376px;
+        background-color: var(--color-hallback);
+        padding: 15px 30px; /* перенесено из инлайн-стиля */
+        box-sizing: border-box;
     }
-}
 
-/* ГЕНЕРАЦИЯ ЗАЛА */
-.hall-scheme__place {
-    width: 40px;          /* ширина места */
-    height: 40px;         /* высота места */
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 2px;          /* небольшой отступ между местами */
-    transition: transform 0.1s;
-}
 
-.hall-scheme__place--standart { background-color: #ffffff; } /* белый */
-.hall-scheme__place--vip { background-color: #ffa500; }      /* оранжевый */
-.hall-scheme__place--taken { background-color: #000000; }    /* чёрный */
-.hall-scheme__place--disabled { background-color: #444; }    /* если есть */
-.hall-scheme__place--selected {
-    background-color: #16A6AF; /* голубой */
-    transform: scale(1.05);
-}
 
-.hall-scheme__row {
-    display: flex;
-    justify-content: center;
-    gap: 2px;          /* расстояние между местами */
-    margin-bottom: 2px;/* отступ между рядами */
-}

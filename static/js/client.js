@@ -64,11 +64,11 @@ async function initIndex() {
 }
 
 // Календарь
-function renderCalendar(baseDateStr) {
+function renderCalendar(selectedDateStr) {
     const calendarEl = document.querySelector('.calendar__days');
     if (!calendarEl) return;
 
-    const baseDate = new Date(baseDateStr + 'T12:00:00');
+    const baseDate = new Date(selectedDateStr + 'T12:00:00');
     const dayOfWeek = baseDate.getDay();
     const monday = new Date(baseDate);
     monday.setDate(baseDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
@@ -85,11 +85,17 @@ function renderCalendar(baseDateStr) {
     days.forEach(day => {
         const dayStr = formatDate(day);
         const isToday = (dayStr === todayStr);
-        const dayName = day.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0,2);
+        const isSelected = (dayStr === selectedDateStr);
+
+        let dayClasses = 'calendar__day';
+        if (isToday) dayClasses += ' calendar__day--today';
+        if (isSelected) dayClasses += ' calendar__day--selected';
+
+        const dayName = day.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0, 2);
         const dayNumber = day.getDate();
 
         html += `
-            <div class="calendar__day ${isToday ? 'calendar__day--today' : ''}" data-date="${dayStr}">
+            <div class="${dayClasses}" data-date="${dayStr}">
                 <span class="day-name">${dayName}</span>
                 <span class="day-number">${dayNumber}</span>
                 ${isToday ? '<span class="day-today">Сегодня</span>' : ''}
@@ -189,14 +195,16 @@ function renderMovies(films, allData, currentDate) {
 function checkIfPast(time, dateStr) {
     const now = new Date();
     const [hours, minutes] = time.split(':').map(Number);
-    const seanceDate = new Date(dateStr + 'T' + time + ':00'); // полная дата+время
+    const seanceDate = new Date(dateStr + 'T' + time + ':00');
     return now > seanceDate;
 }
 
 // ---------- СТРАНИЦА ВЫБОРА МЕСТ (hall.html) ----------
 async function initHall() {
+    console.log('initHall started');
     const seanceId = getParamFromURL('seanceId');
     const date = getParamFromURL('date') || getTodayDate();
+    console.log('seanceId:', seanceId, 'date:', date);
     if (!seanceId) {
         alert('Не указан сеанс');
         window.location.href = 'index.html';
@@ -205,7 +213,9 @@ async function initHall() {
 
     try {
         const configMatrix = await api.getHallConfig(seanceId, date);
+        console.log('configMatrix:', configMatrix);
         const allData = await api.getAllData();
+        console.log('allData:', allData);
         const seance = allData.seances.find(s => s.id == seanceId);
         if (!seance) throw new Error('Сеанс не найден');
         const film = allData.films.find(f => f.id === seance.seance_filmid);
@@ -220,15 +230,31 @@ async function initHall() {
 
         renderHallScheme(configMatrix);
 
-        document.querySelector('.btn-booking').addEventListener('click', bookTickets);
+        const bookBtn = document.querySelector('.btn-booking');
+        if (bookBtn) {
+            bookBtn.addEventListener('click', bookTickets);
+        } else {
+            console.error('Кнопка .btn-booking не найдена');
+        }
     } catch (e) {
         alert('Ошибка загрузки данных: ' + e.message);
     }
 }
 
 function renderHallScheme(matrix) {
+    console.log('renderHallScheme called, matrix type:', typeof matrix, 'length:', matrix ? matrix.length : 'null');
     const container = document.querySelector('.hall-scheme');
+    console.log('container:', container);
+    if (!container) {
+        console.error('Контейнер .hall-scheme не найден');
+        return;
+    }
     container.innerHTML = '';
+
+    if (!matrix || matrix.length === 0) {
+        console.warn('Матрица пуста, схема не отрисована');
+        return;
+    }
 
     matrix.forEach((rowPlaces, rowIndex) => {
         const rowDiv = document.createElement('div');
@@ -250,6 +276,7 @@ function renderHallScheme(matrix) {
         container.appendChild(rowDiv);
     });
 
+    console.log('Схема отрисована, рядов:', container.children.length);
     updateTotalPrice();
 }
 
@@ -271,13 +298,19 @@ function updateTotalPrice() {
         }
     });
     const totalEl = document.getElementById('total-price');
-    if (totalEl) totalEl.textContent = total;
+    if (totalEl) {
+        totalEl.textContent = total;
+    } else {
+        console.warn('Элемент #total-price не найден');
+    }
 
     const bookBtn = document.querySelector('.btn-booking');
-    if (selected.length > 0) {
-        bookBtn.removeAttribute('disabled');
-    } else {
-        bookBtn.setAttribute('disabled', 'disabled');
+    if (bookBtn) {
+        if (selected.length > 0) {
+            bookBtn.removeAttribute('disabled');
+        } else {
+            bookBtn.setAttribute('disabled', 'disabled');
+        }
     }
 }
 
@@ -311,7 +344,10 @@ function initPayment() {
     }
 
     const tickets = JSON.parse(ticketsJson);
-    if (tickets.length === 0) return;
+    if (tickets.length === 0) {
+        window.location.href = 'index.html';
+        return;
+    }
 
     const ticket = tickets[0];
     document.getElementById('film-name').textContent = ticket.ticket_filmname;
@@ -321,9 +357,14 @@ function initPayment() {
     const total = tickets.reduce((sum, t) => sum + t.ticket_price, 0);
     document.getElementById('total-price').textContent = total + ' ₽';
 
-    document.querySelector('.btn-code').addEventListener('click', () => {
-        window.location.href = 'ticket.html';
-    });
+    const btn = document.querySelector('.btn-code');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            window.location.href = 'ticket.html';
+        });
+    } else {
+        console.error('Кнопка .btn-code не найдена');
+    }
 }
 
 // ---------- СТРАНИЦА БИЛЕТА (ticket.html) ----------
