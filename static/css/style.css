@@ -139,7 +139,7 @@
 .hall-info {
     width: 419px; /* по макету */
     height: 67px;
-    margin-bottom: 20px;
+    margin-bottom: 75px;
 }
 
 .hall-info__title {
@@ -495,7 +495,43 @@
 .hall-scheme__place--vip { background-color: #ffa500; }
 .hall-scheme__place--taken { background-color: #000000; }
 .hall-scheme__place--disabled { background-color: #444; }
-.hall-scheme__place--selected { background-color: #16A6AF; }}
+.hall-scheme__place--selected { background-color: #16A6AF; }
+
+.hall-screen {
+    text-align: center;
+    background-color: #444;
+    color: white;
+    padding: 8px 0;
+    border-radius: 4px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.hall-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.legend-color--standard { background-color: #ffffff; border: 1px solid #ccc; }
+.legend-color--vip { background-color: #ffa500; }
+.legend-color--taken { background-color: #000000; }
+.legend-color--selected { background-color: #16A6AF; }
 
 
 /* -------------------- */
@@ -559,7 +595,7 @@
         background-color: var(--color-hallback);
         padding: 15px 30px; /* перенесено из инлайн-стиля */
         box-sizing: border-box;
-    }
+    }}
 
 
 

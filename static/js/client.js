@@ -201,10 +201,8 @@ function checkIfPast(time, dateStr) {
 
 // ---------- СТРАНИЦА ВЫБОРА МЕСТ (hall.html) ----------
 async function initHall() {
-    console.log('initHall started');
     const seanceId = getParamFromURL('seanceId');
     const date = getParamFromURL('date') || getTodayDate();
-    console.log('seanceId:', seanceId, 'date:', date);
     if (!seanceId) {
         alert('Не указан сеанс');
         window.location.href = 'index.html';
@@ -213,9 +211,7 @@ async function initHall() {
 
     try {
         const configMatrix = await api.getHallConfig(seanceId, date);
-        console.log('configMatrix:', configMatrix);
         const allData = await api.getAllData();
-        console.log('allData:', allData);
         const seance = allData.seances.find(s => s.id == seanceId);
         if (!seance) throw new Error('Сеанс не найден');
         const film = allData.films.find(f => f.id === seance.seance_filmid);
@@ -228,19 +224,19 @@ async function initHall() {
         window.standardPrice = hall.hall_price_standart;
         window.vipPrice = hall.hall_price_vip;
 
+        // Обновляем цены в легенде
+        const standardPriceSpan = document.querySelector('.legend-price-standard');
+        const vipPriceSpan = document.querySelector('.legend-price-vip');
+        if (standardPriceSpan) standardPriceSpan.textContent = window.standardPrice;
+        if (vipPriceSpan) vipPriceSpan.textContent = window.vipPrice;
+
         renderHallScheme(configMatrix);
 
-        const bookBtn = document.querySelector('.btn-booking');
-        if (bookBtn) {
-            bookBtn.addEventListener('click', bookTickets);
-        } else {
-            console.error('Кнопка .btn-booking не найдена');
-        }
+        document.querySelector('.btn-booking').addEventListener('click', bookTickets);
     } catch (e) {
         alert('Ошибка загрузки данных: ' + e.message);
     }
 }
-
 function renderHallScheme(matrix) {
     console.log('renderHallScheme called, matrix type:', typeof matrix, 'length:', matrix ? matrix.length : 'null');
     const container = document.querySelector('.hall-scheme');
