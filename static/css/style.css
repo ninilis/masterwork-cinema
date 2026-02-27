@@ -1,9 +1,5 @@
-/* style.css */
-
-/* Подключение шрифта Roboto */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap');
 
-/* CSS-переменные (custom properties) */
 :root {
     /* Цвета */
     --color-lazurit: #16A6AF;
@@ -15,7 +11,7 @@
     --color-gray-light: #666;                 /* для текста muted и границ */
     --color-gray-dark: #171D24;                /* тёмный фон для схемы зала */
 
-    /* Тени (из макета) */
+    /* Тени  */
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
 
     /* Шрифты */
@@ -52,7 +48,9 @@
     --spacing-lg: 30px;
 }
 
-/* Сброс и базовые стили */
+/* -------------------- */
+/* Сброс и базовые стили  */
+/* -------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -124,6 +122,7 @@
     border-radius: 2px;
 }
 
+
 /* -------------------- */
 /* Страница hall.html   */
 /* -------------------- */
@@ -159,8 +158,7 @@
 .hall-scheme {
     width: 100%;
     max-width: var(--container-max-width);
-    min-height: 376px; /* по макету */
-    /* внутри будет flex/grid для рядов */
+    min-height: 376px;
     background-color: var(--color-gray-dark);
     margin-top: 40px;
 }
