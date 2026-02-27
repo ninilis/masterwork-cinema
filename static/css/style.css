@@ -49,7 +49,7 @@
 }
 
 /* -------------------- */
-/* Сброс и базовые стили  */
+/* Сброс и базовые стили */
 /* -------------------- */
 * {
     margin: 0;
@@ -212,7 +212,7 @@
     background-color: var(--color-white);
 }
 .hall-scheme__place--vip {
-    background-color: var(--color-orange); /* нет замены, оставляем */
+    background-color: var(--color-orange);
 }
 .hall-scheme__place--taken {
     background-color: var(--color-gray-dark);
@@ -228,16 +228,16 @@
     text-align: center;
     border: 1px solid var(--color-gray-light);
     color: var(--color-white);
-    border-radius: 20px 20px 20px 20px; /* плавное скругление всех углов */
+    border-radius: 20px 20px 20px 20px;
     letter-spacing: 2px;
-    width: 50%;                /* ширина меньше родителя */
-    margin: 0 auto 20px auto;   /* центрирование + отступ снизу */
+    width: 50%;
+    margin: 0 auto 20px auto;
 }
 
 .hall-legend {
     display: grid;
-    grid-template-columns: repeat(2, auto); /* две равные колонки */
-    gap: 20px 30px;                          /* отступы между ячейками */
+    grid-template-columns: repeat(2, auto);
+    gap: 20px 30px;
     justify-content: center;
     margin: 20px 0;
     color: var(--color-white);
@@ -289,7 +289,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 5px; /* минимальное расстояние между стрелками и днями */
+    gap: 5px;
     margin-bottom: 30px;
     max-width: 990px;
     width: 100%;
@@ -319,11 +319,11 @@
     display: flex;
     flex: 1;
     justify-content: space-between;
-    gap: 5px; /* зазор между ячейками */
+    gap: 5px;
 }
 
 .calendar__day {
-    flex: 1; /* все ячейки равной ширины */
+    flex: 1;
     background: var(--color-bg-beige);
     border-radius: 2px;
     display: flex;
@@ -337,14 +337,14 @@
 }
 
 .calendar__day--today {
-    background: var(--color-lazurit); /* полупрозрачный бирюзовый */
+    background: var(--color-lazurit);
 }
 
 .calendar__day--selected {
     background: var(--color-lazurit);
-    transform: scale(1.1); /* увеличиваем на 10% */
-    z-index: 10; /* поднимаем над соседями */
-    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.3); /* тень для объёма */
+    transform: scale(1.1);
+    z-index: 10;
+    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.3);
 }
 
 
@@ -368,7 +368,7 @@
 }
 
 .movie-card__left {
-    flex: 0 0 200px; /* фиксированная ширина левой колонки */
+    flex: 0 0 200px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -404,18 +404,18 @@
 }
 
 .session-time {
-    background: var(--color-white);        /* белый фон */
-    color: var(--color-black);             /* чёрный текст */
+    background: var(--color-white);
+    color: var(--color-black);
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 14px;
     cursor: pointer;
-    box-shadow: var(--shadow-default); /* если нужна тень, иначе уберите */
+    box-shadow: var(--shadow-default);
     transition: background 0.2s;
 }
 
 .session-time:hover {
-    background: var(--color-bg-beige);     /* чуть темнее при наведении */
+    background: var(--color-bg-beige);
 }
 
 .session-time--past {
@@ -439,7 +439,7 @@
 .movie-card__description {
     font-size: 14px;
     line-height: 1.5;
-    color:  var(--color-gray-light); /* нет замены, оставляем */
+    color:  var(--color-gray-light);
 }
 
 .movie-card__duration {
@@ -455,9 +455,9 @@
     margin: var(--spacing-lg) auto;
     padding: var(--spacing-lg);
     background: var(--color-bg-beige);
-    border-top: 4px dashed var(--color-orange);   /* пунктир сверху */
-    border-bottom: 4px dashed var(--color-orange);/* пунктир снизу */
-    border-left: none;   /* убираем боковые границы */
+    border-top: 4px dashed var(--color-orange);
+    border-bottom: 4px dashed var(--color-orange);
+    border-left: none;
     border-right: none;
 }
 
@@ -475,14 +475,14 @@
     border-top: 6px dotted var(--color-orange);
     margin-left: calc(-1 * var(--spacing-lg));
     margin-right: calc(-1 * var(--spacing-lg));
-    width: auto; /* займёт ширину родителя + отступы */
+    width: auto;
     opacity: 1;
 }
 
 .payment-card__details p, .ticket-card__details {
     font-size: 18px;
-    margin-bottom: 5px;  /* или другое значение, например 0 */
-    line-height: 1.5;    /* уменьшите межстрочный интервал при необходимости */
+    margin-bottom: 5px;
+    line-height: 1.5;
 }
 
 .detail-label {
@@ -601,7 +601,7 @@
 
     .hall-info {
         height: 67px;
-        margin-bottom: 30px; /* увеличено с 20px до 30px */
+        margin-bottom: 30px;
     }
 
     .hall-scheme {
@@ -609,7 +609,7 @@
         max-width: var(--container-max-width);
         min-height: 376px;
         background-color: var(--color-gray-dark);
-        padding: 15px 30px; /* перенесено из инлайн-стиля */
+        padding: 15px 30px;
         box-sizing: border-box;
     }
 }

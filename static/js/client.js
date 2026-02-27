@@ -1,5 +1,3 @@
-// static/js/client.js
-
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDate(date) {
     const yyyy = date.getFullYear();
