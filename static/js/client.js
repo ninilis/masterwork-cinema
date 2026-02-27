@@ -88,10 +88,9 @@ function renderCalendar(selectedDateStr) {
         const isSelected = (dayStr === selectedDateStr);
 
         let dayClasses = 'calendar__day';
-        if (isToday) dayClasses += ' calendar__day--today';
         if (isSelected) dayClasses += ' calendar__day--selected';
 
-        const dayName = day.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0, 2);
+        const dayName = day.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0,2);
         const dayNumber = day.getDate();
 
         html += `
@@ -112,28 +111,57 @@ function renderCalendar(selectedDateStr) {
     });
 }
 
+
 // Стрелки календаря (переключение недели с перезагрузкой)
 function initCalendarArrows() {
     const prevBtn = document.querySelector('.calendar__arrow--prev');
     const nextBtn = document.querySelector('.calendar__arrow--next');
 
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            const currentDateStr = getParamFromURL('date') || getTodayDate();
-            const currentDate = new Date(currentDateStr + 'T12:00:00');
-            currentDate.setDate(currentDate.getDate() - 7);
-            window.location.href = `index.html?date=${formatDate(currentDate)}`;
-        });
+    if (!prevBtn || !nextBtn) return;
+
+    // Функция обновления состояния стрелок
+    function updateArrows(currentDateStr) {
+        const currentDate = new Date(currentDateStr + 'T12:00:00');
+        const today = new Date();
+        today.setHours(12, 0, 0, 0); // нормализуем
+
+        // Получаем понедельник недели для currentDate
+        const dayOfWeek = currentDate.getDay();
+        const monday = new Date(currentDate);
+        monday.setDate(currentDate.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+        // Получаем понедельник текущей недели
+        const todayDayOfWeek = today.getDay();
+        const currentMonday = new Date(today);
+        currentMonday.setDate(today.getDate() - (todayDayOfWeek === 0 ? 6 : todayDayOfWeek - 1));
+
+        // Если отображаемая неделя совпадает с текущей, левая стрелка неактивна
+        if (formatDate(monday) === formatDate(currentMonday)) {
+            prevBtn.disabled = true;
+        } else {
+            prevBtn.disabled = false;
+        }
     }
 
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const currentDateStr = getParamFromURL('date') || getTodayDate();
-            const currentDate = new Date(currentDateStr + 'T12:00:00');
-            currentDate.setDate(currentDate.getDate() + 7);
-            window.location.href = `index.html?date=${formatDate(currentDate)}`;
-        });
-    }
+    // Получаем текущую дату из URL или сегодня
+    const currentDateStr = getParamFromURL('date') || getTodayDate();
+    updateArrows(currentDateStr);
+
+    prevBtn.addEventListener('click', () => {
+        const currentDateStr = getParamFromURL('date') || getTodayDate();
+        const currentDate = new Date(currentDateStr + 'T12:00:00');
+        currentDate.setDate(currentDate.getDate() - 7);
+        const newDate = formatDate(currentDate);
+        window.location.href = `index.html?date=${newDate}`;
+    });
+
+    nextBtn.addEventListener('click', () => {
+        const currentDateStr = getParamFromURL('date') || getTodayDate();
+        const currentDate = new Date(currentDateStr + 'T12:00:00');
+        currentDate.setDate(currentDate.getDate() + 7);
+        const newDate = formatDate(currentDate);
+        window.location.href = `index.html?date=${newDate}`;
+    });
 }
 
 // Отрисовка карточек фильмов

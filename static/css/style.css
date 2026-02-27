@@ -312,6 +312,11 @@
     opacity: 0.7;
 }
 
+.calendar__arrow:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
 .calendar__days {
     display: flex;
     flex: 1;
@@ -339,12 +344,14 @@
 
 .calendar__day--selected {
     background: var(--color-lazurit);
-    opacity: 0.8; /* или любой другой оттенок, можно совпадать с today */
+    transform: scale(1.1); /* увеличиваем на 10% */
+    z-index: 10; /* поднимаем над соседями */
+    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.3); /* тень для объёма */
 }
+
 
 .day-name {
     font-weight: 300;
-    text-transform: lowercase;
 }
 
 .day-number {
@@ -352,9 +359,8 @@
 }
 
 .day-today {
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 700;
-    text-transform: lowercase;
 }
 
 /* Список фильмов */
@@ -399,7 +405,6 @@
 
 .session-times {
     display: flex;
-    flex-wrap: wrap;
     gap: 5px;
 }
 
