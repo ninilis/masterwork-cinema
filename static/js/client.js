@@ -449,27 +449,33 @@ function initTicket() {
 function generateQRCode(tickets) {
     if (!tickets || tickets.length === 0) return;
 
-    // Базовые данные (одинаковые для всех билетов одного заказа)
+    // Базовые данные
     const film = tickets[0].ticket_filmname;
     const date = tickets[0].ticket_date;
     const time = tickets[0].ticket_time;
     const hall = tickets[0].ticket_hallname;
 
-    // Собираем все места
+    // Все места
     const seatsList = tickets.map(t => `${t.ticket_row} ряд/${t.ticket_place} место`).join(', ');
     const total = tickets.reduce((sum, t) => sum + t.ticket_price, 0);
 
     const qrData = `Билеты: ${film}, ${date} ${time}, Зал ${hall}, Места: ${seatsList}, Сумма: ${total}р. Билет действителен строго на свой сеанс.`;
 
-    if (typeof QRCreator === 'undefined') {
-        console.error('Библиотека QRCreator не загружена');
+    if (typeof QrCreator === 'undefined') {
+        console.error('Библиотека QrCreator не загружена');
         return;
     }
 
-    const qr = QRCreator(qrData, { image: 'SVG' });
     const container = document.querySelector('.qr-placeholder');
-    container.innerHTML = '';
-    container.appendChild(qr.result);
+    container.innerHTML = ''; // очищаем
+
+    QrCreator.render({
+        text: qrData,
+        size: 200, // размер QR-кода
+        fill: '#000000',
+        background: '#ffffff',
+        radius: 0.5, // скругление модулей
+    }, container);
 }
 
 // ---------- ЗАПУСК В ЗАВИСИМОСТИ ОТ СТРАНИЦЫ ----------
