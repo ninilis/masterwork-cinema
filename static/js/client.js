@@ -218,7 +218,7 @@ async function initHall() {
         const hall = allData.halls.find(h => h.id === seance.seance_hallid);
 
         document.querySelector('.hall-info__title').textContent = film.film_name;
-        document.querySelector('.hall-info__time').textContent = seance.seance_time;
+        document.querySelector('.hall-info__time').textContent = 'Время сеанса: ' + seance.seance_time;
         document.querySelector('.hall-info__hall').textContent = hall.hall_name;
 
         window.standardPrice = hall.hall_price_standart;
@@ -322,44 +322,77 @@ async function bookTickets() {
         coast: place.classList.contains('hall-scheme__place--vip') ? window.vipPrice : window.standardPrice
     }));
 
+    console.log('Отправляемые билеты:', tickets);
+
     try {
         const result = await api.purchaseTicket(seanceId, date, tickets);
-        localStorage.setItem('lastTickets', JSON.stringify(result.tickets));
+        console.log('Полный ответ API при покупке:', result);
+
+        if (!result) {
+            throw new Error('Пустой ответ от API');
+        }
+
+        // Извлекаем массив билетов из ответа (поддерживаем разные форматы)
+        let ticketsData;
+        if (Array.isArray(result)) {
+            ticketsData = result; // если API возвращает массив напрямую
+        } else if (result.tickets && Array.isArray(result.tickets)) {
+            ticketsData = result.tickets; // если возвращает объект с полем tickets
+        } else {
+            console.error('Неизвестный формат ответа:', result);
+            throw new Error('API не вернуло билеты в ожидаемом формате');
+        }
+
+        localStorage.setItem('lastTickets', JSON.stringify(ticketsData));
+        console.log('Билеты сохранены, переход на payment.html');
         window.location.href = 'payment.html';
     } catch (e) {
         alert('Ошибка бронирования: ' + e.message);
+        console.error(e);
     }
 }
 
 // ---------- СТРАНИЦА ПОДТВЕРЖДЕНИЯ (payment.html) ----------
 function initPayment() {
     const ticketsJson = localStorage.getItem('lastTickets');
-    if (!ticketsJson) {
+    console.log('Сырые данные из localStorage:', ticketsJson);
+
+    if (!ticketsJson || ticketsJson === 'undefined') {
         window.location.href = 'index.html';
         return;
     }
 
-    const tickets = JSON.parse(ticketsJson);
-    if (tickets.length === 0) {
+    let tickets;
+    try {
+        tickets = JSON.parse(ticketsJson);
+    } catch (e) {
+        console.error('Ошибка парсинга билетов', e);
         window.location.href = 'index.html';
         return;
     }
 
-    const ticket = tickets[0];
+    if (!Array.isArray(tickets) || tickets.length === 0) {
+        window.location.href = 'index.html';
+        return;
+    }
+
+    const ticket = tickets[0]; // для общей информации (фильм, зал, время – они одинаковы)
+
+    // Формируем строку со всеми местами
+    const seatsString = tickets.map(t => `${t.ticket_row} ряд, ${t.ticket_place} место`).join('; ');
+
     document.getElementById('film-name').textContent = ticket.ticket_filmname;
-    document.getElementById('selected-seats').textContent = `${ticket.ticket_row} ряд, ${ticket.ticket_place} место`;
+    document.getElementById('selected-seats').textContent = seatsString;
     document.getElementById('hall-name').textContent = ticket.ticket_hallname;
     document.getElementById('start-time').textContent = ticket.ticket_time;
     const total = tickets.reduce((sum, t) => sum + t.ticket_price, 0);
-    document.getElementById('total-price').textContent = total + ' ₽';
+    document.getElementById('total-price').textContent = total + 'руб';
 
     const btn = document.querySelector('.btn-code');
     if (btn) {
         btn.addEventListener('click', () => {
             window.location.href = 'ticket.html';
         });
-    } else {
-        console.error('Кнопка .btn-code не найдена');
     }
 }
 
@@ -375,16 +408,30 @@ function initTicket() {
     if (tickets.length === 0) return;
 
     const ticket = tickets[0];
+    const seatsString = tickets.map(t => `${t.ticket_row} ряд, ${t.ticket_place} место`).join('; ');
+
     document.getElementById('film-name').textContent = ticket.ticket_filmname;
-    document.getElementById('selected-seats').textContent = `${ticket.ticket_row} ряд, ${ticket.ticket_place} место`;
+    document.getElementById('selected-seats').textContent = seatsString;
     document.getElementById('hall-name').textContent = ticket.ticket_hallname;
     document.getElementById('start-time').textContent = ticket.ticket_time;
 
-    generateQRCode(ticket);
+    generateQRCode(tickets); // передаём все билеты
 }
 
-function generateQRCode(ticket) {
-    const qrData = `Билет: ${ticket.ticket_filmname}, ${ticket.ticket_date} ${ticket.ticket_time}, Зал ${ticket.ticket_hallname}, Ряд ${ticket.ticket_row}, Место ${ticket.ticket_place}, Цена ${ticket.ticket_price}р. Билет действителен строго на свой сеанс.`;
+function generateQRCode(tickets) {
+    if (!tickets || tickets.length === 0) return;
+
+    // Базовые данные (одинаковые для всех билетов одного заказа)
+    const film = tickets[0].ticket_filmname;
+    const date = tickets[0].ticket_date;
+    const time = tickets[0].ticket_time;
+    const hall = tickets[0].ticket_hallname;
+
+    // Собираем все места
+    const seatsList = tickets.map(t => `${t.ticket_row} ряд/${t.ticket_place} место`).join(', ');
+    const total = tickets.reduce((sum, t) => sum + t.ticket_price, 0);
+
+    const qrData = `Билеты: ${film}, ${date} ${time}, Зал ${hall}, Места: ${seatsList}, Сумма: ${total}р. Билет действителен строго на свой сеанс.`;
 
     if (typeof QRCreator === 'undefined') {
         console.error('Библиотека QRCreator не загружена');

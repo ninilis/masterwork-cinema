@@ -6,15 +6,14 @@
 /* CSS-переменные (custom properties) */
 :root {
     /* Цвета */
-    --color-primary: #16A6AF;
-    --color-hover: #19828a;/* основной (кнопки, акценты) */
-    --color-accent: #C76F00;          /* оранжевый для заголовков билетов */
+    --color-lazurit: #16A6AF;
+    --color-lazurit-dark: #19828a;          /* основной (кнопки, акценты) */
+    --color-orange: #C76F00;                 /* оранжевый для заголовков билетов */
     --color-bg-beige: rgba(241, 235, 230, 0.95); /* фон подложек */
-    --color-text-dark: #000;
-    --color-text-light: #fff;
-    --color-text-muted: #666;
-    --color-border: #ccc;              /* для разделителей */
-    --color-hallback: #171D24;
+    --color-black: #000;
+    --color-white: #fff;
+    --color-gray-light: #666;                 /* для текста muted и границ */
+    --color-gray-dark: #171D24;                /* тёмный фон для схемы зала */
 
     /* Тени (из макета) */
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
@@ -65,7 +64,7 @@
     background-size: cover;
     min-height: 100vh;
     font-family: var(--font-family);
-    color: var(--color-text-dark);
+    color: var(--color-black);
     display: flex;
     flex-direction: column;
 }
@@ -98,10 +97,10 @@
 .btn-login {
     width: 71px;
     height: var(--btn-height);
-    background: var(--color-primary);
+    background: var(--color-lazurit);
     border-radius: var(--btn-border-radius);
     border: none;
-    color: var(--color-text-light);
+    color: var(--color-white);
     font-size: 14px;
     font-weight: var(--font-weight-bold);
     text-transform: uppercase;
@@ -115,11 +114,11 @@
 }
 
 .btn-login:hover {
-    background: var(--color-hover);
-    color: var(--color-text-light);
+    background: var(--color-lazurit-dark);
+    color: var(--color-white);
 }
 
-    /* Общий класс для бежево-прозрачных подложек */
+/* Общий класс для бежево-прозрачных подложек */
 .bg-beige-transparent {
     background: var(--color-bg-beige);
     border-radius: 2px;
@@ -137,7 +136,6 @@
 }
 
 .hall-info {
-    width: 419px; /* по макету */
     height: 67px;
     margin-bottom: 75px;
 }
@@ -163,44 +161,18 @@
     max-width: var(--container-max-width);
     min-height: 376px; /* по макету */
     /* внутри будет flex/grid для рядов */
-    background-color: var(--color-hallback);
+    background-color: var(--color-gray-dark);
     margin-top: 40px;
 }
-
-/* Легенда для схемы зала */
-.hall-legend {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    margin-top: var(--spacing-lg);
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 14px;
-}
-
-.legend-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-}
-
-.legend-color--standard { background-color: #ccc; }
-.legend-color--vip { background-color: gold; }
-.legend-color--taken { background-color: #666; }
-.legend-color--selected { background-color: #4caf50; }
 
 /* Кнопка бронирования (на hall.html) */
 .btn-booking {
     width: 232px;
     height: var(--btn-height);
-    background: var(--color-primary);
+    background: var(--color-lazurit);
     border: none;
     border-radius: var(--btn-border-radius);
-    color: var(--color-text-light);
+    color: var(--color-white);
     font-size: 16px;
     font-weight: var(--font-weight-regular);
     box-shadow: var(--shadow-default);
@@ -213,6 +185,102 @@
 .btn-booking:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ГЕНЕРАЦИЯ ЗАЛА */
+.hall-scheme__row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.hall-scheme__place {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hall-scheme__place--standart,
+.hall-scheme__place--vip,
+.hall-scheme__place--taken,
+.hall-scheme__place--disabled,
+.hall-scheme__place--selected {
+    border: 1px solid var(--color-gray-light);
+}
+
+.hall-scheme__place--standart {
+    background-color: var(--color-white);
+}
+.hall-scheme__place--vip {
+    background-color: var(--color-orange); /* нет замены, оставляем */
+}
+.hall-scheme__place--taken {
+    background-color: var(--color-gray-dark);
+}
+.hall-scheme__place--disabled {
+    background-color: var(--color-gray-light);
+}
+.hall-scheme__place--selected {
+    background-color: var(--color-lazurit);
+}
+
+.hall-screen {
+    text-align: center;
+    border: 1px solid var(--color-gray-light);
+    color: var(--color-white);
+    border-radius: 20px 20px 20px 20px; /* плавное скругление всех углов */
+    letter-spacing: 2px;
+    width: 50%;                /* ширина меньше родителя */
+    margin: 0 auto 20px auto;   /* центрирование + отступ снизу */
+}
+
+.hall-legend {
+    display: grid;
+    grid-template-columns: repeat(2, auto); /* две равные колонки */
+    gap: 20px 30px;                          /* отступы между ячейками */
+    justify-content: center;
+    margin: 20px 0;
+    color: var(--color-white);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.legend-color--standard,
+.legend-color--vip,
+.legend-color--taken,
+.legend-color--selected {
+    border: 1px solid var(--color-gray-light);
+    width: 24px;
+    height: 24px;
+}
+
+.legend-color--standard {
+    background-color: var(--color-white);
+}
+
+.legend-color--vip {
+    background-color: var(--color-orange);
+}
+
+.legend-color--taken {
+    background-color: var(--color-gray-dark);
+}
+
+.legend-color--selected {
+    background-color: var(--color-lazurit);
 }
 
 /* -------------------- */
@@ -233,7 +301,7 @@
     background: none;
     border: none;
     font-size: 40px;
-    color: var(--color-primary);
+    color: var(--color-lazurit);
     cursor: pointer;
     padding: 0 5px;
     line-height: 1;
@@ -266,11 +334,11 @@
 }
 
 .calendar__day--today {
-    background: var(--color-primary); /* полупрозрачный бирюзовый */
+    background: var(--color-lazurit); /* полупрозрачный бирюзовый */
 }
 
 .calendar__day--selected {
-    background: var(--color-primary);
+    background: var(--color-lazurit);
     opacity: 0.8; /* или любой другой оттенок, можно совпадать с today */
 }
 
@@ -336,8 +404,8 @@
 }
 
 .session-time {
-    background: white;        /* белый фон */
-    color: black;             /* чёрный текст */
+    background: var(--color-white);        /* белый фон */
+    color: var(--color-black);             /* чёрный текст */
     padding: 5px 10px;
     border-radius: 3px;
     font-size: 14px;
@@ -347,7 +415,7 @@
 }
 
 .session-time:hover {
-    background: #f0f0f0;      /* чуть темнее при наведении */
+    background: var(--color-bg-beige);     /* чуть темнее при наведении */
 }
 
 .session-time--past {
@@ -371,12 +439,12 @@
 .movie-card__description {
     font-size: 14px;
     line-height: 1.5;
-    color: #333;
+    color:  var(--color-gray-light); /* нет замены, оставляем */
 }
 
 .movie-card__duration {
     font-size: 14px;
-    color: #666;
+    color: var(--color-gray-light);
 }
 
 /* -------------------- */
@@ -387,8 +455,8 @@
     margin: var(--spacing-lg) auto;
     padding: var(--spacing-lg);
     background: var(--color-bg-beige);
-    border-top: 4px dashed var(--color-accent);   /* пунктир сверху */
-    border-bottom: 4px dashed var(--color-accent);/* пунктир снизу */
+    border-top: 4px dashed var(--color-orange);   /* пунктир сверху */
+    border-bottom: 4px dashed var(--color-orange);/* пунктир снизу */
     border-left: none;   /* убираем боковые границы */
     border-right: none;
 }
@@ -399,12 +467,12 @@
     font-size: 22px;
     line-height: 25px;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-orange);
     margin-bottom: 20px;
 }
 
 .payment-card__divider, .ticket-card__divider {
-    border-top: 6px dotted var(--color-accent);
+    border-top: 6px dotted var(--color-orange);
 }
 
 .payment-card__details p, .ticket-card__details {
@@ -413,21 +481,21 @@
 
 .detail-label {
     font-weight: var(--font-weight-regular);
-    color: var(--color-text-muted);
+    color: var(--color-gray-light);
 }
 
 .detail-value {
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-dark);
+    color: var(--color-black);
 }
 
 .btn-code {
     width: 337px;
     height: var(--btn-height);
-    background: var(--color-primary);
+    background: var(--color-lazurit);
     border: none;
     border-radius: var(--btn-border-radius);
-    color: var(--color-text-light);
+    color: var(--color-white);
     font-size: 16px;
     font-weight: var(--font-weight-regular);
     text-transform: uppercase;
@@ -444,7 +512,7 @@
 
 .payment-card__footnote, .ticket-card__footnote {
     font-size: 14px;
-    color: var(--color-text-muted);
+    color: var(--color-gray-light);
     margin-top: 20px;
 }
 
@@ -452,12 +520,17 @@
     font-size: 14px;
     font-weight: 500;
     margin-top: 10px;
-    color: var(--color-text-muted);
+    color: var(--color-gray-light);
 }
 
 /* -------------------- */
 /* Страница ticket.html */
 /* -------------------- */
+.hall {
+    background: var(--color-gray-dark);
+    padding: var(--spacing-lg);
+}
+
 .ticket-card__qr {
     display: flex;
     justify-content: center;
@@ -467,72 +540,14 @@
 .qr-placeholder {
     width: 200px;
     height: 200px;
-    background: #fff;
-    color: #000;
+    background: var(--color-white);
+    color: var(--color-black);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     font-size: 14px;
 }
-
-/* ГЕНЕРАЦИЯ ЗАЛА */
-.hall-scheme__row {
-    display: flex;
-    justify-content: center;
-    gap: 2px;
-    margin-bottom: 2px;
-}
-
-.hall-scheme__place {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.hall-scheme__place--standart { background-color: #ffffff; }
-.hall-scheme__place--vip { background-color: #ffa500; }
-.hall-scheme__place--taken { background-color: #000000; }
-.hall-scheme__place--disabled { background-color: #444; }
-.hall-scheme__place--selected { background-color: #16A6AF; }
-
-.hall-screen {
-    text-align: center;
-    background-color: #444;
-    color: white;
-    padding: 8px 0;
-    border-radius: 4px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.hall-legend {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
-
-.legend-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-}
-
-.legend-color--standard { background-color: #ffffff; border: 1px solid #ccc; }
-.legend-color--vip { background-color: #ffa500; }
-.legend-color--taken { background-color: #000000; }
-.legend-color--selected { background-color: #16A6AF; }
-
 
 /* -------------------- */
 /* Адаптивность         */
@@ -583,7 +598,6 @@
     }
 
     .hall-info {
-        width: 419px;
         height: 67px;
         margin-bottom: 30px; /* увеличено с 20px до 30px */
     }
@@ -592,10 +606,8 @@
         width: 100%;
         max-width: var(--container-max-width);
         min-height: 376px;
-        background-color: var(--color-hallback);
+        background-color: var(--color-gray-dark);
         padding: 15px 30px; /* перенесено из инлайн-стиля */
         box-sizing: border-box;
-    }}
-
-
-
+    }
+}
