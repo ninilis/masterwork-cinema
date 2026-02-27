@@ -351,16 +351,13 @@
 
 
 .day-name {
-    font-weight: 300;
+    font-weight: var(--font-weight-thin);
 }
 
-.day-number {
-    font-weight: 700;
-}
 
 .day-today {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
 }
 
 /* Список фильмов */
@@ -399,7 +396,7 @@
 }
 
 .hall-name {
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     font-size: 14px;
 }
 
@@ -437,7 +434,7 @@
 
 .movie-card__title {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     margin: 0;
 }
 
@@ -478,15 +475,21 @@
 
 .payment-card__divider, .ticket-card__divider {
     border-top: 6px dotted var(--color-orange);
+    margin-left: calc(-1 * var(--spacing-lg));
+    margin-right: calc(-1 * var(--spacing-lg));
+    width: auto; /* займёт ширину родителя + отступы */
+    opacity: 1;
 }
 
 .payment-card__details p, .ticket-card__details {
     font-size: 18px;
+    margin-bottom: 5px;  /* или другое значение, например 0 */
+    line-height: 1.5;    /* уменьшите межстрочный интервал при необходимости */
 }
 
 .detail-label {
     font-weight: var(--font-weight-regular);
-    color: var(--color-gray-light);
+    color: var(--color-black);
 }
 
 .detail-value {
@@ -515,18 +518,14 @@
     opacity: 0.9;
 }
 
-.payment-card__footnote, .ticket-card__footnote {
-    font-size: 14px;
+.payment-card__footnote,
+.ticket-card__footnote,
+.payment-card__wish,
+.ticket-card__wish {
+    font-size: 16px;
     color: var(--color-gray-light);
-    margin-top: 20px;
 }
 
-.payment-card__wish, .ticket-card__wish {
-    font-size: 14px;
-    font-weight: 500;
-    margin-top: 10px;
-    color: var(--color-gray-light);
-}
 
 /* -------------------- */
 /* Страница ticket.html */

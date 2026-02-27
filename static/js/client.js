@@ -414,7 +414,7 @@ function initPayment() {
     document.getElementById('hall-name').textContent = ticket.ticket_hallname;
     document.getElementById('start-time').textContent = ticket.ticket_time;
     const total = tickets.reduce((sum, t) => sum + t.ticket_price, 0);
-    document.getElementById('total-price').textContent = total + 'руб';
+    document.getElementById('total-price').textContent = total + ' рублей';
 
     const btn = document.querySelector('.btn-code');
     if (btn) {
