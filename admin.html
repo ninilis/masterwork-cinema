@@ -85,6 +85,8 @@
                         <span class="seat-type-demo seat-type-disabled">заблокировано</span>
                     </div>
 
+                    <p class="mb-2">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
+
                     <!-- Экран -->
                     <div class="hall-screen-label">ЭКРАН</div>
 
@@ -102,24 +104,28 @@
             <section class="admin-block">
                 <h2 class="admin-block__title">Конфигурация цен</h2>
                 <div class="admin-block__content">
-                    <div class="mb-3">
-                        <label for="hallSelectPrice" class="form-label">Выберите зал для конфигурации:</label>
-                        <select id="hallSelectPrice" class="form-select">
-                            <option>Зал №1</option>
-                            <option>Зал №2</option>
-                        </select>
+                    <!-- Вкладки выбора зала -->
+                    <div class="hall-tabs" id="priceHallTabs"></div>
+
+                    <!-- Поля ввода цен с легендой -->
+                    <div class="price-config">
+                        <div class="price-item">
+                            <input type="number" id="standartPrice" class="form-control price-input" value="250">
+                            <span class="seat-label">за</span>
+                            <span class="seat-color seat-color--standart"></span>
+                            <span class="seat-label">обычные кресла</span>
+                        </div>
+                        <div class="price-item">
+                            <input type="number" id="vipPrice" class="form-control price-input" value="350">
+                            <span class="seat-label">за</span>
+                            <span class="seat-color seat-color--vip"></span>
+                            <span class="seat-label">VIP кресла</span>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="standartPrice" class="form-label">Цена обычного кресла (₽)</label>
-                        <input type="number" id="standartPrice" class="form-control" value="250">
-                    </div>
-                    <div class="mb-3">
-                        <label for="vipPrice" class="form-label">Цена VIP кресла (₽)</label>
-                        <input type="number" id="vipPrice" class="form-control" value="350">
-                    </div>
-                    <div class="gap-2">
+
+                    <div class="d-flex gap-2">
                         <button class="btn btn-outline-secondary">Отмена</button>
-                        <button class="btn btn-primary">Сохранить</button>
+                        <button class="btn btn-primary" id="savePriceBtn">Сохранить</button>
                     </div>
                 </div>
             </section>

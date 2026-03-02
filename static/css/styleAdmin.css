@@ -366,6 +366,54 @@
     border-color: var(--color-lazurit-dark);
 }
 
+/* Конфигурация цен */
+.price-config {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.price-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.seat-color {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.seat-color--standart {
+    background-color: var(--color-gray-light);
+}
+
+.seat-color--vip {
+    background-color: var(--color-lazurit);
+}
+
+.seat-label {
+    font-size: 1rem;
+    color: var(--color-black);
+    font-weight: var(--font-weight-regular);
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.price-input {
+    width: 120px;
+}
+
+/* Вкладки выбора зала (переиспользуем существующий стиль .hall-tabs) */
+#priceHallTabs {
+    margin-bottom: 20px;
+}
+
 /* Модальные окна */
 .modal-content {
     border-radius: 8px;

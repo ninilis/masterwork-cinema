@@ -12,6 +12,7 @@ let halls = [];
 let films = [];
 let seances = [];
 let currentSeatType = 'standart'; // текущий выбранный тип места (standart / vip / disabled)
+let selectedPriceHallId = null;
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDateForInput(date) {
@@ -73,6 +74,7 @@ async function loadAdminData() {
         renderFilms();
         renderHallSelects();
         renderHallConfigTabs();          // вкладки конфигурации
+        renderPriceHallTabs();
         renderFilmsPool();
         renderTimelines();
         updateOpenButtonText();
@@ -98,6 +100,46 @@ function renderHalls() {
             const hallItem = e.target.closest('.hall-item');
             const hallId = hallItem.dataset.hallId;
             deleteHall(hallId);
+        });
+    });
+}
+
+// ---------- ОТРИСОВКА ЦЕН ----------
+function renderPriceHallTabs() {
+    const container = document.getElementById('priceHallTabs');
+    if (!container) return;
+    if (halls.length === 0) {
+        container.innerHTML = '<p>Нет залов</p>';
+        return;
+    }
+    let html = '';
+    halls.forEach((hall, index) => {
+        const activeClass = index === 0 ? 'active' : '';
+        html += `<div class="hall-tab ${activeClass}" data-hall-id="${hall.id}">${hall.hall_name}</div>`;
+    });
+    container.innerHTML = html;
+
+    // Устанавливаем выбранный зал (первый по умолчанию)
+    if (halls.length > 0) {
+        selectedPriceHallId = halls[0].id;
+        // Загружаем цены выбранного зала
+        const hall = halls[0];
+        document.getElementById('standartPrice').value = hall.hall_price_standart || 250;
+        document.getElementById('vipPrice').value = hall.hall_price_vip || 350;
+    }
+
+    // Обработчики кликов по вкладкам
+    document.querySelectorAll('#priceHallTabs .hall-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('#priceHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            selectedPriceHallId = tab.dataset.hallId;
+            // Загружаем цены выбранного зала
+            const hall = halls.find(h => h.id == selectedPriceHallId);
+            if (hall) {
+                document.getElementById('standartPrice').value = hall.hall_price_standart || 250;
+                document.getElementById('vipPrice').value = hall.hall_price_vip || 350;
+            }
         });
     });
 }
@@ -533,9 +575,10 @@ function initDrag() {
 
 // ---------- ОБНОВЛЕНИЕ ЦЕН ----------
 async function updatePrices() {
-    const select = document.getElementById('hallSelectPrice');
-    if (!select) return;
-    const hallId = select.value;
+    if (!selectedPriceHallId) {
+        alert('Выберите зал');
+        return;
+    }
     const standart = parseInt(document.getElementById('standartPrice').value);
     const vip = parseInt(document.getElementById('vipPrice').value);
 
@@ -545,9 +588,9 @@ async function updatePrices() {
     }
 
     try {
-        await api.updateHallPrice(hallId, standart, vip);
+        await api.updateHallPrice(selectedPriceHallId, standart, vip);
         alert('Цены обновлены');
-        await loadAdminData();
+        await loadAdminData(); // перезагружает данные, вкладки перерисуются с актуальными ценами
     } catch (error) {
         alert('Ошибка: ' + error.message);
     }
