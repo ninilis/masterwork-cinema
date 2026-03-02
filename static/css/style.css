@@ -129,7 +129,7 @@
 .hall-container {
     max-width: var(--container-max-width);
     margin: var(--spacing-lg) auto;
-    padding: 14px; /* по макету */
+    padding: 14px;
     background: var(--color-bg-beige);
     border-radius: 2px;
 }
