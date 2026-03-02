@@ -78,7 +78,7 @@ function renderHalls() {
     container.innerHTML = halls.map(hall => `
         <div class="hall-item" data-hall-id="${hall.id}">
             <span class="hall-name">${hall.hall_name}</span>
-            <button class="btn-delete-hall" title="Удалить зал">🗑</button>
+            <button class="btn-delete-hall" title="Удалить зал">🗑️</button>
         </div>
     `).join('');
 
@@ -482,4 +482,14 @@ function initEventListeners() {
             document.getElementById('filmPosterInput').click();
         });
     }
+
+    // Обработка фокуса для всех модальных окон
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('hidden.bs.modal', function () {
+            const trigger = document.querySelector(`[data-bs-target="#${this.id}"]`);
+            if (trigger) trigger.focus();
+        });
+    });
 }
+
+

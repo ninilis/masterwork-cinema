@@ -14,11 +14,11 @@
 </head>
 <body class="page-body-admin">
 <header class="page-header">
-    <div class="container d-flex flex-column align-items-center">
+    <div class="container d-flex flex-column">
         <a href="index.html" class="logo">
             <img src="static/img/logo.svg" alt="Идём в кино">
         </a>
-        <span class="admin-subtitle">Администраторская</span>
+        <span class="admin-subtitle">АДМИНИСТРАТОРСКАЯ</span>
     </div>
 </header>
 
@@ -55,7 +55,7 @@
                             <button class="btn-delete-hall" aria-label="Удалить зал">×</button>
                         </div>
                     </div>
-                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addHallModal">+ Создать зал</button>
+                    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addHallModal">Создать зал</button>
                 </div>
             </section>
 
@@ -90,9 +90,9 @@
                     <div id="hallSchemeEditor" class="hall-scheme-editor mb-3">
                         <!-- Сюда будет рендериться сетка -->
                     </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary">Отмена</button>
+                    <div class="gap-2">
                         <button class="btn btn-primary">Сохранить</button>
+                        <button class="btn btn-outline-secondary">Отмена</button>
                     </div>
                 </div>
             </section>
@@ -116,7 +116,7 @@
                         <label for="vipPrice" class="form-label">Цена VIP кресла (₽)</label>
                         <input type="number" id="vipPrice" class="form-control" value="350">
                     </div>
-                    <div class="d-flex gap-2">
+                    <div class="gap-2">
                         <button class="btn btn-outline-secondary">Отмена</button>
                         <button class="btn btn-primary">Сохранить</button>
                     </div>
@@ -127,7 +127,7 @@
             <section class="admin-block">
                 <h2 class="admin-block__title">Сетка сеансов</h2>
                 <div class="admin-block__content">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="justify-content-between align-items-center mb-3">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">+ Добавить фильм</button>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSeanceModal">+ Добавить сеанс</button>
                     </div>

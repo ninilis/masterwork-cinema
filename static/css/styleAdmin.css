@@ -36,10 +36,6 @@
     --btn-height: 40px;
     --btn-border-radius: 3px;
 
-    /* Календарь */
-    --calendar-day-width: 125px;
-    --calendar-day-height: 48px;
-
     /* Карточка фильма */
     --movie-card-height: 350px;
     --poster-width: 125px;
@@ -321,13 +317,14 @@
     background-color: var(--color-lazurit);
     border-color: var(--color-lazurit);
     width: 200px;
-    display: block;
     margin: 0 auto;
+    box-shadow: var(--shadow-default);
 }
 
 .btn-primary:hover {
     background-color: var(--color-lazurit-dark);
     border-color: var(--color-lazurit-dark);
+    box-shadow: var(--shadow-default);
 }
 
 /* Модальные окна админки */
@@ -378,12 +375,15 @@
 .btn-outline-secondary {
     background-color: var(--color-white);
     color: var(--color-gray-dark);
+    border: none;
+    box-shadow: var(--shadow-default);
 }
 
 .btn-outline-secondary:hover {
     background-color: var(--color-gray-light);
     border-color: var(--color-gray-light);
     color: var(--color-white);
+    box-shadow: var(--shadow-default);
 }
 
 /* Скрытое поле для загрузки постера */
