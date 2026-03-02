@@ -63,13 +63,9 @@
             <section class="admin-block">
                 <h2 class="admin-block__title">Конфигурация залов</h2>
                 <div class="admin-block__content">
-                    <div class="mb-3">
-                        <label for="hallSelectConfig" class="form-label">Выберите зал для конфигурации:</label>
-                        <select id="hallSelectConfig" class="form-select">
-                            <option>Зал №1</option>
-                            <option>Зал №2</option>
-                        </select>
-                    </div>
+                    <!-- Вкладки выбора зала -->
+                    <div class="hall-tabs" id="hallConfigTabs"></div>
+
                     <div class="row mb-3">
                         <div class="col">
                             <label for="rowsCount" class="form-label">Количество рядов</label>
@@ -80,19 +76,24 @@
                             <input type="number" id="colsCount" class="form-control" min="1" value="8">
                         </div>
                     </div>
+
                     <p class="mb-2">Теперь вы можете указать типы кресел на схеме зала:</p>
+                    <!-- Легенда кресел -->
                     <div class="seat-types mb-3">
-                        <span class="badge bg-secondary seat-type-demo seat-type-standart">обычные</span>
-                        <span class="badge bg-warning seat-type-demo seat-type-vip">VIP</span>
-                        <span class="badge bg-dark seat-type-demo seat-type-disabled">заблокировано</span>
+                        <span class="seat-type-demo seat-type-standart">обычные</span>
+                        <span class="seat-type-demo seat-type-vip">VIP</span>
+                        <span class="seat-type-demo seat-type-disabled">заблокировано</span>
                     </div>
-                    <p class="small text-muted">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
-                    <div id="hallSchemeEditor" class="hall-scheme-editor mb-3">
-                        <!-- Сюда будет рендериться сетка -->
-                    </div>
-                    <div class="gap-2">
-                        <button class="btn btn-primary">Сохранить</button>
+
+                    <!-- Экран -->
+                    <div class="hall-screen-label">ЭКРАН</div>
+
+                    <!-- Схема зала -->
+                    <div id="hallSchemeEditor" class="hall-scheme-editor mb-3"></div>
+
+                    <div class="d-flex gap-2">
                         <button class="btn btn-outline-secondary">Отмена</button>
+                        <button class="btn btn-primary" id="saveHallConfigBtn">Сохранить</button>
                     </div>
                 </div>
             </section>

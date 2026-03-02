@@ -82,14 +82,18 @@ class ApiClient {
 
     /**
      * Изменение конфигурации мест в зале.
-     * @param {number|string} hallId
+     * @param {number|string} hallId - ID зала
      * @param {Array<Array<string>>} config - двумерный массив типов мест
+     * @param {number} rows - количество рядов
+     * @param {number} places - количество мест в ряду
      * @returns {Promise<Object>} - информация о зале
      */
-    updateHallConfig(hallId, config) {
+    updateHallConfig(hallId, config, rows, places) {
         const formData = new FormData();
+        formData.append('rowCount', rows);
+        formData.append('placeCount', places);
         formData.append('config', JSON.stringify(config));
-        return this.request(`/hall/${hallId}/config`, 'POST', formData);
+        return this.request(`/hall/${hallId}`, 'POST', formData);
     }
 
     /**

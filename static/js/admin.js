@@ -11,6 +11,7 @@ if (document.querySelector('.admin-steps')) {
 let halls = [];
 let films = [];
 let seances = [];
+let currentSeatType = 'standart'; // текущий выбранный тип места (standart / vip / disabled)
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDateForInput(date) {
@@ -30,10 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.admin-steps')) {
         loadAdminData();
         initEventListeners();
+        initSeatTypeSelection(); // выбор типа места через легенду
         const hallSelectOpen = document.getElementById('hallSelectOpen');
         if (hallSelectOpen) {
             hallSelectOpen.addEventListener('change', updateOpenButtonText);
         }
+
+        // Возврат фокуса на кнопку после закрытия модалок
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function () {
+                const trigger = document.querySelector(`[data-bs-target="#${this.id}"]`);
+                if (trigger) trigger.focus();
+            });
+        });
     }
 });
 
@@ -62,6 +72,7 @@ async function loadAdminData() {
         renderHalls();
         renderFilms();
         renderHallSelects();
+        renderHallConfigTabs();          // вкладки конфигурации
         renderFilmsPool();
         renderTimelines();
         updateOpenButtonText();
@@ -70,7 +81,7 @@ async function loadAdminData() {
     }
 }
 
-// ---------- ОТРИСОВКА СПИСКА ЗАЛОВ ----------
+// ---------- ОТРИСОВКА СПИСКА ЗАЛОВ (блок 1) ----------
 function renderHalls() {
     const container = document.getElementById('halls-list');
     if (!container) return;
@@ -78,7 +89,7 @@ function renderHalls() {
     container.innerHTML = halls.map(hall => `
         <div class="hall-item" data-hall-id="${hall.id}">
             <span class="hall-name">${hall.hall_name}</span>
-            <button class="btn-delete-hall" title="Удалить зал">🗑️</button>
+            <button class="btn-delete-hall" title="Удалить зал">×</button>
         </div>
     `).join('');
 
@@ -119,6 +130,285 @@ function renderHallSelects() {
     selects.forEach(select => {
         select.innerHTML = halls.map(hall => `<option value="${hall.id}">${hall.hall_name}</option>`).join('');
     });
+}
+
+// ---------- ОТРИСОВКА ВКЛАДОК ВЫБОРА ЗАЛА В КОНФИГУРАЦИИ ----------
+function renderHallConfigTabs() {
+    const container = document.getElementById('hallConfigTabs');
+    if (!container) return;
+    if (halls.length === 0) {
+        container.innerHTML = '<p>Нет залов</p>';
+        return;
+    }
+    let html = '';
+    halls.forEach((hall, index) => {
+        const activeClass = index === 0 ? 'active' : '';
+        html += `<div class="hall-tab ${activeClass}" data-hall-id="${hall.id}">${hall.hall_name}</div>`;
+    });
+    container.innerHTML = html;
+
+    // Загружаем схему первого зала
+    if (halls.length > 0) {
+        loadHallConfig(halls[0].id);
+    }
+
+    // Обработчики кликов по вкладкам
+    document.querySelectorAll('.hall-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('.hall-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const hallId = tab.dataset.hallId;
+            loadHallConfig(hallId);
+        });
+    });
+}
+
+// ---------- ЗАГРУЗКА КОНФИГУРАЦИИ ВЫБРАННОГО ЗАЛА ----------
+function loadHallConfig(hallId) {
+    const hall = halls.find(h => h.id == hallId);
+    if (!hall) return;
+
+    // Заполняем поля количества рядов и мест
+    document.getElementById('rowsCount').value = hall.hall_rows || 5;
+    document.getElementById('colsCount').value = hall.hall_places || 8;
+
+    // Отрисовываем схему
+    renderSchemeEditor(hall);
+}
+
+// ---------- ОТРИСОВКА РЕДАКТОРА СХЕМЫ ----------
+function renderSchemeEditor(hall) {
+    const container = document.getElementById('hallSchemeEditor');
+    if (!container) return;
+
+    let config = hall.hall_config;
+    if (!config || config.length === 0) {
+        config = Array(hall.hall_rows).fill().map(() => Array(hall.hall_places).fill('standart'));
+    }
+
+    container.innerHTML = '';
+
+    for (let r = 0; r < config.length; r++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'hall-scheme-editor__row';
+        for (let c = 0; c < config[r].length; c++) {
+            const placeType = config[r][c];
+            const place = document.createElement('div');
+            place.className = `hall-scheme-editor__place hall-scheme-editor__place--${placeType}`;
+            place.dataset.row = r;
+            place.dataset.col = c;
+            place.dataset.type = placeType;
+
+            // Клик устанавливает текущий выбранный тип
+            place.addEventListener('click', () => {
+                place.className = `hall-scheme-editor__place hall-scheme-editor__place--${currentSeatType}`;
+                place.dataset.type = currentSeatType;
+            });
+
+            rowDiv.appendChild(place);
+        }
+        container.appendChild(rowDiv);
+    }
+}
+
+// ---------- ПЕРЕСТРОЕНИЕ СХЕМЫ ПРИ ИЗМЕНЕНИИ РАЗМЕРОВ ----------
+function rebuildSchemeFromInputs() {
+    const activeTab = document.querySelector('.hall-tab.active');
+    if (!activeTab) return;
+    const hallId = activeTab.dataset.hallId;
+    const hall = halls.find(h => h.id == hallId);
+    if (!hall) return;
+
+    const newRows = parseInt(document.getElementById('rowsCount').value);
+    const newCols = parseInt(document.getElementById('colsCount').value);
+    if (isNaN(newRows) || isNaN(newCols) || newRows < 1 || newCols < 1) {
+        alert('Некорректные размеры зала');
+        return;
+    }
+
+    // Собираем старую конфигурацию из DOM
+    const editor = document.getElementById('hallSchemeEditor');
+    const oldRows = editor.querySelectorAll('.hall-scheme-editor__row');
+    let oldConfig = [];
+    oldRows.forEach(row => {
+        const rowConfig = [];
+        row.querySelectorAll('.hall-scheme-editor__place').forEach(place => {
+            rowConfig.push(place.dataset.type);
+        });
+        oldConfig.push(rowConfig);
+    });
+
+    // Создаём новую конфигурацию, сохраняя старые значения где возможно
+    let newConfig = [];
+    for (let r = 0; r < newRows; r++) {
+        let row = [];
+        for (let c = 0; c < newCols; c++) {
+            if (r < oldConfig.length && c < oldConfig[r].length) {
+                row.push(oldConfig[r][c]);
+            } else {
+                row.push('standart');
+            }
+        }
+        newConfig.push(row);
+    }
+
+    // Обновляем данные зала и перерисовываем
+    hall.hall_config = newConfig;
+    hall.hall_rows = newRows;
+    hall.hall_places = newCols;
+    renderSchemeEditor(hall);
+}
+
+// ---------- СОХРАНЕНИЕ КОНФИГУРАЦИИ ЗАЛА ----------
+async function saveHallConfig() {
+    const activeTab = document.querySelector('.hall-tab.active');
+    if (!activeTab) return;
+    const hallId = activeTab.dataset.hallId;
+    const hall = halls.find(h => h.id == hallId);
+    if (!hall) return;
+
+    // Собираем конфигурацию из DOM
+    const editor = document.getElementById('hallSchemeEditor');
+    const rows = editor.querySelectorAll('.hall-scheme-editor__row');
+    const newConfig = [];
+    rows.forEach(row => {
+        const rowConfig = [];
+        row.querySelectorAll('.hall-scheme-editor__place').forEach(place => {
+            rowConfig.push(place.dataset.type);
+        });
+        newConfig.push(rowConfig);
+    });
+
+    const newRows = parseInt(document.getElementById('rowsCount').value);
+    const newCols = parseInt(document.getElementById('colsCount').value);
+    if (isNaN(newRows) || isNaN(newCols) || newRows < 1 || newCols < 1) {
+        alert('Некорректные размеры зала');
+        return;
+    }
+
+    try {
+        await api.updateHallConfig(hallId, newConfig, newRows, newCols);
+        alert('Конфигурация сохранена');
+        await loadAdminData(); // перезагружаем данные
+    } catch (error) {
+        alert('Ошибка сохранения: ' + error.message);
+    }
+}
+
+// ---------- ИНИЦИАЛИЗАЦИЯ ВЫБОРА ТИПА МЕСТА ПО ЛЕГЕНДЕ ----------
+function initSeatTypeSelection() {
+    const legendItems = document.querySelectorAll('.seat-type-demo');
+    legendItems.forEach(item => {
+        item.addEventListener('click', () => {
+            legendItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (item.classList.contains('seat-type-standart')) {
+                currentSeatType = 'standart';
+            } else if (item.classList.contains('seat-type-vip')) {
+                currentSeatType = 'vip';
+            } else if (item.classList.contains('seat-type-disabled')) {
+                currentSeatType = 'disabled';
+            }
+        });
+    });
+    // По умолчанию активируем обычные места
+    const defaultItem = document.querySelector('.seat-type-standart');
+    if (defaultItem) {
+        defaultItem.classList.add('active');
+        currentSeatType = 'standart';
+    }
+}
+
+// ---------- УПРАВЛЕНИЕ ЗАЛАМИ ----------
+async function deleteHall(hallId) {
+    if (!confirm('Удалить зал? Это также удалит все связанные сеансы.')) return;
+    try {
+        await api.deleteHall(hallId);
+        await loadAdminData();
+    } catch (error) {
+        alert('Ошибка удаления: ' + error.message);
+    }
+}
+
+async function createHall() {
+    const name = document.getElementById('hallName').value.trim();
+    if (!name) {
+        alert('Введите название зала');
+        return;
+    }
+    try {
+        await api.addHall(name);
+        await loadAdminData();
+        const modalEl = document.getElementById('addHallModal');
+        bootstrap.Modal.getInstance(modalEl).hide();
+        document.querySelector('[data-bs-target="#addHallModal"]').focus();
+        document.getElementById('hallName').value = '';
+    } catch (error) {
+        alert('Ошибка при создании зала: ' + error.message);
+    }
+}
+
+// ---------- УПРАВЛЕНИЕ ФИЛЬМАМИ ----------
+async function deleteFilm(filmId) {
+    if (!confirm('Удалить фильм? Это также удалит все связанные сеансы.')) return;
+    try {
+        await api.deleteMovie(filmId);
+        await loadAdminData();
+    } catch (error) {
+        alert('Ошибка удаления: ' + error.message);
+    }
+}
+
+async function createFilm() {
+    const name = document.getElementById('filmName').value.trim();
+    const duration = parseInt(document.getElementById('filmDuration').value);
+    const description = document.getElementById('filmDescription').value.trim();
+    const origin = document.getElementById('filmOrigin').value.trim();
+    const posterFile = document.getElementById('filmPosterInput').files[0];
+
+    if (!name || !duration) {
+        alert('Заполните обязательные поля');
+        return;
+    }
+
+    try {
+        await api.addMovie(name, duration, description, origin, posterFile);
+        await loadAdminData();
+        const modalEl = document.getElementById('addFilmModal');
+        bootstrap.Modal.getInstance(modalEl).hide();
+        document.querySelector('[data-bs-target="#addFilmModal"]').focus();
+        // очистка формы
+        document.getElementById('filmName').value = '';
+        document.getElementById('filmDuration').value = '';
+        document.getElementById('filmDescription').value = '';
+        document.getElementById('filmOrigin').value = '';
+        document.getElementById('filmPosterInput').value = '';
+    } catch (error) {
+        alert('Ошибка добавления фильма: ' + error.message);
+    }
+}
+
+// ---------- УПРАВЛЕНИЕ СЕАНСАМИ ----------
+async function createSeance() {
+    const hallId = document.getElementById('seanceHall').value;
+    const filmId = document.getElementById('seanceFilm').value;
+    const time = document.getElementById('seanceTime').value;
+
+    if (!hallId || !filmId || !time) {
+        alert('Заполните все поля');
+        return;
+    }
+
+    try {
+        await api.addSeance(hallId, filmId, time);
+        await loadAdminData();
+        const modalEl = document.getElementById('addSeanceModal');
+        bootstrap.Modal.getInstance(modalEl).hide();
+        document.querySelector('[data-bs-target="#addSeanceModal"]').focus();
+        document.getElementById('seanceTime').value = '';
+    } catch (error) {
+        alert('Ошибка добавления сеанса: ' + error.message);
+    }
 }
 
 // ---------- ОТРИСОВКА ПУЛА ФИЛЬМОВ ДЛЯ DRAG & DROP ----------
@@ -241,157 +531,6 @@ function initDrag() {
     });
 }
 
-// ---------- УПРАВЛЕНИЕ ЗАЛАМИ ----------
-async function deleteHall(hallId) {
-    if (!confirm('Удалить зал? Это также удалит все связанные сеансы.')) return;
-    try {
-        await api.deleteHall(hallId);
-        await loadAdminData();
-    } catch (error) {
-        alert('Ошибка удаления: ' + error.message);
-    }
-}
-
-async function createHall() {
-    const name = document.getElementById('hallName').value.trim();
-    if (!name) {
-        alert('Введите название зала');
-        return;
-    }
-    try {
-        await api.addHall(name);
-        await loadAdminData();
-        const modalEl = document.getElementById('addHallModal');
-        bootstrap.Modal.getInstance(modalEl).hide();
-        document.getElementById('hallName').value = '';
-    } catch (error) {
-        alert('Ошибка при создании зала: ' + error.message);
-    }
-}
-
-// ---------- РЕДАКТОР СХЕМЫ ЗАЛА ----------
-function openSchemeEditor(hallId) {
-    const hall = halls.find(h => h.id == hallId);
-    if (!hall) return;
-
-    document.getElementById('editingHallName').textContent = hall.hall_name;
-    const editorContainer = document.getElementById('hall-scheme-editor');
-    editorContainer.innerHTML = '';
-
-    let config = hall.hall_config;
-    if (!config || config.length === 0) {
-        config = Array(hall.hall_rows).fill().map(() => Array(hall.hall_places).fill('standart'));
-    }
-
-    for (let r = 0; r < hall.hall_rows; r++) {
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'hall-scheme-editor__row';
-        for (let c = 0; c < hall.hall_places; c++) {
-            const place = document.createElement('div');
-            place.className = `hall-scheme-editor__place hall-scheme-editor__place--${config[r][c]}`;
-            place.dataset.row = r;
-            place.dataset.col = c;
-            place.dataset.type = config[r][c];
-
-            place.addEventListener('click', () => {
-                const types = ['standart', 'vip', 'disabled'];
-                let current = place.dataset.type;
-                let nextIndex = (types.indexOf(current) + 1) % types.length;
-                let nextType = types[nextIndex];
-                place.className = `hall-scheme-editor__place hall-scheme-editor__place--${nextType}`;
-                place.dataset.type = nextType;
-            });
-
-            rowDiv.appendChild(place);
-        }
-        editorContainer.appendChild(rowDiv);
-    }
-
-    const modal = new bootstrap.Modal(document.getElementById('editHallSchemeModal'));
-    modal.show();
-
-    document.getElementById('saveSchemeBtn').onclick = async () => {
-        const newConfig = [];
-        const rows = editorContainer.querySelectorAll('.hall-scheme-editor__row');
-        rows.forEach(row => {
-            const rowConfig = [];
-            row.querySelectorAll('.hall-scheme-editor__place').forEach(place => {
-                rowConfig.push(place.dataset.type);
-            });
-            newConfig.push(rowConfig);
-        });
-
-        try {
-            await api.updateHallConfig(hallId, newConfig);
-            modal.hide();
-            await loadAdminData();
-        } catch (error) {
-            alert('Ошибка сохранения схемы: ' + error.message);
-        }
-    };
-}
-
-// ---------- УПРАВЛЕНИЕ ФИЛЬМАМИ ----------
-async function deleteFilm(filmId) {
-    if (!confirm('Удалить фильм? Это также удалит все связанные сеансы.')) return;
-    try {
-        await api.deleteMovie(filmId);
-        await loadAdminData();
-    } catch (error) {
-        alert('Ошибка удаления: ' + error.message);
-    }
-}
-
-async function createFilm() {
-    const name = document.getElementById('filmName').value.trim();
-    const duration = parseInt(document.getElementById('filmDuration').value);
-    const description = document.getElementById('filmDescription').value.trim();
-    const origin = document.getElementById('filmOrigin').value.trim();
-    const posterFile = document.getElementById('filmPosterInput').files[0]; // скрытое поле
-
-    if (!name || !duration) {
-        alert('Заполните обязательные поля');
-        return;
-    }
-
-    try {
-        await api.addMovie(name, duration, description, origin, posterFile);
-        await loadAdminData();
-        const modalEl = document.getElementById('addFilmModal');
-        bootstrap.Modal.getInstance(modalEl).hide();
-        // очистка формы
-        document.getElementById('filmName').value = '';
-        document.getElementById('filmDuration').value = '';
-        document.getElementById('filmDescription').value = '';
-        document.getElementById('filmOrigin').value = '';
-        document.getElementById('filmPosterInput').value = '';
-    } catch (error) {
-        alert('Ошибка добавления фильма: ' + error.message);
-    }
-}
-
-// ---------- УПРАВЛЕНИЕ СЕАНСАМИ ----------
-async function createSeance() {
-    const hallId = document.getElementById('seanceHall').value;
-    const filmId = document.getElementById('seanceFilm').value;
-    const time = document.getElementById('seanceTime').value;
-
-    if (!hallId || !filmId || !time) {
-        alert('Заполните все поля');
-        return;
-    }
-
-    try {
-        await api.addSeance(hallId, filmId, time);
-        await loadAdminData();
-        const modalEl = document.getElementById('addSeanceModal');
-        bootstrap.Modal.getInstance(modalEl).hide();
-        document.getElementById('seanceTime').value = ''; // очистка времени
-    } catch (error) {
-        alert('Ошибка добавления сеанса: ' + error.message);
-    }
-}
-
 // ---------- ОБНОВЛЕНИЕ ЦЕН ----------
 async function updatePrices() {
     const select = document.getElementById('hallSelectPrice');
@@ -447,7 +586,15 @@ function updateOpenButtonText() {
 
 // ---------- ПОДПИСКА НА КНОПКИ ----------
 function initEventListeners() {
-    // (можно удалить старый saveHallBtn)
+    // Форма добавления зала
+    const hallForm = document.getElementById('addHallForm');
+    if (hallForm) {
+        hallForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            createHall();
+        });
+    }
+
     const saveFilmBtn = document.getElementById('saveFilmBtn');
     if (saveFilmBtn) saveFilmBtn.addEventListener('click', createFilm);
 
@@ -456,15 +603,6 @@ function initEventListeners() {
 
     const toggleStatusBtn = document.getElementById('toggleHallStatusBtn');
     if (toggleStatusBtn) toggleStatusBtn.addEventListener('click', toggleHallStatus);
-
-    // Обработка формы добавления зала
-    const hallForm = document.getElementById('addHallForm');
-    if (hallForm) {
-        hallForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            createHall();
-        });
-    }
 
     // Обработка формы добавления сеанса
     const seanceForm = document.getElementById('addSeanceForm');
@@ -483,13 +621,13 @@ function initEventListeners() {
         });
     }
 
-    // Обработка фокуса для всех модальных окон
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('hidden.bs.modal', function () {
-            const trigger = document.querySelector(`[data-bs-target="#${this.id}"]`);
-            if (trigger) trigger.focus();
-        });
-    });
+    // Кнопка сохранения конфигурации зала
+    const saveConfigBtn = document.getElementById('saveHallConfigBtn');
+    if (saveConfigBtn) saveConfigBtn.addEventListener('click', saveHallConfig);
+
+    // Изменение размеров зала
+    const rowsInput = document.getElementById('rowsCount');
+    const colsInput = document.getElementById('colsCount');
+    if (rowsInput) rowsInput.addEventListener('input', rebuildSchemeFromInputs);
+    if (colsInput) colsInput.addEventListener('input', rebuildSchemeFromInputs);
 }
-
-
