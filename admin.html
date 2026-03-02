@@ -43,6 +43,7 @@
             <section class="admin-block">
                 <h2 class="admin-block__title">Управление залами</h2>
                 <div class="admin-block__content">
+                    <h3 class="halls-title">Доступные залы:</h3>
                     <div id="halls-list" class="halls-list">
                         <!-- здесь будут динамически добавляться залы -->
                         <div class="hall-item">
@@ -128,6 +129,7 @@
                 <div class="admin-block__content">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">+ Добавить фильм</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSeanceModal">+ Добавить сеанс</button>
                     </div>
                     <div class="schedule-container">
                         <div class="films-pool">
@@ -180,30 +182,20 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Новый зал</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h3 class="modal-title">Добавление зала</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="addHallForm">
                     <div class="mb-3">
                         <label for="hallName" class="form-label">Название зала</label>
-                        <input type="text" class="form-control" id="hallName" required>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="hallRows" class="form-label">Рядов</label>
-                            <input type="number" class="form-control" id="hallRows" min="1" value="5">
-                        </div>
-                        <div class="col">
-                            <label for="hallCols" class="form-label">Мест в ряду</label>
-                            <input type="number" class="form-control" id="hallCols" min="1" value="8">
-                        </div>
+                        <input type="text" class="form-control" id="hallName" placeholder="Например, «Зал 1»" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary">Сохранить</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
+                <button type="submit" form="addHallForm" class="btn btn-primary">Добавить зал</button>
             </div>
         </div>
     </div>
@@ -214,36 +206,76 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Добавить фильм</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h3 class="modal-title">Добавление фильма</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="addFilmForm">
                     <div class="mb-3">
-                        <label for="filmName" class="form-label">Название</label>
-                        <input type="text" class="form-control" id="filmName" required>
+                        <label for="filmName" class="form-label">Название фильма</label>
+                        <input type="text" class="form-control" id="filmName" placeholder="Например, «Обитель зла: Реквием»" required>
                     </div>
                     <div class="mb-3">
-                        <label for="filmDuration" class="form-label">Длительность (мин)</label>
-                        <input type="number" class="form-control" id="filmDuration" required>
+                        <label for="filmDuration" class="form-label">Продолжительность фильма (мин.)</label>
+                        <input type="number" class="form-control" id="filmDuration" min="1" required>
                     </div>
                     <div class="mb-3">
-                        <label for="filmDescription" class="form-label">Описание</label>
-                        <textarea class="form-control" id="filmDescription" rows="2"></textarea>
+                        <label for="filmDescription" class="form-label">Описание фильма</label>
+                        <textarea class="form-control" id="filmDescription" rows="3"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="filmOrigin" class="form-label">Страна</label>
                         <input type="text" class="form-control" id="filmOrigin">
                     </div>
+                    <!-- Скрытое поле для файла, открывается кнопкой -->
+                    <input type="file" id="filmPosterInput" class="hidden-file-input" accept=".png">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
+                <button type="button" class="btn btn-primary" id="uploadPosterBtn">Загрузить Постер</button>
+                <button type="submit" form="addFilmForm" class="btn btn-primary">Добавить фильм</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно добавления сеанса (новое) -->
+<div class="modal fade" id="addSeanceModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Добавление сеанса</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addSeanceForm">
                     <div class="mb-3">
-                        <label for="filmPoster" class="form-label">Постер (png)</label>
-                        <input type="file" class="form-control" id="filmPoster" accept=".png">
+                        <label for="seanceHall" class="form-label">Название зала</label>
+                        <select class="form-select" id="seanceHall" required>
+                            <option value="">Выберите зал</option>
+                            <option value="1">Зал №1</option>
+                            <option value="2">Зал №2</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="seanceFilm" class="form-label">Название фильма</label>
+                        <select class="form-select" id="seanceFilm" required>
+                            <option value="">Выберите фильм</option>
+                            <option value="1">Джон Уик</option>
+                            <option value="2">Аватар</option>
+                            <option value="3">Интерстеллар</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="seanceTime" class="form-label">Время начала (в формате 00:00)</label>
+                        <input type="time" class="form-control" id="seanceTime" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-primary">Сохранить</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
+                <button type="submit" form="addSeanceForm" class="btn btn-primary">Добавить сеанс</button>
             </div>
         </div>
     </div>

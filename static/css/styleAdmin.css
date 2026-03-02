@@ -168,6 +168,19 @@
 }
 
 /* Список залов */
+.halls-title {
+    color: var(--color-black);
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-regular);
+    margin-bottom: 10px;
+}
+
+.hall-name::before {
+    content: "- ";
+    margin-right: 5px;
+    color: var(--color-black);
+}
+
 .halls-list {
     display: flex;
     flex-direction: column;
@@ -177,32 +190,21 @@
 .hall-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: var(--color-white);
-    border: 1px solid var(--color-gray-light);
+    gap: 10px;               /* расстояние между кнопкой и названием */
     border-radius: 4px;
-    padding: 8px 12px;
-}
-
-.hall-name {
-    font-weight: 500;
+    width: 100%;              /* растягивается на всю ширину родителя */
 }
 
 .btn-delete-hall {
     background: none;
     border: none;
-    color: #dc3545;
-    font-size: 1.5rem;
-    line-height: 1;
+    font-size: 1.2rem;        /* размер иконки */
     cursor: pointer;
     padding: 0 5px;
+    line-height: 1;
 }
 
-.btn-delete-hall:hover {
-    color: #bd2130;
-}
-
-/* Редактор схемы (в модалке или прямо в блоке) */
+/* Редактор схемы  */
 .hall-scheme-editor {
     display: flex;
     flex-direction: column;
@@ -318,7 +320,7 @@
 .btn-primary {
     background-color: var(--color-lazurit);
     border-color: var(--color-lazurit);
-    width: 200px;        /* нужный размер */
+    width: 200px;
     display: block;
     margin: 0 auto;
 }
@@ -328,3 +330,63 @@
     border-color: var(--color-lazurit-dark);
 }
 
+/* Модальные окна админки */
+.modal-content {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-default);
+}
+
+.modal-header {
+    background-color: var(--color-purple);
+    color: var(--color-white);
+    border-bottom: none;
+    padding: 15px 20px;
+}
+
+.modal-title {
+    font-weight: var(--font-weight-bold);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+/* Белая кнопка закрытия */
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+    background-size: 1.2em;
+}
+
+.modal-body {
+    background: var(--color-bg-admin);
+    padding: 25px 20px;
+}
+
+.modal-body .form-label {
+    color: var(--color-black);
+    font-weight: var(--font-weight-regular);
+    margin-bottom: 4px;
+}
+
+.modal-footer {
+    background: var(--color-bg-admin);
+    padding: 15px 20px;
+    gap: 10px;
+}
+
+/* Кнопка "Отменить" – белая с серой рамкой */
+.btn-outline-secondary {
+    background-color: var(--color-white);
+    color: var(--color-gray-dark);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--color-gray-light);
+    border-color: var(--color-gray-light);
+    color: var(--color-white);
+}
+
+/* Скрытое поле для загрузки постера */
+.hidden-file-input {
+    display: none;
+}
