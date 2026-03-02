@@ -432,8 +432,8 @@ async function createFilm() {
 
 // ---------- УПРАВЛЕНИЕ СЕАНСАМИ ----------
 async function createSeance() {
-    const hallId = document.getElementById('seanceHall').value;
-    const filmId = document.getElementById('seanceFilm').value;
+    const hallId = document.getElementById('seanceHallId').value;
+    const filmId = document.getElementById('seanceFilmId').value;
     const time = document.getElementById('seanceTime').value;
 
     if (!hallId || !filmId || !time) {
@@ -446,8 +446,11 @@ async function createSeance() {
         await loadAdminData();
         const modalEl = document.getElementById('addSeanceModal');
         bootstrap.Modal.getInstance(modalEl).hide();
-        document.querySelector('[data-bs-target="#addSeanceModal"]').focus();
+        // Очистка формы
         document.getElementById('seanceTime').value = '';
+        document.getElementById('seanceHallId').value = '';
+        document.getElementById('seanceFilmId').value = '';
+        document.querySelector('[data-bs-target="#addSeanceModal"]')?.focus(); // если есть кнопка, но её нет – можно убрать
     } catch (error) {
         alert('Ошибка добавления сеанса: ' + error.message);
     }
@@ -457,9 +460,40 @@ async function createSeance() {
 function renderFilmsPool() {
     const pool = document.getElementById('films-pool-list');
     if (!pool) return;
-    pool.innerHTML = films.map(film => `
-        <div class="film-item" draggable="true" data-film-id="${film.id}">${film.film_name}</div>
-    `).join('');
+
+    pool.innerHTML = films.map(film => {
+        // Генерируем случайный светлый цвет (пастельный оттенок)
+        const hue = Math.floor(Math.random() * 360);
+        const bgColor = `hsl(${hue}, 30%, 90%)`;
+
+        // Постер (если есть, иначе заглушка)
+        const posterSrc = film.film_poster || 'static/img/default-poster.jpg';
+
+        return `
+            <div class="film-card" draggable="true" data-film-id="${film.id}" style="background-color: ${bgColor};">
+                <div class="film-card-poster">
+                    <img src="${posterSrc}" alt="${film.film_name}">
+                </div>
+                <div class="film-card-info">
+                    <div class="film-card-title">${film.film_name}</div>
+                    <div class="film-card-duration">${film.film_duration} мин</div>
+                    <button class="btn-delete-film" title="Удалить фильм">×</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    // Обработчики удаления фильмов
+    document.querySelectorAll('.btn-delete-film').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // предотвращаем срабатывание drag
+            const filmCard = e.target.closest('.film-card');
+            const filmId = filmCard.dataset.filmId;
+            deleteFilm(filmId);
+        });
+    });
+
+    // Переинициализация drag&drop после обновления списка
     initDrag();
 }
 
@@ -542,19 +576,16 @@ function initDrag() {
                     return; // перемещение существующего
                 }
 
-                const time = prompt('Введите время сеанса (HH:MM):', '12:00');
-                if (!time) {
-                    evt.item.remove();
-                    return;
-                }
+                // Удаляем добавленный элемент, так как создание будет через модалку
+                evt.item.remove();
 
-                try {
-                    await api.addSeance(hallId, filmId, time);
-                    await loadAdminData();
-                } catch (error) {
-                    alert('Ошибка создания сеанса: ' + error.message);
-                    evt.item.remove();
-                }
+                // Заполняем скрытые поля в модальном окне
+                document.getElementById('seanceHallId').value = hallId;
+                document.getElementById('seanceFilmId').value = filmId;
+
+                // Открываем модальное окно
+                const modal = new bootstrap.Modal(document.getElementById('addSeanceModal'));
+                modal.show();
             },
             onRemove: async (evt) => {
                 const seanceId = evt.item.dataset.seanceId;
@@ -638,8 +669,13 @@ function initEventListeners() {
         });
     }
 
-    const saveFilmBtn = document.getElementById('saveFilmBtn');
-    if (saveFilmBtn) saveFilmBtn.addEventListener('click', createFilm);
+    const filmForm = document.getElementById('addFilmForm');
+    if (filmForm) {
+        filmForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            createFilm();
+        });
+    }
 
     const savePriceBtn = document.getElementById('savePriceBtn');
     if (savePriceBtn) savePriceBtn.addEventListener('click', updatePrices);

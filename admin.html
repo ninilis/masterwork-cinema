@@ -136,26 +136,16 @@
                 <div class="admin-block__content">
                     <div class="justify-content-between align-items-center mb-3">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">+ Добавить фильм</button>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSeanceModal">+ Добавить сеанс</button>
                     </div>
                     <div class="schedule-container">
                         <div class="films-pool">
                             <h3>Фильмы</h3>
                             <div id="films-pool-list" class="d-flex flex-wrap gap-2">
-                                <div class="film-item" draggable="true" data-film-id="1">Джон Уик</div>
-                                <div class="film-item" draggable="true" data-film-id="2">Аватар</div>
-                                <div class="film-item" draggable="true" data-film-id="3">Интерстеллар</div>
+                                <!-- фильмы будут подгружаться динамически -->
                             </div>
                         </div>
                         <div id="halls-timelines" class="mt-4">
-                            <div class="hall-timeline" data-hall-id="1">
-                                <div class="timeline-header">Зал №1</div>
-                                <div class="timeline-slots" id="timeline-hall-1"></div>
-                            </div>
-                            <div class="hall-timeline" data-hall-id="2">
-                                <div class="timeline-header">Зал №2</div>
-                                <div class="timeline-slots" id="timeline-hall-2"></div>
-                            </div>
+                            <!-- залы будут подгружаться динамически -->
                         </div>
                     </div>
                     <div class="d-flex gap-2 mt-3">
@@ -247,7 +237,7 @@
     </div>
 </div>
 
-<!-- Модальное окно добавления сеанса (новое) -->
+<!-- Модальное окно добавления сеанса -->
 <div class="modal fade" id="addSeanceModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -257,23 +247,10 @@
             </div>
             <div class="modal-body">
                 <form id="addSeanceForm">
-                    <div class="mb-3">
-                        <label for="seanceHall" class="form-label">Название зала</label>
-                        <select class="form-select" id="seanceHall" required>
-                            <option value="">Выберите зал</option>
-                            <option value="1">Зал №1</option>
-                            <option value="2">Зал №2</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="seanceFilm" class="form-label">Название фильма</label>
-                        <select class="form-select" id="seanceFilm" required>
-                            <option value="">Выберите фильм</option>
-                            <option value="1">Джон Уик</option>
-                            <option value="2">Аватар</option>
-                            <option value="3">Интерстеллар</option>
-                        </select>
-                    </div>
+                    <!-- Скрытые поля для ID зала и фильма -->
+                    <input type="hidden" id="seanceHallId" name="hallId">
+                    <input type="hidden" id="seanceFilmId" name="filmId">
+
                     <div class="mb-3">
                         <label for="seanceTime" class="form-label">Время начала (в формате 00:00)</label>
                         <input type="time" class="form-control" id="seanceTime" required>
