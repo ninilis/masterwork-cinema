@@ -11,8 +11,9 @@ if (document.querySelector('.admin-steps')) {
 let halls = [];
 let films = [];
 let seances = [];
-let currentSeatType = 'standart'; // текущий выбранный тип места (standart / vip / disabled)
-let selectedPriceHallId = null;
+let currentSeatType = 'standart';          // текущий выбранный тип места (standart / vip / disabled)
+let selectedPriceHallId = null;             // выбранный зал в блоке цен
+let selectedOpenHallId = null;               // выбранный зал в блоке открытия продаж
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDateForInput(date) {
@@ -33,10 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAdminData();
         initEventListeners();
         initSeatTypeSelection(); // выбор типа места через легенду
-        const hallSelectOpen = document.getElementById('hallSelectOpen');
-        if (hallSelectOpen) {
-            hallSelectOpen.addEventListener('change', updateOpenButtonText);
-        }
 
         // Возврат фокуса на кнопку после закрытия модалок
         document.querySelectorAll('.modal').forEach(modal => {
@@ -73,10 +70,11 @@ async function loadAdminData() {
         renderHalls();
         renderFilms();
         renderHallSelects();
-        renderHallConfigTabs();          // вкладки конфигурации
-        renderPriceHallTabs();
-        renderFilmsPool();
-        renderTimelines();
+        renderHallConfigTabs();          // вкладки конфигурации залов
+        renderPriceHallTabs();             // вкладки цен
+        renderOpenHallTabs();               // вкладки открытия продаж
+        renderFilmsPool();                   // пул фильмов
+        renderTimelines();                    // ленты сеансов
         updateOpenButtonText();
     } catch (error) {
         alert('Ошибка загрузки данных: ' + error.message);
@@ -91,7 +89,7 @@ function renderHalls() {
     container.innerHTML = halls.map(hall => `
         <div class="hall-item" data-hall-id="${hall.id}">
             <span class="hall-name">${hall.hall_name}</span>
-            <button class="btn-delete-hall" title="Удалить зал">×</button>
+            <button class="btn-delete-hall" title="Удалить зал">🗑️</button>
         </div>
     `).join('');
 
@@ -104,7 +102,7 @@ function renderHalls() {
     });
 }
 
-// ---------- ОТРИСОВКА ЦЕН ----------
+// ---------- ОТРИСОВКА ВКЛАДОК ДЛЯ ЦЕН (блок 3) ----------
 function renderPriceHallTabs() {
     const container = document.getElementById('priceHallTabs');
     if (!container) return;
@@ -144,7 +142,39 @@ function renderPriceHallTabs() {
     });
 }
 
-// ---------- ОТРИСОВКА СПИСКА ФИЛЬМОВ ----------
+// ---------- ОТРИСОВКА ВКЛАДОК ДЛЯ ОТКРЫТИЯ ПРОДАЖ (блок 5) ----------
+function renderOpenHallTabs() {
+    const container = document.getElementById('openHallTabs');
+    if (!container) return;
+    if (halls.length === 0) {
+        container.innerHTML = '<p>Нет залов</p>';
+        return;
+    }
+    let html = '';
+    halls.forEach((hall, index) => {
+        const activeClass = index === 0 ? 'active' : '';
+        html += `<div class="hall-tab ${activeClass}" data-hall-id="${hall.id}">${hall.hall_name}</div>`;
+    });
+    container.innerHTML = html;
+
+    // Устанавливаем выбранный зал (первый по умолчанию)
+    if (halls.length > 0) {
+        selectedOpenHallId = halls[0].id;
+        updateOpenButtonText();
+    }
+
+    // Обработчики кликов по вкладкам
+    document.querySelectorAll('#openHallTabs .hall-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('#openHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            selectedOpenHallId = tab.dataset.hallId;
+            updateOpenButtonText();
+        });
+    });
+}
+
+// ---------- ОТРИСОВКА СПИСКА ФИЛЬМОВ (вспомогательная) ----------
 function renderFilms() {
     const container = document.getElementById('films-list');
     if (!container) return;
@@ -166,7 +196,7 @@ function renderFilms() {
     });
 }
 
-// ---------- ЗАПОЛНЕНИЕ ВСЕХ ВЫПАДАЮЩИХ СПИСКОВ ЗАЛОВ ----------
+// ---------- ЗАПОЛНЕНИЕ ВСЕХ ВЫПАДАЮЩИХ СПИСКОВ ЗАЛОВ (устаревшее, может остаться для совместимости) ----------
 function renderHallSelects() {
     const selects = document.querySelectorAll('select[id^="hallSelect"]');
     selects.forEach(select => {
@@ -174,7 +204,7 @@ function renderHallSelects() {
     });
 }
 
-// ---------- ОТРИСОВКА ВКЛАДОК ВЫБОРА ЗАЛА В КОНФИГУРАЦИИ ----------
+// ---------- ОТРИСОВКА ВКЛАДОК ВЫБОРА ЗАЛА В КОНФИГУРАЦИИ (блок 2) ----------
 function renderHallConfigTabs() {
     const container = document.getElementById('hallConfigTabs');
     if (!container) return;
@@ -450,7 +480,8 @@ async function createSeance() {
         document.getElementById('seanceTime').value = '';
         document.getElementById('seanceHallId').value = '';
         document.getElementById('seanceFilmId').value = '';
-        document.querySelector('[data-bs-target="#addSeanceModal"]')?.focus(); // если есть кнопка, но её нет – можно убрать
+        // Возврат фокуса (если есть кнопка, но её может не быть – опционально)
+        document.querySelector('[data-bs-target="#addSeanceModal"]')?.focus();
     } catch (error) {
         alert('Ошибка добавления сеанса: ' + error.message);
     }
@@ -477,7 +508,7 @@ function renderFilmsPool() {
                 <div class="film-card-info">
                     <div class="film-card-title">${film.film_name}</div>
                     <div class="film-card-duration">${film.film_duration} мин</div>
-                    <button class="btn-delete-film" title="Удалить фильм">×</button>
+                    <button class="btn-delete-film" title="Удалить фильм">🗑️</button>
                 </div>
             </div>
         `;
@@ -629,10 +660,11 @@ async function updatePrices() {
 
 // ---------- ПЕРЕКЛЮЧЕНИЕ СТАТУСА ЗАЛА ----------
 async function toggleHallStatus() {
-    const select = document.getElementById('hallSelectOpen');
-    if (!select) return;
-    const hallId = select.value;
-    const hall = halls.find(h => h.id == hallId);
+    if (!selectedOpenHallId) {
+        alert('Выберите зал');
+        return;
+    }
+    const hall = halls.find(h => h.id == selectedOpenHallId);
     if (!hall) return;
 
     const newStatus = hall.hall_open === 1 ? 0 : 1;
@@ -640,7 +672,7 @@ async function toggleHallStatus() {
     if (!confirm(`Вы уверены, что хотите ${action} продажи в зале "${hall.hall_name}"?`)) return;
 
     try {
-        await api.toggleHallStatus(hallId, newStatus);
+        await api.toggleHallStatus(selectedOpenHallId, newStatus);
         await loadAdminData();
     } catch (error) {
         alert('Ошибка изменения статуса: ' + error.message);
@@ -648,11 +680,13 @@ async function toggleHallStatus() {
 }
 
 function updateOpenButtonText() {
-    const select = document.getElementById('hallSelectOpen');
     const button = document.getElementById('toggleHallStatusBtn');
-    if (!select || !button) return;
-    const hallId = select.value;
-    const hall = halls.find(h => h.id == hallId);
+    if (!button) return;
+    if (!selectedOpenHallId) {
+        button.textContent = 'Открыть продажу билетов';
+        return;
+    }
+    const hall = halls.find(h => h.id == selectedOpenHallId);
     if (hall) {
         button.textContent = hall.hall_open === 1 ? 'Приостановить продажу билетов' : 'Открыть продажу билетов';
     }
@@ -669,6 +703,7 @@ function initEventListeners() {
         });
     }
 
+    // Форма добавления фильма
     const filmForm = document.getElementById('addFilmForm');
     if (filmForm) {
         filmForm.addEventListener('submit', (e) => {
@@ -677,13 +712,15 @@ function initEventListeners() {
         });
     }
 
+    // Кнопка сохранения цен
     const savePriceBtn = document.getElementById('savePriceBtn');
     if (savePriceBtn) savePriceBtn.addEventListener('click', updatePrices);
 
+    // Кнопка переключения статуса зала
     const toggleStatusBtn = document.getElementById('toggleHallStatusBtn');
     if (toggleStatusBtn) toggleStatusBtn.addEventListener('click', toggleHallStatus);
 
-    // Обработка формы добавления сеанса
+    // Форма добавления сеанса
     const seanceForm = document.getElementById('addSeanceForm');
     if (seanceForm) {
         seanceForm.addEventListener('submit', (e) => {
