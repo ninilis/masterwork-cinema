@@ -272,6 +272,11 @@
     justify-content: center;
 }
 
+.na {
+    margin-right: 72px;
+    font-size: 18px;
+}
+
 /* Вкладки конфигурации */
 .seat-type-demo.active {
     outline: 2px solid var(--color-lazurit);
@@ -479,14 +484,11 @@
     border: none;
     font-size: 18px;
     line-height: 1;
-    color: #dc3545;
     cursor: pointer;
     padding: 0 5px;
 }
 
-.btn-delete-film:hover {
-    color: #bd2130;
-}
+
 
 /* Модальные окна */
 .modal-content {
@@ -550,3 +552,5 @@
 .hidden-file-input {
     display: none;
 }
+
+
