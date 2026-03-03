@@ -8,6 +8,7 @@
     --color-black: #000;
     --color-white: #fff;
     --color-gray-light: #666;
+    --color-gray-super-light: #C4C4C4;
     --color-gray-dark: #171D24;
     --color-bg-admin: rgba(234, 233, 235, 0.95);
     --color-purple: #63536C;
@@ -180,12 +181,17 @@
     padding: 0 5px;
 }
 
+.hall-scheme {
+    border: 1px solid var(--color-gray-dark);
+    margin: 0 30px 30px;
+    padding: 30px;
+}
+
 .hall-scheme-editor {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    background: #e9ecef;
     padding: 15px;
     border-radius: 8px;
 }
@@ -207,17 +213,18 @@
 }
 
 .hall-scheme-editor__place--standart {
-    background: var(--color-gray-light);
+    background: var(--color-gray-super-light);
+    border: 1px solid var(--color-gray-dark);
 }
 
 .hall-scheme-editor__place--vip {
     background: var(--color-lazurit);
-    border-color: #b8860b;
+    border-color: var(--color-lazurit-dark);
 }
 
 .hall-scheme-editor__place--disabled {
-    background: #f0f0f0;
-    border-color: #ccc;
+    background: var(--color-bg-admin);
+    border-color: var(--color-gray-super-light);
     cursor: not-allowed;
 }
 
