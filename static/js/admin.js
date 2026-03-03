@@ -1,5 +1,3 @@
-// static/js/admin.js
-
 // ---------- ПРОВЕРКА АВТОРИЗАЦИИ ----------
 if (document.querySelector('.admin-steps')) {
     if (!sessionStorage.getItem('adminAuthenticated')) {
@@ -11,9 +9,9 @@ if (document.querySelector('.admin-steps')) {
 let halls = [];
 let films = [];
 let seances = [];
-let currentSeatType = 'standart';          // текущий выбранный тип места (standart / vip / disabled)
-let selectedPriceHallId = null;             // выбранный зал в блоке цен
-let selectedOpenHallId = null;               // выбранный зал в блоке открытия продаж
+let currentSeatType = 'standart'; // текущий выбранный тип места (standart / vip / disabled)
+let selectedPriceHallId = null; // выбранный зал в блоке цен
+let selectedOpenHallId = null; // выбранный зал в блоке открытия продаж
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDateForInput(date) {
@@ -37,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Возврат фокуса на кнопку после закрытия модалок
         document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('hidden.bs.modal', function () {
+            modal.addEventListener('hidden.bs.modal', function() {
                 const trigger = document.querySelector(`[data-bs-target="#${this.id}"]`);
                 if (trigger) trigger.focus();
             });
@@ -70,11 +68,11 @@ async function loadAdminData() {
         renderHalls();
         renderFilms();
         renderHallSelects();
-        renderHallConfigTabs();          // вкладки конфигурации залов
-        renderPriceHallTabs();             // вкладки цен
-        renderOpenHallTabs();               // вкладки открытия продаж
-        renderFilmsPool();                   // пул фильмов
-        renderTimelines();                    // ленты сеансов
+        renderHallConfigTabs(); // вкладки конфигурации залов
+        renderPriceHallTabs(); // вкладки цен
+        renderOpenHallTabs(); // вкладки открытия продаж
+        renderFilmsPool(); // пул фильмов
+        renderTimelines(); // ленты сеансов
         updateOpenButtonText();
     } catch (error) {
         alert('Ошибка загрузки данных: ' + error.message);
@@ -240,11 +238,9 @@ function loadHallConfig(hallId) {
     const hall = halls.find(h => h.id == hallId);
     if (!hall) return;
 
-    // Заполняем поля количества рядов и мест
     document.getElementById('rowsCount').value = hall.hall_rows || 5;
     document.getElementById('colsCount').value = hall.hall_places || 8;
 
-    // Отрисовываем схему
     renderSchemeEditor(hall);
 }
 
@@ -271,7 +267,6 @@ function renderSchemeEditor(hall) {
             place.dataset.col = c;
             place.dataset.type = placeType;
 
-            // Клик устанавливает текущий выбранный тип
             place.addEventListener('click', () => {
                 place.className = `hall-scheme-editor__place hall-scheme-editor__place--${currentSeatType}`;
                 place.dataset.type = currentSeatType;
@@ -324,7 +319,6 @@ function rebuildSchemeFromInputs() {
         newConfig.push(row);
     }
 
-    // Обновляем данные зала и перерисовываем
     hall.hall_config = newConfig;
     hall.hall_rows = newRows;
     hall.hall_places = newCols;
@@ -361,7 +355,7 @@ async function saveHallConfig() {
     try {
         await api.updateHallConfig(hallId, newConfig, newRows, newCols);
         alert('Конфигурация сохранена');
-        await loadAdminData(); // перезагружаем данные
+        await loadAdminData();
     } catch (error) {
         alert('Ошибка сохранения: ' + error.message);
     }
@@ -383,7 +377,7 @@ function initSeatTypeSelection() {
             }
         });
     });
-    // По умолчанию активируем обычные места
+
     const defaultItem = document.querySelector('.seat-type-standart');
     if (defaultItem) {
         defaultItem.classList.add('active');

@@ -1,5 +1,3 @@
-// static/js/api.js
-
 class ApiClient {
     constructor(baseURL) {
         this.baseURL = baseURL;
