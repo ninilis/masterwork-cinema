@@ -12,6 +12,7 @@
     --color-gray-dark: #171D24;
     --color-bg-admin: rgba(234, 233, 235, 0.95);
     --color-purple: #63536C;
+    --color-purple-light: #BC95D6;
 
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
 
@@ -99,17 +100,16 @@
     flex-shrink: 0;
 }
 
+/* Кружки степпера */
 .step-circle {
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    background: var(--color-purple);
-    color: var(--color-white);
-    display: flex;
-    align-items: center;
+    background: var(--color-white);
+    display: inline-flex;
     justify-content: center;
-    font-weight: bold;
-    z-index: 2;
+    flex-shrink: 0;
+    border: 2px solid var(--color-purple-light);
 }
 
 .step-line {
@@ -121,17 +121,15 @@
 }
 
 .steps-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    position: relative;
+    padding-left: 40px;
 }
 
 .admin-block {
     background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
     padding: 20px;
     box-shadow: var(--shadow-default);
+    position: relative;
 }
 
 .admin-block__title {
@@ -141,7 +139,9 @@
     background: var(--color-purple);
     margin: -20px -20px 20px -20px;
     padding: 10px 20px;
-    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* расстояние между кружком и текстом */
 }
 
 .halls-title {

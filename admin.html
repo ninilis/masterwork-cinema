@@ -23,24 +23,15 @@
 
 <main class="main-content">
     <div class="container admin-steps">
-        <!-- Левый вертикальный степпер -->
-        <div class="steps-line">
-            <div class="step-circle">1</div>
-            <div class="step-line"></div>
-            <div class="step-circle">2</div>
-            <div class="step-line"></div>
-            <div class="step-circle">3</div>
-            <div class="step-line"></div>
-            <div class="step-circle">4</div>
-            <div class="step-line"></div>
-            <div class="step-circle">5</div>
-        </div>
 
         <!-- Правый блок с контентом -->
         <div class="steps-content">
             <!-- Блок 1: Управление залами -->
             <section class="admin-block">
-                <h2 class="admin-block__title">Управление залами</h2>
+                <h2 class="admin-block__title">
+                    <span class="step-circle">1</span>
+                    Управление залами
+                </h2>
                 <div class="admin-block__content">
                     <h3 class="halls-title">Доступные залы:</h3>
                     <div id="halls-list" class="halls-list">
@@ -60,7 +51,10 @@
 
             <!-- Блок 2: Конфигурация залов -->
             <section class="admin-block">
-                <h2 class="admin-block__title">Конфигурация залов</h2>
+                <h2 class="admin-block__title">
+                    <span class="step-circle">2</span>
+                    Конфигурация залов
+                </h2>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="hallConfigTabs"></div>
@@ -105,7 +99,10 @@
 
             <!-- Блок 3: Конфигурация цен -->
             <section class="admin-block">
-                <h2 class="admin-block__title">Конфигурация цен</h2>
+                <h2 class="admin-block__title">
+                    <span class="step-circle">3</span>
+                    Конфигурация цен
+                </h2>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="priceHallTabs"></div>
@@ -135,7 +132,10 @@
 
             <!-- Блок 4: Сетка сеансов (drag&drop) -->
             <section class="admin-block">
-                <h2 class="admin-block__title">Сетка сеансов</h2>
+                <h2 class="admin-block__title">
+                    <span class="step-circle">4</span>
+                    Сетка сеансов
+                </h2>
                 <div class="admin-block__content">
                     <div class="justify-content-between align-items-center mb-3">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">Добавить фильм</button>
@@ -161,7 +161,10 @@
 
             <!-- Блок 5: Открыть продажи -->
             <section class="admin-block">
-                <h2 class="admin-block__title">Открыть продажи</h2>
+                <h2 class="admin-block__title">
+                    <span class="step-circle">5</span>
+                    Открыть продажи
+                </h2>
                 <p class="mb-2">Выберите зал для открытия/закрытия продаж:</p>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
