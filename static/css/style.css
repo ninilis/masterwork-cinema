@@ -287,75 +287,89 @@
 /* Календарь */
 .calendar {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 5px;
-    margin-bottom: 30px;
-    max-width: 990px;
+    justify-content: center;
     width: 100%;
-}
-
-.calendar__arrow {
-    background: none;
-    border: none;
-    font-size: 40px;
-    color: var(--color-lazurit);
-    cursor: pointer;
-    padding: 0 5px;
-    line-height: 1;
-    transition: opacity 0.2s;
-}
-
-.calendar__arrow:hover {
-    opacity: 0.7;
-}
-
-.calendar__arrow:disabled {
-    opacity: 0.3;
-    pointer-events: none;
+    max-width: var(--container-max-width);
+    margin: 0 auto 30px;
+    padding-bottom: 10px;
 }
 
 .calendar__days {
     display: flex;
-    flex: 1;
-    justify-content: space-between;
-    gap: 5px;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
 }
 
 .calendar__day {
-    flex: 1;
+    width: 124px;
+    height: 48px;
     background: var(--color-bg-beige);
     border-radius: 2px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: flex-start;
+    padding-left: 8px;
     font-size: 14px;
     cursor: pointer;
-    transition: background 0.2s;
-    height: 55px;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-default);
 }
 
-.calendar__day--today {
-    background: var(--color-lazurit);
+/* Ячейка-стрелка (текст по центру) */
+.calendar__day--arrow {
+    align-items: center;
+    padding-left: 0;
+    font-size: 28px;
+    font-weight: var(--font-weight-regular);
 }
 
 .calendar__day--selected {
-    background: var(--color-lazurit);
-    transform: scale(1.1);
+    width: 241px;
+    height: 52px;
+    background: var(--color-white);
+    font-weight: var(--font-weight-bold);
     z-index: 10;
-    box-shadow: 0 10px 15px -5px rgba(0,0,0,0.3);
+    position: relative;
+    top: -2px;
+    box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
 }
 
+.calendar__day--selected .day-name,
+.calendar__day--selected .day-number,
+.calendar__day--selected .day-today,
+.calendar__day--selected .day-date {
+    font-weight: var(--font-weight-bold);
+}
+
+.calendar__day--weekend .day-name,
+.calendar__day--weekend .day-number {
+    color: red;
+}
 
 .day-name {
-    font-weight: var(--font-weight-thin);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.2;
+    text-transform: capitalize;
 }
 
+.day-name::after {
+    content: ',';
+    margin-right: 2px;
+}
+
+.day-number {
+    font-weight: var(--font-weight-regular);
+    line-height: 1.2;
+}
 
 .day-today {
+    font-weight: var(--font-weight-regular);
     font-size: 14px;
-    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
 }
 
 /* Список фильмов */
@@ -613,3 +627,6 @@
         box-sizing: border-box;
     }
 }
+
+
+/*------------------------------------- */
