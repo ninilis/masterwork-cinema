@@ -73,23 +73,25 @@
 
 .container {
     max-width: var(--container-max-width);
-    margin: 0 auto;
-    padding: 0 var(--spacing-md);
     width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
+
 
 /* Шапка (общая) */
 .page-header {
     padding: 14px 0;
     background: transparent;
+    width: 100%;
 }
 
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
-
 
 /* Кнопка "Войти" (на index.html) */
 .btn-login {
@@ -109,11 +111,18 @@
     box-shadow: var(--shadow-default);
     cursor: pointer;
     transition: opacity 0.2s;
+    flex-shrink: 0;
 }
 
 .btn-login:hover {
     background: var(--color-lazurit-dark);
     color: var(--color-white);
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Общий класс для бежево-прозрачных подложек */
@@ -132,6 +141,7 @@
     padding: 14px;
     background: var(--color-bg-beige);
     border-radius: 2px;
+    width: 100%;
 }
 
 .hall-info {
@@ -147,6 +157,7 @@
 .hall-info__time {
     font-size: 18px;
     margin-bottom: 0;
+    color: var(--color-gray-light);
 }
 
 .hall-info__hall {
@@ -200,11 +211,8 @@
     cursor: pointer;
 }
 
-.hall-scheme__place--standart,
-.hall-scheme__place--vip,
-.hall-scheme__place--taken,
-.hall-scheme__place--disabled,
-.hall-scheme__place--selected {
+
+.hall-scheme__place--taken {
     border: 1px solid var(--color-gray-light);
 }
 
@@ -218,7 +226,7 @@
     background-color: var(--color-gray-dark);
 }
 .hall-scheme__place--disabled {
-    background-color: var(--color-gray-light);
+    background-color: var(--color-gray-dark);
 }
 .hall-scheme__place--selected {
     background-color: var(--color-lazurit);
@@ -290,8 +298,8 @@
     justify-content: center;
     width: 100%;
     max-width: var(--container-max-width);
-    margin: 0 auto 30px;
-    padding-bottom: 10px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .calendar__days {
@@ -302,7 +310,7 @@
 }
 
 .calendar__day {
-    width: 124px;
+    width: 120px;
     height: 48px;
     background: var(--color-bg-beige);
     border-radius: 2px;
@@ -379,18 +387,20 @@
     background: var(--color-bg-beige);
     border-radius: 2px;
     padding: 15px;
+    width: 100%;
+    height: 350px;
+    margin-bottom: 30px;
 }
 
 .movie-card__left {
-    flex: 0 0 200px;
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .movie-card__poster {
-    width: 100%;
-    height: auto;
+    width: 125px;
+    height: 175px;
     object-fit: cover;
     border-radius: 2px;
 }
@@ -450,14 +460,24 @@
     margin: 0;
 }
 
+.movie-card__title::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 14px;
+    background-color: var(--color-gray-dark);
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
 .movie-card__description {
     font-size: 14px;
-    line-height: 1.5;
-    color:  var(--color-gray-light);
+    margin: 0;
 }
 
 .movie-card__duration {
     font-size: 14px;
+    margin: 0;
     color: var(--color-gray-light);
 }
 
@@ -580,8 +600,15 @@
     }
 
     .movie-card {
-        flex-direction: column;
-        height: auto;
+        display: flex;
+        gap: 20px;
+        background: var(--color-bg-beige);
+        border-radius: 2px;
+        padding: 15px;
+        width: 100%;
+        max-width: 990px;
+        margin: 0 auto 30px;
+        box-sizing: border-box;
     }
 
     .movie-card__poster {

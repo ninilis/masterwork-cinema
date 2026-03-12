@@ -72,11 +72,11 @@ function getCalendarItems() {
 
     // Добавляем следующие 5 дней (если всего 7 ячеек, и мы уже добавили 1 или 2)
     // Но нужно точно 7 элементов. Рассчитываем, сколько дат осталось после учета стрелок.
-    const startDate = isFirstWeek ? new Date(today) : new Date(currentStartDate);
-    // Если первая ячейка - дата, то startDate уже today, и нужно добавить ещё 5 дат (всего 6 дат + стрелка вперёд = 7)
+        // Если первая ячейка - дата, то startDate уже today, и нужно добавить ещё 5 дат (всего 6 дат + стрелка вперёд = 7)
     // Если первая ячейка - стрелка, то startDate - это первый день после стрелки, и нужно добавить 5 дат (всего 1 стрелка + 5 дат + стрелка вперёд = 7)
-    const countDates = isFirstWeek ? 6 : 5; // сколько дат добавить после первой ячейки
-    for (let i = 1; i <= countDates; i++) {
+// Добавляем следующие 5 дней
+    const startDate = isFirstWeek ? new Date(today) : new Date(currentStartDate);
+    for (let i = 1; i <= 5; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
         items.push({ type: 'date', date });
