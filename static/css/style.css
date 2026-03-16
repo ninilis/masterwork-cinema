@@ -503,7 +503,6 @@
 }
 
 .payment-card__title, .ticket-card__title {
-    font-family: var(--font-family);
     font-weight: var(--font-weight-bold);
     font-size: 22px;
     line-height: 25px;
@@ -521,7 +520,7 @@
 }
 
 .payment-card__details p, .ticket-card__details {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 5px;
     line-height: 1.5;
 }
@@ -555,6 +554,8 @@
 
 .btn-code:hover {
     opacity: 0.9;
+    background: var(--color-lazurit-dark);
+    color: var(--color-white);
 }
 
 .payment-card__footnote,
@@ -563,6 +564,7 @@
 .ticket-card__wish {
     font-size: 14px;
     color: var(--color-gray-light);
+    margin-bottom: 5px;
 }
 
 
@@ -580,6 +582,11 @@
     margin: var(--spacing-lg) 0;
 }
 
+.ticket-card__details p {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
 .qr-placeholder {
     width: 200px;
     height: 200px;
@@ -590,6 +597,8 @@
     justify-content: center;
     border-radius: 10px;
     font-size: 14px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 /* -------------------- */

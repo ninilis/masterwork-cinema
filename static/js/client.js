@@ -587,7 +587,7 @@ function generateQRCode(tickets) {
     container.innerHTML = '';
     QrCreator.render({
         text: qrData,
-        size: 200,
+        size: 180,
         fill: '#000000',
         background: '#ffffff',
         radius: 0.5,
