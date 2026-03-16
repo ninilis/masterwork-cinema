@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap');
 
 :root {
-    --color-lazurit: #16A6AF;
+    --color-lazurit: #5fd5df;
     --color-lazurit-dark: #19828a;
     --color-orange: #C76F00;
     --color-bg-beige: rgba(241, 235, 230, 0.95);
@@ -81,7 +81,7 @@
 }
 
 .login-card__body .form-label {
-    color: var(--color-black);
+    color: var(--color-gray-light);
     font-weight: var(--font-weight-regular);
 }
 
