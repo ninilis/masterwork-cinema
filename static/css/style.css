@@ -138,7 +138,7 @@
 .hall-container {
     width: 990px;
     margin: var(--spacing-lg) auto;
-    padding: 0 0 20px 0;
+    padding: 0 0 5px 0;
     background: var(--color-bg-beige);
     border-radius: 2px;
     box-sizing: border-box;
@@ -152,23 +152,19 @@
     padding: 14px 14px 0 14px;
 }
 
-.hall-total {
-    padding: 14px 14px 0 14px;
-}
-
 .hall-info__title {
-    font-size: 28px;
+    font-size: 16px;
     font-weight: var(--font-weight-bold);
     margin: 0;
 }
 
 .hall-info__time {
-    font-size: 18px;
+    font-size: 14px;
     margin: 0;
 }
 
 .hall-info__hall {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: var(--font-weight-bold);
     margin: 0;
 }
@@ -194,13 +190,18 @@
     box-shadow: var(--shadow-default);
     cursor: pointer;
     transition: opacity 0.2s;
-    margin: 20px auto;
+    margin: 30px auto;
     display: block;
 }
 
 .btn-booking:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.btn-booking:hover {
+    background: var(--color-lazurit-dark);
+    color: var(--color-white);
 }
 
 /* ГЕНЕРАЦИЯ ЗАЛА */
@@ -451,7 +452,7 @@
 
 .session-time--past {
     opacity: 0.5;
-    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .movie-card__right {
@@ -462,7 +463,7 @@
 }
 
 .movie-card__title {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: var(--font-weight-bold);
     margin: 0;
 }
@@ -496,10 +497,37 @@
     margin: var(--spacing-lg) auto;
     padding: var(--spacing-lg);
     background: var(--color-bg-beige);
-    border-top: 4px dashed var(--color-orange);
-    border-bottom: 4px dashed var(--color-orange);
     border-left: none;
     border-right: none;
+    position: relative;
+}
+
+/* Верхняя пунктирная линия */
+.payment-card::before,
+.ticket-card::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-top: 6px dotted var(--color-orange);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Нижняя пунктирная линия */
+.payment-card::after,
+.ticket-card::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-bottom: 6px dotted var(--color-orange);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .payment-card__title, .ticket-card__title {

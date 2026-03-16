@@ -443,28 +443,21 @@ function renderHallScheme(matrix) {
         container.append(rowDiv);
     });
 
-    updateTotalPrice();
+    const bookBtn = document.querySelector('.btn-booking');
+    if (bookBtn) {
+        const selected = document.querySelectorAll('.hall-scheme__place--selected');
+        bookBtn.disabled = selected.length === 0;
+    }
 }
 
 function onPlaceClick(e) {
     const place = e.currentTarget;
     if (place.classList.contains('hall-scheme__place--taken') || place.classList.contains('hall-scheme__place--disabled')) return;
     place.classList.toggle('hall-scheme__place--selected');
-    updateTotalPrice();
-}
-
-function updateTotalPrice() {
-    const selected = document.querySelectorAll('.hall-scheme__place--selected');
-    let total = 0;
-    selected.forEach(place => {
-        const price = place.classList.contains('hall-scheme__place--vip') ? Number(window.vipPrice) : Number(window.standardPrice);
-        total += price || 0;
-    });
-    const totalEl = document.getElementById('total-price');
-    if (totalEl) totalEl.textContent = total;
 
     const bookBtn = document.querySelector('.btn-booking');
     if (bookBtn) {
+        const selected = document.querySelectorAll('.hall-scheme__place--selected');
         bookBtn.disabled = selected.length === 0;
     }
 }
