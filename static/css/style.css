@@ -632,6 +632,12 @@
 .hall-info__hint {
     display: none;
 }
+
+/* Обёртка для информации и подсказки */
+.hall-info-wrapper {
+    width: 100%;
+}
+
 /* -------------------- */
 /* Адаптивность         */
 /* -------------------- */
@@ -640,25 +646,24 @@
 /* -------------------- */
 @media (max-width: 768px) {
     :root {
-        --container-max-width: 100%;  /* контейнер на всю ширину */
+        --container-max-width: 100%;
         --movie-card-height: auto;
-        --poster-width: 80px;          /* уменьшаем постер */
+        --poster-width: 80px;
         --poster-height: 120px;
-        --calendar-day-width: calc((100vw - 20px) / 7); /* равномерное распределение 7 ячеек */
+        --calendar-day-width: calc((100vw - 20px) / 7);
         --calendar-day-height: 48px;
-        --spacing-md: 10px;            /* уменьшаем отступы */
+        --spacing-md: 10px;
         --spacing-lg: 20px;
     }
 
-    /* Убираем горизонтальный скролл */
     body {
         overflow-x: hidden;
     }
 
     .container {
-        padding: 0 10px;               /* небольшие отступы по бокам */
+        padding: 0 10px;
         width: 100%;
-        max-width: none;                /* сбрасываем ограничение */
+        max-width: none;
     }
 
     /* Календарь */
@@ -675,19 +680,19 @@
 
     .calendar__day {
         width: var(--calendar-day-width);
-        min-width: 40px;                /* защита от слишком маленьких */
-        font-size: 12px;                /* уменьшаем шрифт */
+        min-width: 40px;
+        font-size: 12px;
         padding-left: 4px;
     }
 
     .calendar__day--selected {
-        width: auto;                    /* сбрасываем фиксированную ширину */
+        width: auto;
         min-width: calc(var(--calendar-day-width) + 20px);
     }
 
     /* Карточки фильмов */
     .movie-card {
-        flex-direction: column;          /* вертикальное расположение */
+        flex-direction: column;
         height: auto;
         padding: 15px;
         width: 100%;
@@ -696,7 +701,7 @@
     }
 
     .movie-card__left {
-        flex-direction: row;             /* постер и залы в ряд */
+        flex-direction: row;
         align-items: flex-start;
         gap: 15px;
         width: 100%;
@@ -717,16 +722,16 @@
     }
 
     .hall-name {
-        font-size: 14px;                 /* уменьшаем шрифт названия зала */
+        font-size: 14px;
     }
 
     .session-time {
-        font-size: 12px;                 /* уменьшаем время */
+        font-size: 12px;
         padding: 4px 8px;
     }
 
     .movie-card__title {
-        font-size: 20px;                 /* заголовок фильма меньше */
+        font-size: 20px;
         margin-top: 10px;
     }
 
@@ -738,7 +743,7 @@
         font-size: 13px;
     }
 
-    /* Добавляем подсказку "Тапните…" */
+    /* Подсказка для главной */
     .movies-list::after {
         content: "Тапните для выбора мест";
         display: block;
@@ -749,7 +754,7 @@
         margin-bottom: 20px;
     }
 
-    /* Страница hall.html (схема зала) */
+    /* Страница hall.html */
     .hall-container {
         width: 100%;
         margin-top: 15px;
@@ -765,12 +770,12 @@
     }
 
     .hall-scheme {
-        min-height: auto;                 /* адаптивная высота */
+        min-height: auto;
         padding: 10px 15px;
     }
 
     .hall-scheme__place {
-        width: 18px;                      /* чуть меньше на планшете */
+        width: 18px;
         height: 18px;
     }
 
@@ -784,6 +789,43 @@
         font-size: 14px;
     }
 
+    /* Подсказка "Тапните дважды…" на планшетах */
+    .hall-info-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;        /* теперь по центру */
+        flex-wrap: nowrap;
+    }
+
+    .hall-info {
+        flex: 1 1 auto;
+        min-width: 0; /* позволяет сжиматься */
+    }
+
+    .hall-info__hint {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+        margin-left: 15px;
+    }
+
+    .hint-text {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        line-height: 1.3;
+        color: var(--color-gray-light);
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .hint-icon {
+        width: 28px;
+        height: auto;
+        flex-shrink: 0;
+    }
+}
     /* Страницы payment.html и ticket.html */
     .payment-card, .ticket-card {
         width: 100%;
@@ -828,7 +870,7 @@
     }
 
     .movie-card__left {
-        flex-direction: column;          /* постер сверху, залы снизу */
+        flex-direction: column;
         align-items: center;
     }
 
@@ -855,76 +897,56 @@
         font-size: 14px;
     }
 
-    /* Кресла зала квадратные (20x20) на мобильных тоже остаются квадратными,
-       но если они казались не квадратными, значит, сбросьте искажения */
     .hall-scheme__place {
         width: 20px;
         height: 20px;
     }
 
-    /* Увеличиваем кнопки для удобного тапа */
     .btn-booking,
     .btn-code {
         width: 100%;
         max-width: 280px;
     }
 
-    /* Подсказка */
     .movies-list::after {
         font-size: 12px;
     }
-}
 
-/* Планшеты (до 768px) */
-@media (max-width: 768px) {
+    /* Подсказка на мобильных – остаётся справа */
     .hall-info {
         display: flex;
-        align-items: flex-start; /* выравнивание по верхнему краю */
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: nowrap; /* запрещаем перенос блока */
+    }
+
+    .hall-info__main {
+        flex: 1 1 auto;
+        min-width: 0;
+        word-break: break-word;
     }
 
     .hall-info__hint {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-left: auto;      /* прижимаем к правому краю */
+        gap: 5px;
         flex-shrink: 0;
+        margin-left: 8px;
     }
 
     .hint-text {
-        display: flex;
-        flex-direction: column; /* каждое слово на отдельной строке */
-        font-size: 12px;
-        line-height: 1.3;
-        color: var(--color-gray-light);
-        text-align: right;
-        white-space: nowrap;    /* запрещаем перенос внутри слов */
+        font-size: 10px;
+        white-space: normal;
     }
 
     .hint-icon {
-        width: 30px;
-        height: auto;
-        flex-shrink: 0;
-    }
-}
-
-/* Мобильные (до 390px) */
-@media (max-width: 390px) {
-    .hall-info {
-        flex-direction: column; /* ставим информацию и подсказку друг под другом */
-        align-items: stretch;
+        width: 22px;
     }
 
     .hall-info__hint {
-        justify-content: flex-end;
-        margin-left: 0;
-        margin-top: 10px;
-    }
-
-    .hint-text {
-        font-size: 11px;
-    }
-
-    .hint-icon {
-        width: 25px;
+        margin-left: 8px;
+        gap: 5px;
     }
 }
+
+
