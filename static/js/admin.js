@@ -537,7 +537,11 @@ function renderTimelines() {
         const slots = timeline.querySelector('.timeline-slots');
         slots.innerHTML = '';
 
-        const hallSeances = seancesByHall[hall.id] || [];
+        // Сортируем сеансы по времени (строковое сравнение "ЧЧ:ММ")
+        const hallSeances = (seancesByHall[hall.id] || []).sort((a, b) => {
+            return a.seance_time.localeCompare(b.seance_time);
+        });
+
         hallSeances.forEach(seance => {
             const film = films.find(f => f.id == seance.seance_filmid);
             if (!film) return;
