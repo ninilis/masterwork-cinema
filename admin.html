@@ -91,7 +91,7 @@
                 </div>
 
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary">Отмена</button>
+                        <button class="btn btn-outline-secondary" id="cancelHallConfigBtn">Отмена</button>
                         <button class="btn btn-primary" id="saveHallConfigBtn">Сохранить</button>
                     </div>
                 </div>
@@ -110,13 +110,13 @@
                     <!-- Поля ввода цен с легендой -->
                     <div class="price-config">
                         <div class="price-item">
-                            <input type="number" id="standartPrice" class="form-control price-input" value="250">
+                            <input type="number" id="standartPrice" class="form-control price-input" value="250" min="0">
                             <span class="seat-label">за</span>
                             <span class="seat-color seat-color--standart"></span>
                             <span class="seat-label">обычные кресла</span>
                         </div>
                         <div class="price-item">
-                            <input type="number" id="vipPrice" class="form-control price-input" value="350">
+                            <input type="number" id="vipPrice" class="form-control price-input" value="350" min="0">
                             <span class="seat-label">за</span>
                             <span class="seat-color seat-color--vip"></span>
                             <span class="seat-label">VIP кресла</span>
@@ -124,7 +124,7 @@
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary">Отмена</button>
+                        <button class="btn btn-outline-secondary" id="cancelPriceBtn">Отмена</button>
                         <button class="btn btn-primary" id="savePriceBtn">Сохранить</button>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                         </div>
                     </div>
                     <div class="d-flex gap-2 mt-3">
-                        <button class="btn btn-outline-secondary">Отмена</button>
+                        <button class="btn btn-outline-secondary" id="cancelScheduleBtn">Отмена</button>
                         <button class="btn btn-primary">Сохранить</button>
                     </div>
                 </div>

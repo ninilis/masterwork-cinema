@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.admin-steps')) {
         loadAdminData();
         initEventListeners();
-        initSeatTypeSelection(); // выбор типа места через легенду
 
         // Возврат фокуса на кнопку после закрытия модалок
         document.querySelectorAll('.modal').forEach(modal => {
@@ -268,8 +267,15 @@ function renderSchemeEditor(hall) {
             place.dataset.type = placeType;
 
             place.addEventListener('click', () => {
-                place.className = `hall-scheme-editor__place hall-scheme-editor__place--${currentSeatType}`;
-                place.dataset.type = currentSeatType;
+                // Циклическое переключение: standart -> vip -> disabled -> standart
+                const currentType = place.dataset.type;
+                let newType;
+                if (currentType === 'standart') newType = 'vip';
+                else if (currentType === 'vip') newType = 'disabled';
+                else newType = 'standart';
+
+                place.className = `hall-scheme-editor__place hall-scheme-editor__place--${newType}`;
+                place.dataset.type = newType;
             });
 
             rowDiv.appendChild(place);
@@ -361,29 +367,6 @@ async function saveHallConfig() {
     }
 }
 
-// ---------- ИНИЦИАЛИЗАЦИЯ ВЫБОРА ТИПА МЕСТА ПО ЛЕГЕНДЕ ----------
-function initSeatTypeSelection() {
-    const legendItems = document.querySelectorAll('.seat-type-demo');
-    legendItems.forEach(item => {
-        item.addEventListener('click', () => {
-            legendItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            if (item.classList.contains('seat-type-standart')) {
-                currentSeatType = 'standart';
-            } else if (item.classList.contains('seat-type-vip')) {
-                currentSeatType = 'vip';
-            } else if (item.classList.contains('seat-type-disabled')) {
-                currentSeatType = 'disabled';
-            }
-        });
-    });
-
-    const defaultItem = document.querySelector('.seat-type-standart');
-    if (defaultItem) {
-        defaultItem.classList.add('active');
-        currentSeatType = 'standart';
-    }
-}
 
 // ---------- УПРАВЛЕНИЕ ЗАЛАМИ ----------
 async function deleteHall(hallId) {
@@ -638,8 +621,8 @@ async function updatePrices() {
     const standart = parseInt(document.getElementById('standartPrice').value);
     const vip = parseInt(document.getElementById('vipPrice').value);
 
-    if (isNaN(standart) || isNaN(vip)) {
-        alert('Введите корректные цены');
+    if (isNaN(standart) || isNaN(vip) || standart < 0 || vip < 0) {
+        alert('Цены должны быть положительными числами');
         return;
     }
 
@@ -650,6 +633,7 @@ async function updatePrices() {
     } catch (error) {
         alert('Ошибка: ' + error.message);
     }
+
 }
 
 // ---------- ПЕРЕКЛЮЧЕНИЕ СТАТУСА ЗАЛА ----------
@@ -740,4 +724,27 @@ function initEventListeners() {
     const colsInput = document.getElementById('colsCount');
     if (rowsInput) rowsInput.addEventListener('input', rebuildSchemeFromInputs);
     if (colsInput) colsInput.addEventListener('input', rebuildSchemeFromInputs);
+    // Отмена в конфигурации зала
+    document.getElementById('cancelHallConfigBtn')?.addEventListener('click', () => {
+        const activeTab = document.querySelector('.hall-tab.active');
+        if (activeTab) loadHallConfig(activeTab.dataset.hallId);
+    });
+
+// Отмена в блоке цен
+    document.getElementById('cancelPriceBtn')?.addEventListener('click', () => {
+        if (selectedPriceHallId) {
+            const hall = halls.find(h => h.id == selectedPriceHallId);
+            if (hall) {
+                document.getElementById('standartPrice').value = hall.hall_price_standart || 250;
+                document.getElementById('vipPrice').value = hall.hall_price_vip || 350;
+            }
+        }
+    });
+
+// Отмена в сетке сеансов
+    document.getElementById('cancelScheduleBtn')?.addEventListener('click', () => {
+        loadAdminData(); // полная перезагрузка всех данных
+    });
 }
+
+
