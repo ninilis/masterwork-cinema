@@ -792,5 +792,12 @@ function initEventListeners() {
     document.getElementById('cancelScheduleBtn')?.addEventListener('click', () => {
         loadAdminData(); // полная перезагрузка всех данных
     });
+    //Аккордион
+    document.querySelectorAll('.admin-block__title').forEach(title => {
+        title.addEventListener('click', (e) => {
+            const block = e.target.closest('.admin-block');
+            block.classList.toggle('collapsed');
+        });
+    });
 }
 
