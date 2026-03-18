@@ -12,6 +12,8 @@ let seances = [];
 let currentSeatType = 'standart'; // текущий выбранный тип места (standart / vip / disabled)
 let selectedPriceHallId = null; // выбранный зал в блоке цен
 let selectedOpenHallId = null; // выбранный зал в блоке открытия продаж
+let draggingSeance = null;        // текущий перетаскиваемый сеанс
+
 
 // ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 function formatDateForInput(date) {
@@ -386,11 +388,15 @@ async function createHall() {
         return;
     }
     try {
-        await api.addHall(name);
+        const newHall = await api.addHall(name); // предполагаем, что возвращает объект зала с id
+        // Установим дефолтную конфигурацию
+        const defaultRows = 5;
+        const defaultCols = 8;
+        const defaultConfig = Array(defaultRows).fill().map(() => Array(defaultCols).fill('standart'));
+        await api.updateHallConfig(newHall.id, defaultConfig, defaultRows, defaultCols);
         await loadAdminData();
-        const modalEl = document.getElementById('addHallModal');
-        bootstrap.Modal.getInstance(modalEl).hide();
-        document.querySelector('[data-bs-target="#addHallModal"]').focus();
+        // Закрыть модалку и очистить поле
+        bootstrap.Modal.getInstance(document.getElementById('addHallModal')).hide();
         document.getElementById('hallName').value = '';
     } catch (error) {
         alert('Ошибка при создании зала: ' + error.message);
@@ -554,6 +560,7 @@ function renderTimelines() {
 let sortableInstances = [];
 
 function initDrag() {
+    // Уничтожаем предыдущие экземпляры Sortable
     sortableInstances.forEach(instance => instance.destroy());
     sortableInstances = [];
 
@@ -570,44 +577,80 @@ function initDrag() {
         }));
     }
 
+    // Получаем элемент корзины (убеждаемся, что он существует)
+    const trashBin = document.getElementById('trashBin');
+    if (!trashBin) {
+        console.warn('Элемент #trashBin не найден в DOM');
+        return;
+    }
+
+    // Для каждого таймлайна создаём Sortable
     document.querySelectorAll('.timeline-slots').forEach(slot => {
         sortableInstances.push(new Sortable(slot, {
             group: {
                 name: 'films',
-                pull: true
+                pull: true,
+                revertClone: false
+            },
+            animation: 150,
+            onStart: (evt) => {
+                // Показываем корзину только если перетаскивается сеанс
+                if (evt.item.classList.contains('seance-block')) {
+                    draggingSeance = evt.item;
+                    trashBin.classList.remove('hidden');
+                }
+            },
+            onEnd: (evt) => {
+                // Скрываем корзину
+                trashBin.classList.add('hidden');
+
+                if (draggingSeance) {
+                    // Координаты мыши в момент отпускания
+                    const clientX = evt.originalEvent.clientX;
+                    const clientY = evt.originalEvent.clientY;
+                    const trashRect = trashBin.getBoundingClientRect();
+
+                    // Проверяем, отпущен ли элемент над корзиной
+                    if (clientX >= trashRect.left && clientX <= trashRect.right &&
+                        clientY >= trashRect.top && clientY <= trashRect.bottom) {
+
+                        const seanceId = draggingSeance.dataset.seanceId;
+                        if (seanceId && confirm('Удалить этот сеанс?')) {
+                            // Удаляем через API
+                            api.deleteSeance(seanceId)
+                                .then(() => loadAdminData())
+                                .catch(err => {
+                                    alert('Ошибка удаления: ' + err.message);
+                                    loadAdminData(); // перезагружаем для синхронизации
+                                });
+                        }
+                        // Если отмена – ничего не делаем, элемент вернётся на место автоматически
+                    }
+                    draggingSeance = null;
+                }
             },
             onAdd: async (evt) => {
+                // Логика добавления нового сеанса (перетаскивание карточки фильма из пула)
                 const filmId = evt.item.dataset.filmId;
                 const hallId = evt.target.closest('.hall-timeline').dataset.hallId;
 
+                // Если перетаскивается существующий сеанс (перемещение между таймлайнами), ничего не делаем
                 if (evt.item.classList.contains('seance-block')) {
-                    return; // перемещение существующего
+                    return;
                 }
 
-                // Удаляем добавленный элемент, так как создание будет через модалку
+                // Удаляем добавленный элемент (он будет создан через модалку)
                 evt.item.remove();
 
-                // Заполняем скрытые поля в модальном окне
+                // Заполняем скрытые поля в модальном окне добавления сеанса
                 document.getElementById('seanceHallId').value = hallId;
                 document.getElementById('seanceFilmId').value = filmId;
 
                 // Открываем модальное окно
                 const modal = new bootstrap.Modal(document.getElementById('addSeanceModal'));
                 modal.show();
-            },
-            onRemove: async (evt) => {
-                const seanceId = evt.item.dataset.seanceId;
-                if (seanceId && confirm('Удалить сеанс?')) {
-                    try {
-                        await api.deleteSeance(seanceId);
-                    } catch (error) {
-                        alert('Ошибка удаления: ' + error.message);
-                        loadAdminData();
-                    }
-                } else {
-                    loadAdminData(); // отмена – восстановить
-                }
             }
+            // onRemove полностью удалён – удаление только через корзину
         }));
     });
 }
@@ -746,5 +789,4 @@ function initEventListeners() {
         loadAdminData(); // полная перезагрузка всех данных
     });
 }
-
 

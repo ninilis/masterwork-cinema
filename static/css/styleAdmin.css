@@ -550,6 +550,26 @@
     padding: 0 5px;
 }
 
+.trash-bin {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4444;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: opacity 0.3s;
+}
+.trash-bin.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
 /* Модальные окна */
 .modal-content {
     border-radius: 8px;
