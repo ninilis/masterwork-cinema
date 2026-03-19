@@ -3,6 +3,7 @@
 :root {
     --color-lazurit: #16A6AF;
     --color-lazurit-dark: #19828a;
+    --color-lazurit-light: #B0D6D8;
     --color-orange: #C76F00;
     --color-bg-beige: rgba(241, 235, 230, 0.95);
     --color-black: #000;
@@ -15,6 +16,7 @@
     --color-purple-light: #BC95D6;
 
     --shadow-default: 0px 0px 3px 0px rgba(0,0,0,0.12), 0px 3px 3px 0px rgba(0,0,0,0.24);
+    --shadow-accent: 0px 6px 12px rgba(0, 0, 0, 0.3);
 
     --font-family: 'Roboto', sans-serif;
     --font-weight-thin: 100;
@@ -27,7 +29,7 @@
     --logo-font-size: 34px;
     --container-max-width: 990px;
     --btn-height: 40px;
-    --btn-border-radius: 3px;
+    --btn-border-radius: 1px;
     --calendar-day-width: 125px;
     --calendar-day-height: 48px;
     --movie-card-height: 350px;
@@ -46,24 +48,27 @@
 
 /* Шапка страницы */
 .page-header {
+    display: flex;                /* включаем flex-раскладку */
+    align-items: center;          /* вертикальное центрирование дочерних элементов */
+    /* остальные свойства остаются */
     width: 972px;
     height: 120px;
-    margin: 30px auto 0 auto;
-    position: static;            /* сбрасываем возможное абсолютное позиционирование */
+    margin: 0 auto;
 }
 
 .page-header .container {
-    max-width: 100%;             /* запрещаем контейнеру выходить за ширину родителя */
+    width: 100%;                  /* чтобы контейнер занимал всю ширину */
+    max-width: 100%;
     padding-left: 0;
     padding-right: 0;
+    /* убираем лишние отступы Bootstrap, если они мешают */
 }
 
 /* Логотип */
 .logo {
-    position: static;
-    transform: none;
-    left: auto;
-    top: auto;
+    display: flex;                /* если нужно точно управлять высотой */
+    align-items: center;
+    /* можно также задать line-height, но flex проще */
 }
 
 /* Подпись под логотипом */
@@ -111,12 +116,13 @@
 }
 
 /* Поля ввода */
-.login-card__body .form-control {
+.login-card__body {
     width: 100%;
     height: 36px;
     border: 1px solid #b5b0b0;
     border-radius: 0;
 }
+
 
 /* Лейблы полей */
 .login-card__body .form-label {
@@ -142,7 +148,6 @@
 .admin-steps {
     display: flex;
     gap: 20px;
-    margin-top: 30px;
     margin-bottom: 50px;
 }
 
@@ -160,6 +165,24 @@
     background-size: cover;
     color: var(--color-black);
     font-family: var(--font-family);
+}
+
+.form-control {
+    display: block;
+    width: 50%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
 /* Кружки степпера */
@@ -223,7 +246,7 @@
 
 .halls-title {
     color: var(--color-black);
-    font-size: 1.2rem;
+    font-size: 16px;
     font-weight: var(--font-weight-regular);
     margin-bottom: 10px;
 }
@@ -236,6 +259,7 @@
 
 .hall-name {
     font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
 }
 
 .hall-name::before {
@@ -252,6 +276,7 @@
     line-height: 1;
     cursor: pointer;
     padding: 0 5px;
+    text-transform: uppercase;
 }
 
 .hall-scheme {
@@ -276,8 +301,8 @@
 }
 
 .hall-scheme-editor__place {
-    width: 35px;
-    height: 35px;
+    width: 26px;
+    height: 26px;
     border-radius: 4px;
     background: var(--color-white);
     border: 1px solid #ced4da;
@@ -287,12 +312,12 @@
 
 .hall-scheme-editor__place--standart {
     background: var(--color-gray-super-light);
-    border: 1px solid var(--color-gray-dark);
+    border: 1px solid var(--color-gray-light);
 }
 
 .hall-scheme-editor__place--vip {
-    background: var(--color-lazurit);
-    border-color: var(--color-lazurit-dark);
+    background: var(--color-lazurit-light);
+    border-color: var(--color-lazurit);
 }
 
 .hall-scheme-editor__place--disabled {
@@ -320,21 +345,23 @@
 .seat-type-demo::before {
     content: "";
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
     border-radius: 4px;
     margin-right: 5px;
 }
 
 .seat-type-standart::before {
-    background-color: var(--color-gray-light);
+    background-color: var(--color-gray-super-light);
+    border: 1px solid var(--color-gray-light);
 }
 .seat-type-vip::before {
-    background-color: var(--color-lazurit);
+    background-color: var(--color-lazurit-light);
+    border: 1px solid var(--color-lazurit-dark);
 }
 .seat-type-disabled::before {
-    background-color: var(--color-white);
-    border: 1px solid var(--color-bg-admin);
+    background-color: var(--color-bg-beige);
+    border: 1px solid var(--color-gray-super-light);
 }
 
 .hall-screen-label {
@@ -359,13 +386,15 @@
 
 .hall-tabs {
     display: flex;
-    gap: 10px;
+    gap: 0;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    text-transform: uppercase;
 }
 
 .hall-tab {
     padding: 8px 16px;
+    font-size: 1rem;
     border-radius: var(--btn-border-radius);
     background-color: var(--color-bg-admin);
     color: var(--color-black);
@@ -377,13 +406,16 @@
 .hall-tab.active {
     background-color: var(--color-white);
     border-color: var(--color-lazurit);
-    box-shadow: var(--shadow-default);
+    box-shadow: var(--shadow-accent);
     font-size: 1.2rem;
+    font-weight:var(--font-weight-bold);
+    padding: 9px 21px;
 }
 
 .hall-tab:hover {
     background-color: var(--color-white);
 }
+
 
 .film-item {
     padding: 8px 12px;
@@ -440,15 +472,36 @@
 .btn-primary {
     background-color: var(--color-lazurit);
     border-color: var(--color-lazurit);
-    width: 200px;
+    width: 159px;
+    height: 40px;
     margin: 0;
     box-shadow: var(--shadow-default);
     border-radius: var(--btn-border-radius);
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
 .btn-primary:hover {
     background-color: var(--color-lazurit-dark);
     border-color: var(--color-lazurit-dark);
+    box-shadow: var(--shadow-default);
+}
+
+.btn-outline-secondary {
+    background-color: var(--color-white);
+    border-color: var(--color-white);
+    color: var(--color-gray-dark);
+    box-shadow: var(--shadow-default);
+    width: 121px;
+    height: 40px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--color-gray-light);
+    border-color: var(--color-gray-light);
+    color: var(--color-white);
     box-shadow: var(--shadow-default);
 }
 
@@ -474,12 +527,15 @@
 }
 
 .seat-color--standart {
-    background-color: var(--color-gray-light);
+    background-color: var(--color-gray-super-light);
+    border: 1px solid var(--color-gray-light);
 }
 
 .seat-color--vip {
-    background-color: var(--color-lazurit);
+    background-color: var(--color-lazurit-light);
+    border: 1px solid var(--color-lazurit-dark);
 }
+
 
 .seat-label {
     font-size: 1rem;
@@ -494,7 +550,8 @@
 }
 
 /* Вкладки выбора зала*/
-#priceHallTabs {
+
+.priceHallTabs {
     margin-bottom: 20px;
 }
 
@@ -502,15 +559,24 @@
     margin-bottom: 20px;
 }
 
+.films-pool-list {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.films-pool-card {
+    gap: 20px;
+}
+
 .film-card {
     display: flex;
     align-items: stretch;
-    border-radius: 8px;
     overflow: hidden;
     box-shadow: var(--shadow-default);
     cursor: grab;
     transition: transform 0.2s;
-    width: 250px;
+    width: 259px;
+    height: 52px;
     background-color: var(--color-white);
 }
 
@@ -520,7 +586,8 @@
 }
 
 .film-card-poster {
-    width: 70px;
+    width: 38px;
+    height: 52px;
     flex-shrink: 0;
     background-color: var(--color-bg-admin);
 }
@@ -534,17 +601,22 @@
 
 .film-card-info {
     flex: 1;
-    padding: 10px;
+    padding: 6px 8px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     position: relative;
+    overflow: hidden;
 }
 
 .film-card-title {
     font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 5px;
-    padding-right: 25px;
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 20px;
 }
 
 .film-card-duration {
@@ -554,8 +626,8 @@
 
 .btn-delete-film {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    bottom: 5px;
+    right: 0;
     background: none;
     border: none;
     font-size: 18px;
@@ -583,8 +655,16 @@
     pointer-events: none;
 }
 
+#toggleHallStatusBtn {
+    width: 270px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+}
 
-/* Модальные окна */
+
+/*------------------------ Модальные окна---------------------------- */
 .modal-content {
     border-radius: 8px;
     overflow: hidden;
@@ -627,20 +707,6 @@
     padding: 15px 20px;
     gap: 10px;
     justify-content: flex-start;
-}
-
-.btn-outline-secondary {
-    background-color: var(--color-white);
-    border-color: var(--color-white);
-    color: var(--color-gray-dark);
-    box-shadow: var(--shadow-default);
-}
-
-.btn-outline-secondary:hover {
-    background-color: var(--color-gray-light);
-    border-color: var(--color-gray-light);
-    color: var(--color-white);
-    box-shadow: var(--shadow-default);
 }
 
 .hidden-file-input {

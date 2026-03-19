@@ -17,7 +17,7 @@
         <a href="index.html" class="logo">
             <img src="static/img/logo.svg" alt="Идём в кино">
         </a>
-        <span class="admin-subtitle">АДМИНИСТРАТОРСКАЯ</span>
+        <img src="static/img/Администраторррская.svg" alt="Администраторррская" class="admin-subtitle">
     </div>
 </header>
 
@@ -57,30 +57,32 @@
                     Конфигурация залов
                     <span class="toggle-icon">▼</span>
                 </h2>
+                <h3 class="halls-title">Выберите зал для конфигурации:</h3>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="hallConfigTabs"></div>
 
-                    <div class="row justify-content-start mb-3 g-2">
+                    <h3 class="halls-title">Укажите количество рядов и максимальное количество кресел в ряду:</h3>
+                    <div class="row justify-content-start mb-3">
                         <div class="col-auto">
-                            <label for="rowsCount" class="form-label">Количество рядов</label>
+                            <label for="rowsCount" class="form-label">Рядов, шт</label>
                             <input type="number" id="rowsCount" class="form-control" min="1" value="5">
                         </div>
                         <div class="col-auto d-flex align-items-center">
                             <span class="na">×</span>
                         </div>
                         <div class="col-auto">
-                            <label for="colsCount" class="form-label">Мест в ряду</label>
+                            <label for="colsCount" class="form-label">Мест, шт</label>
                             <input type="number" id="colsCount" class="form-control" min="1" value="8">
                         </div>
                     </div>
 
-                    <p class="mb-2">Теперь вы можете указать типы кресел на схеме зала:</p>
+                    <h3 class="halls-title">Теперь вы можете указать типы кресел на схеме зала:</h3>
                     <!-- Легенда кресел -->
                     <div class="seat-types mb-3">
-                        <span class="seat-type-demo seat-type-standart">обычные</span>
-                        <span class="seat-type-demo seat-type-vip">VIP</span>
-                        <span class="seat-type-demo seat-type-disabled">заблокировано</span>
+                        <span class="seat-type-demo seat-type-standart"> — обычные</span>
+                        <span class="seat-type-demo seat-type-vip"> — VIP</span>
+                        <span class="seat-type-demo seat-type-disabled"> — заблокировано</span>
                     </div>
 
                     <p class="mb-2">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
@@ -106,12 +108,14 @@
                     Конфигурация цен
                     <span class="toggle-icon">▼</span>
                 </h2>
+                <h3 class="halls-title">Выберите зал для конфигурации:</h3>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="priceHallTabs"></div>
 
                     <!-- Поля ввода цен с легендой -->
                     <div class="price-config">
+                        <h3 class="halls-title">Установите цены для типов кресел:</h3>
                         <div class="price-item">
                             <input type="number" id="standartPrice" class="form-control price-input" value="250" min="0">
                             <span class="seat-label">за</span>
@@ -150,7 +154,7 @@
                     <div class="schedule-container">
                         <div class="films-pool">
                             <h3>Фильмы</h3>
-                            <div id="films-pool-list" class="d-flex flex-wrap gap-2">
+                            <div id="films-pool-list" class="d-flex flex-wrap films-pool-card">
                                 <!-- фильмы будут подгружаться динамически -->
                             </div>
                         </div>
