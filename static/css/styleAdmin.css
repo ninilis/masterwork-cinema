@@ -88,6 +88,8 @@
     position: relative;            /* чтобы заголовок позиционировался относительно карточки */
 }
 
+
+
 .login-card__header {
     position: absolute;
     top: 0;
@@ -118,7 +120,7 @@
 }
 
 /* Поля ввода */
-.login-card__body {
+.login-card__body .form-control {
     width: 100%;
     height: 36px;
     border: 1px solid #b5b0b0;
@@ -131,6 +133,7 @@
     color: var(--color-gray-light);
     font-size: 12px;
     margin: 0;
+
 }
 
 /* Кнопка отправки */
