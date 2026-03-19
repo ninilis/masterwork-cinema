@@ -707,13 +707,25 @@ async function toggleHallStatus() {
 function updateOpenButtonText() {
     const button = document.getElementById('toggleHallStatusBtn');
     if (!button) return;
+
+    // Убираем класс btn-primary по умолчанию (если он есть)
+    button.classList.remove('btn-primary', 'btn-danger');
+
     if (!selectedOpenHallId) {
         button.textContent = 'Открыть продажу билетов';
+        button.classList.add('btn-primary');
         return;
     }
+
     const hall = halls.find(h => h.id == selectedOpenHallId);
     if (hall) {
-        button.textContent = hall.hall_open === 1 ? 'Приостановить продажу билетов' : 'Открыть продажу билетов';
+        if (hall.hall_open === 1) {
+            button.textContent = 'Закрыть продажу билетов';
+            button.classList.add('btn-danger');   // красный цвет
+        } else {
+            button.textContent = 'Открыть продажу билетов';
+            button.classList.add('btn-primary');  // обычный цвет
+        }
     }
 }
 
