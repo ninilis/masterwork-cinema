@@ -388,16 +388,21 @@ async function createHall() {
         return;
     }
     try {
-        const newHall = await api.addHall(name); // предполагаем, что возвращает объект зала с id
-        // Установим дефолтную конфигурацию
-        const defaultRows = 5;
-        const defaultCols = 8;
-        const defaultConfig = Array(defaultRows).fill().map(() => Array(defaultCols).fill('standart'));
-        await api.updateHallConfig(newHall.id, defaultConfig, defaultRows, defaultCols);
+        await api.addHall(name);
         await loadAdminData();
-        // Закрыть модалку и очистить поле
-        bootstrap.Modal.getInstance(document.getElementById('addHallModal')).hide();
+        const newHall = halls.find(h => h.hall_name === name);
+        if (newHall) {
+            const defaultRows = 5;
+            const defaultCols = 8;
+            const defaultConfig = Array(defaultRows).fill().map(() => Array(defaultCols).fill('standart'));
+            await api.updateHallConfig(newHall.id, defaultConfig, defaultRows, defaultCols);
+            await loadAdminData();
+        }
+        const modalEl = document.getElementById('addHallModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
         document.getElementById('hallName').value = '';
+
     } catch (error) {
         alert('Ошибка при создании зала: ' + error.message);
     }
