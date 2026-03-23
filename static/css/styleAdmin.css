@@ -294,14 +294,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
     padding: 15px;
     border-radius: 8px;
 }
 
 .hall-scheme-editor__row {
     display: flex;
-    gap: 5px;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -434,29 +434,6 @@
 
 .film-item:active {
     cursor: grabbing;
-}
-
-.hall-timeline {
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    background: var(--color-white);
-    margin-bottom: 10px;
-}
-
-.timeline-header {
-    padding: 8px 12px;
-    background: #e9ecef;
-    font-weight: bold;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.timeline-slots {
-    min-height: 70px;
-    padding: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    background: #f8f9fa;
 }
 
 .seance-block {
@@ -646,7 +623,7 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--color-danger);
+    background: var(--color-red);
     color: white;
     padding: 15px 30px;
     border-radius: 50px;
@@ -685,6 +662,73 @@
     border-color: var(--color-red-dark);
     box-shadow: var(--shadow-default);
 }
+
+/* Заголовок зала */
+.timeline-header {
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+/* Контейнер для ленты и времени */
+.timeline-slots-wrapper {
+    margin-top: 10px;
+}
+
+/* Прямоугольник с блоками фильмов */
+.timeline-slots {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 8px;
+    background: var(--color-bg-admin);
+    border: 1px solid var(--color-gray-super-light);
+    border-radius: 4px;
+    min-height: 70px;
+}
+
+/* Блок фильма */
+.seance-block {
+    width: 72px;
+    height: 40px;
+    background: var(--color-lazurit);
+    color: var(--color-white);
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 0 4px;
+    line-height: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: grab;
+    flex-shrink: 0;
+}
+
+/* Строка с временами */
+.timeline-times {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;          /* синхронный скролл */
+    gap: 10px;
+    padding: 4px 8px 0 8px;    /* отступы такие же, как у контейнера с блоками */
+    background: transparent;
+}
+
+/* Каждый отдельный элемент времени */
+.seance-time-label {
+    width: 72px;               /* ширина совпадает с шириной блока фильма */
+    text-align: center;
+    font-size: 11px;
+    color: var(--color-gray-dark);
+    flex-shrink: 0;
+}
+
+
 /*------------------------ Модальные окна---------------------------- */
 .modal-content {
     border-radius: 8px;

@@ -535,30 +535,47 @@ function renderTimelines() {
             timeline.dataset.hallId = hall.id;
             timeline.innerHTML = `
                 <div class="timeline-header">${hall.hall_name}</div>
-                <div class="timeline-slots" id="timeline-hall-${hall.id}"></div>
+                <div class="timeline-slots-wrapper">
+                    <div class="timeline-slots" id="timeline-slots-${hall.id}"></div>
+                    <div class="timeline-times" id="timeline-times-${hall.id}"></div>
+                </div>
             `;
             timelinesContainer.appendChild(timeline);
         }
-        const slots = timeline.querySelector('.timeline-slots');
-        slots.innerHTML = '';
 
-        // Сортируем сеансы по времени (строковое сравнение "ЧЧ:ММ")
-        const hallSeances = (seancesByHall[hall.id] || []).sort((a, b) => {
-            return a.seance_time.localeCompare(b.seance_time);
-        });
+        const slotsContainer = timeline.querySelector('.timeline-slots');
+        const timesContainer = timeline.querySelector('.timeline-times');
+        slotsContainer.innerHTML = '';
+        timesContainer.innerHTML = '';
+
+        // Сортируем сеансы по времени (если нужен порядок)
+        const hallSeances = (seancesByHall[hall.id] || []).sort((a, b) =>
+            a.seance_time.localeCompare(b.seance_time)
+        );
 
         hallSeances.forEach(seance => {
             const film = films.find(f => f.id == seance.seance_filmid);
             if (!film) return;
+
+            // Блок с названием фильма
             const block = document.createElement('div');
             block.className = 'seance-block';
-            block.textContent = `${film.film_name} ${seance.seance_time}`;
+            block.textContent = film.film_name;
+            block.title = film.film_name;
             block.dataset.seanceId = seance.id;
             block.dataset.filmId = seance.seance_filmid;
             block.dataset.hallId = seance.seance_hallid;
             block.dataset.time = seance.seance_time;
             block.setAttribute('draggable', 'true');
-            slots.appendChild(block);
+
+            // Метка с временем
+            const timeLabel = document.createElement('div');
+            timeLabel.className = 'seance-time-label';
+            timeLabel.textContent = seance.seance_time;
+            timeLabel.dataset.seanceId = seance.id; // для связи
+
+            slotsContainer.appendChild(block);
+            timesContainer.appendChild(timeLabel);
         });
     });
 
