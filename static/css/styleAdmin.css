@@ -694,19 +694,19 @@
 .seance-block {
     width: 72px;
     height: 40px;
-    background: var(--color-lazurit);
-    color: var(--color-white);
-    text-align: center;
+    color: var(--color-black);
     font-size: 11px;
     font-weight: bold;
     border-radius: 4px;
-    padding: 0 4px;
-    line-height: 40px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 4px;
     cursor: grab;
     flex-shrink: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;          /* максимум 2 строки */
+    -webkit-box-orient: vertical;
+    word-break: break-word;
 }
 
 /* Строка с временами */
@@ -728,7 +728,48 @@
     flex-shrink: 0;
 }
 
+.timeline-times {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 4px 8px 0 8px;
+    background: transparent;
+}
 
+.timeline-time-item {
+    width: 72px;                    /* ширина как у блока фильма */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;        /* выравнивание по левому краю */
+}
+
+.time-tick {
+    width: 2px;
+    height: 8px;
+    background-color: #999;
+    margin-bottom: 2px;
+}
+
+.seance-time-label {
+    font-size: 11px;
+    color: var(--color-gray-dark);
+    text-align: left;               /* по левому краю */
+}
+
+.halls-timelines {
+    margin-top: 20px;
+}
+
+#films-pool-list {
+    margin-bottom: 70px;      /* увеличиваем отступ снизу */
+}
+
+/* Расстояние между последним таймлайном и кнопками "Отмена/Сохранить" */
+.admin-block__content .d-flex.gap-2.mt-3 {
+    margin-top: 70px !important;
+}
 /*------------------------ Модальные окна---------------------------- */
 .modal-content {
     border-radius: 8px;

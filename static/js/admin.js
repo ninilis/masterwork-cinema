@@ -481,15 +481,15 @@ function renderFilmsPool() {
     if (!pool) return;
 
     pool.innerHTML = films.map(film => {
-        // Генерируем случайный светлый цвет (пастельный оттенок)
-        const hue = Math.floor(Math.random() * 360);
-        const bgColor = `hsl(${hue}, 30%, 90%)`;
-
-        // Постер (если есть, иначе заглушка)
+        // Генерируем цвет один раз и сохраняем
+        if (!film.film_color) {
+            const hue = Math.floor(Math.random() * 360);
+            film.film_color = `hsl(${hue}, 70%, 70%)`;
+        }
         const posterSrc = film.film_poster || 'static/img/default-poster.jpg';
 
         return `
-            <div class="film-card" draggable="true" data-film-id="${film.id}" style="background-color: ${bgColor};">
+            <div class="film-card" draggable="true" data-film-id="${film.id}" style="background-color: ${film.film_color};">
                 <div class="film-card-poster">
                     <img src="${posterSrc}" alt="${film.film_name}">
                 </div>
@@ -528,6 +528,7 @@ function renderTimelines() {
     });
 
     halls.forEach(hall => {
+        // Найти или создать контейнер зала
         let timeline = document.querySelector(`.hall-timeline[data-hall-id="${hall.id}"]`);
         if (!timeline) {
             timeline = document.createElement('div');
@@ -548,7 +549,7 @@ function renderTimelines() {
         slotsContainer.innerHTML = '';
         timesContainer.innerHTML = '';
 
-        // Сортируем сеансы по времени (если нужен порядок)
+        // Сортируем сеансы по времени
         const hallSeances = (seancesByHall[hall.id] || []).sort((a, b) =>
             a.seance_time.localeCompare(b.seance_time)
         );
@@ -562,21 +563,40 @@ function renderTimelines() {
             block.className = 'seance-block';
             block.textContent = film.film_name;
             block.title = film.film_name;
+            // Используем цвет из фильма, если он сохранён, иначе стандартный
+            block.style.backgroundColor = film.film_color || 'var(--color-lazurit)';
             block.dataset.seanceId = seance.id;
             block.dataset.filmId = seance.seance_filmid;
             block.dataset.hallId = seance.seance_hallid;
             block.dataset.time = seance.seance_time;
             block.setAttribute('draggable', 'true');
 
-            // Метка с временем
-            const timeLabel = document.createElement('div');
-            timeLabel.className = 'seance-time-label';
-            timeLabel.textContent = seance.seance_time;
-            timeLabel.dataset.seanceId = seance.id; // для связи
+            // Элемент времени с засечкой
+            const timeItem = document.createElement('div');
+            timeItem.className = 'timeline-time-item';
+            timeItem.dataset.seanceId = seance.id;
+
+            const tick = document.createElement('div');
+            tick.className = 'time-tick';
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'seance-time-label';
+            timeSpan.textContent = seance.seance_time;
+
+            timeItem.appendChild(tick);
+            timeItem.appendChild(timeSpan);
 
             slotsContainer.appendChild(block);
-            timesContainer.appendChild(timeLabel);
+            timesContainer.appendChild(timeItem);
         });
+
+        // Синхронизация прокрутки
+        const syncScroll = () => {
+            timesContainer.scrollLeft = slotsContainer.scrollLeft;
+        };
+        slotsContainer.addEventListener('scroll', syncScroll);
+        // При первом запуске также синхронизируем
+        syncScroll();
     });
 
     initDrag();
