@@ -249,6 +249,7 @@
     display: none;
 }
 
+
 .halls-title {
     color: var(--color-black);
     font-size: 16px;
@@ -662,7 +663,7 @@
     border-color: var(--color-red-dark);
     box-shadow: var(--shadow-default);
 }
-
+/*------------------------------ТАЙМЛАЙН----------------------------------*/
 /* Заголовок зала */
 .timeline-header {
     font-weight: bold;
@@ -769,6 +770,32 @@
 /* Расстояние между последним таймлайном и кнопками "Отмена/Сохранить" */
 .admin-block__content .d-flex.gap-2.mt-3 {
     margin-top: 70px !important;
+}
+
+/*-----------------------------------СТЕППЕР-----------------------------*/
+.admin-steps {
+    position: relative;
+}
+
+.step-lines-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* чтобы линии не мешали кликам */
+    z-index: 1;
+}
+
+.step-vertical-line {
+    position: absolute;
+    width: 3px;
+    background-color: var(--color-purple-light);
+    transform: translateX(-50%);
+}
+
+.admin-block__content {
+    padding-left: 70px;
 }
 /*------------------------ Модальные окна---------------------------- */
 .modal-content {

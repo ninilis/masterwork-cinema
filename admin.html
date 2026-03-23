@@ -23,9 +23,9 @@
 
 <main class="main-content">
     <div class="container admin-steps">
-
-        <!-- Правый блок с контентом -->
-        <div class="steps-content">
+        <!-- Контейнер для вертикальных линий (абсолютное позиционирование) -->
+        <div class="step-lines-canvas"></div>
+            <div class="steps-content">
             <!-- Блок 1: Управление залами -->
             <section class="admin-block">
                 <h2 class="admin-block__title">
@@ -57,8 +57,8 @@
                     Конфигурация залов
                     <span class="toggle-icon">▼</span>
                 </h2>
-                <h3 class="halls-title">Выберите зал для конфигурации:</h3>
                 <div class="admin-block__content">
+                <h3 class="halls-title">Выберите зал для конфигурации:</h3>
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="hallConfigTabs"></div>
 
@@ -101,6 +101,7 @@
                 </div>
             </section>
 
+
             <!-- Блок 3: Конфигурация цен -->
             <section class="admin-block">
                 <h2 class="admin-block__title">
@@ -108,6 +109,7 @@
                     Конфигурация цен
                     <span class="toggle-icon">▼</span>
                 </h2>
+                <div class="admin-block__content">
                 <h3 class="halls-title">Выберите зал для конфигурации:</h3>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
@@ -137,7 +139,7 @@
                         <button class="btn btn-primary" id="savePriceBtn">Сохранить</button>
                     </div>
                 </div>
-
+            </div>
             </section>
 
             <!-- Блок 4: Сетка сеансов (drag&drop) -->
@@ -177,6 +179,7 @@
                     Открыть продажи
                     <span class="toggle-icon">▼</span>
                 </h2>
+                <div class="admin-block__content">
                 <p class="mb-2">Выберите зал для открытия/закрытия продаж:</p>
                 <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
@@ -184,6 +187,7 @@
                     <p>Всё готово к открытию</p>
                     <!-- Кнопка изменения статуса -->
                     <button class="btn btn-primary" id="toggleHallStatusBtn">Открыть продажу билетов</button>
+                </div>
                 </div>
             </section>
         </div>

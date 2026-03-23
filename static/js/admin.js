@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.admin-steps')) {
         loadAdminData();
         initEventListeners();
+        drawStepLines();
 
         // Возврат фокуса на кнопку после закрытия модалок
         document.querySelectorAll('.modal').forEach(modal => {
@@ -75,6 +76,7 @@ async function loadAdminData() {
         renderFilmsPool(); // пул фильмов
         renderTimelines(); // ленты сеансов
         updateOpenButtonText();
+        drawStepLines();
     } catch (error) {
         alert('Ошибка загрузки данных: ' + error.message);
     }
@@ -851,7 +853,44 @@ function initEventListeners() {
         title.addEventListener('click', (e) => {
             const block = e.target.closest('.admin-block');
             block.classList.toggle('collapsed');
+            drawStepLines();
         });
     });
 }
 
+function drawStepLines() {
+    const canvas = document.querySelector('.step-lines-canvas');
+    if (!canvas) return;
+    canvas.innerHTML = ''; // очищаем старые линии
+
+    const circles = document.querySelectorAll('.admin-block .step-circle');
+    if (circles.length < 2) return;
+
+    const containerRect = canvas.parentElement.getBoundingClientRect();
+
+    const positions = [];
+    circles.forEach(circle => {
+        const rect = circle.getBoundingClientRect();
+        // Горизонтальный центр кружка
+        const centerX = rect.left + rect.width / 2;
+        // Относительная позиция внутри контейнера
+        const leftRel = centerX - containerRect.left;
+        const topRel = rect.top + window.scrollY - (containerRect.top + window.scrollY);
+        const bottomRel = rect.bottom + window.scrollY - (containerRect.top + window.scrollY);
+        positions.push({ left: leftRel, top: topRel, bottom: bottomRel });
+    });
+
+    for (let i = 0; i < positions.length - 1; i++) {
+        const startY = positions[i].bottom;
+        const endY = positions[i+1].top;
+        const height = endY - startY;
+        if (height <= 0) continue;
+
+        const line = document.createElement('div');
+        line.className = 'step-vertical-line';
+        line.style.left = `${positions[i].left}px`;
+        line.style.top = `${startY}px`;
+        line.style.height = `${height}px`;
+        canvas.appendChild(line);
+    }
+}
