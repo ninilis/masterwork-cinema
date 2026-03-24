@@ -111,19 +111,20 @@
                 </h2>
                 <div class="admin-block__content">
                 <h3 class="halls-title">Выберите зал для конфигурации:</h3>
-                <div class="admin-block__content">
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="priceHallTabs"></div>
 
                     <!-- Поля ввода цен с легендой -->
                     <div class="price-config">
                         <h3 class="halls-title">Установите цены для типов кресел:</h3>
+                        <span class="seat-price">Цена, рублей</span>
                         <div class="price-item">
                             <input type="number" id="standartPrice" class="form-control price-input" value="250" min="0">
                             <span class="seat-label">за</span>
                             <span class="seat-color seat-color--standart"></span>
                             <span class="seat-label">обычные кресла</span>
                         </div>
+                        <span class="seat-price">Цена, рублей</span>
                         <div class="price-item">
                             <input type="number" id="vipPrice" class="form-control price-input" value="350" min="0">
                             <span class="seat-label">за</span>
@@ -139,7 +140,6 @@
                         <button class="btn btn-primary" id="savePriceBtn">Сохранить</button>
                     </div>
                 </div>
-            </div>
             </section>
 
             <!-- Блок 4: Сетка сеансов (drag&drop) -->
@@ -151,11 +151,10 @@
                 </h2>
                 <div class="admin-block__content">
                     <div class="justify-content-between align-items-center mb-3">
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">Добавить фильм</button>
+                        <button class="btn btn-primary add-film" data-bs-toggle="modal" data-bs-target="#addFilmModal">Добавить фильм</button>
                     </div>
                     <div class="schedule-container">
                         <div class="films-pool">
-                            <h3>Фильмы</h3>
                             <div id="films-pool-list" class="d-flex flex-wrap films-pool-card">
                                 <!-- фильмы будут подгружаться динамически -->
                             </div>
@@ -180,14 +179,12 @@
                     <span class="toggle-icon">▼</span>
                 </h2>
                 <div class="admin-block__content">
-                <p class="mb-2">Выберите зал для открытия/закрытия продаж:</p>
-                <div class="admin-block__content">
+                <p class="mb-4">Выберите зал для открытия/закрытия продаж:</p>
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="openHallTabs"></div>
-                    <p>Всё готово к открытию</p>
+                    <p class="text-center">Всё готово к открытию</p>
                     <!-- Кнопка изменения статуса -->
                     <button class="btn btn-primary" id="toggleHallStatusBtn">Открыть продажу билетов</button>
-                </div>
                 </div>
             </section>
         </div>

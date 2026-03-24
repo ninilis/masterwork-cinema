@@ -31,7 +31,7 @@
     --logo-font-size: 34px;
     --container-max-width: 990px;
     --btn-height: 40px;
-    --btn-border-radius: 1px;
+    --btn-border-radius: 2px;
     --calendar-day-width: 125px;
     --calendar-day-height: 48px;
     --movie-card-height: 350px;
@@ -179,14 +179,10 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--bs-body-color);
-    background-color: var(--bs-body-bg);
     background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    border-radius: var(--bs-border-radius);
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
@@ -255,6 +251,7 @@
     font-size: 16px;
     font-weight: var(--font-weight-regular);
     margin-bottom: 10px;
+    margin-top: 40px;
 }
 
 .halls-list {
@@ -287,7 +284,7 @@
 
 .hall-scheme {
     border: 1px solid var(--color-gray-dark);
-    margin: 0 30px 30px;
+    margin: 0 30px 30px 0;
     padding: 30px;
 }
 
@@ -479,6 +476,7 @@
     height: 40px;
     text-transform: uppercase;
     font-size: 14px;
+    border-radius: var(--btn-border-radius);
 }
 
 .btn-outline-secondary:hover {
@@ -488,7 +486,7 @@
     box-shadow: var(--shadow-default);
 }
 
-/* Конфигурация цен */
+/*-------------------------Конфигурация цен---------------------------- */
 .price-config {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -499,6 +497,10 @@
     align-items: center;
     margin-bottom: 15px;
     padding: 10px;
+}
+
+.seat-price {
+    color: var(--color-gray-light);
 }
 
 .seat-color {
@@ -522,7 +524,7 @@
 
 .seat-label {
     font-size: 1rem;
-    color: var(--color-black);
+    color: var(--color-gray-light);
     font-weight: var(--font-weight-regular);
     margin-right: 5px;
     margin-left: 5px;
@@ -532,7 +534,10 @@
     width: 120px;
 }
 
-/* Вкладки выбора зала*/
+/*-----------------------СЕТКА СЕАНСОВ------------------------*/
+.add-film {
+    width: 194px;
+}
 
 .priceHallTabs {
     margin-bottom: 20px;
@@ -770,6 +775,11 @@
 /* Расстояние между последним таймлайном и кнопками "Отмена/Сохранить" */
 .admin-block__content .d-flex.gap-2.mt-3 {
     margin-top: 70px !important;
+}
+
+.text-center {
+    text-align: center;
+    margin-top: 40px;
 }
 
 /*-----------------------------------СТЕППЕР-----------------------------*/
