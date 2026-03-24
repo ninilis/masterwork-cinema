@@ -217,9 +217,27 @@
     user-select: none;
 }
 
+/* Иконка аккордеона */
 .toggle-icon {
-    margin-left: auto;
-    transition: transform 0.3s;
+    display: inline-block;
+    width: 24px;                /* размер иконки */
+    height: 24px;
+    background-image: url('/static/img/akkordion.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.3s ease;
+    margin-left: auto;          /* прижимаем к правому краю */
+}
+
+/* Поворот иконки, когда блок свёрнут */
+.admin-block.collapsed .toggle-icon {
+    transform: rotate(-90deg);  /* или rotate(180deg) в зависимости от дизайна */
+}
+
+/* Скрываем контент блока при свёрнутом состоянии (если ещё нет) */
+.admin-block.collapsed .admin-block__content {
+    display: none;
 }
 
 /* Кнопка удаления залов (trash) Спрайты*/
