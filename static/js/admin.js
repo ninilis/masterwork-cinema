@@ -88,11 +88,11 @@ function renderHalls() {
     if (!container) return;
 
     container.innerHTML = halls.map(hall => `
-        <div class="hall-item" data-hall-id="${hall.id}">
-            <span class="hall-name">${hall.hall_name}</span>
-            <button class="btn-delete-hall" title="Удалить зал">🗑️</button>
-        </div>
-    `).join('');
+    <div class="hall-item" data-hall-id="${hall.id}">
+        <span class="hall-name">${hall.hall_name}</span>
+        <button class="btn-delete-hall" title="Удалить зал"></button>
+    </div>
+`).join('');
 
     document.querySelectorAll('.btn-delete-hall').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -498,7 +498,7 @@ function renderFilmsPool() {
                 <div class="film-card-info">
                     <div class="film-card-title">${film.film_name}</div>
                     <div class="film-card-duration">${film.film_duration} мин</div>
-                    <button class="btn-delete-film" title="Удалить фильм">🗑️</button>
+                    <button class="btn-delete-film" title="Удалить фильм"></button>
                 </div>
             </div>
         `;
