@@ -843,10 +843,13 @@
     padding-left: 70px;
 }
 /*------------------------ Модальные окна---------------------------- */
+/**
 .modal-content {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: var(--shadow-default);
+    width: 960px;
+    height: 260px;
 }
 
 .modal-header {
@@ -889,4 +892,122 @@
 
 .hidden-file-input {
     display: none;
+}
+*/
+
+/* === Модальное окно «Добавление зала» === */
+#addHallModal .modal-dialog {
+    width: 960px;
+    max-width: 960px;
+    height: 260px;
+    margin: 1.75rem auto;
+}
+
+#addHallModal .modal-content {
+    height: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Шапка 960×57 */
+#addHallModal .modal-header {
+    background: var(--color-purple);
+    height: 57px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: none;
+}
+
+/* Заголовок: заглавные, по левому краю */
+#addHallModal .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-white);
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+}
+
+/* Белый жирный крестик */
+#addHallModal .btn-close {
+    background: transparent;
+    opacity: 1;
+    background-image: none;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-white);
+}
+#addHallModal .btn-close::before {
+    content: "✕";
+}
+
+/* Тело окна – центрируем содержимое по вертикали */
+#addHallModal .modal-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 100px;
+}
+
+/* Центрирующая обёртка для лейбла и поля */
+#addHallModal .hall-form-wrapper {
+    width: 750px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Лейбл "Название зала" */
+#addHallModal .form-label {
+    font-size: 12px;
+    color: var(--color-gray-light);
+    margin-bottom: 5px;
+    display: block;
+    text-align: left;
+}
+
+/* Поле ввода – занимает всю ширину обёртки */
+#addHallModal .form-control {
+    width: 100%;
+    height: 35px;
+    border: 1px solid #b5b0b0;
+    border-radius: 0;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+/* Футер с кнопками по центру */
+#addHallModal .modal-footer {
+    justify-content: center;
+    gap: 10px;
+    border-top: none;
+    padding: 15px 20px;
+}
+
+/* Кнопка "Добавить зал" – 194×40 */
+#addHallModal .btn-primary {
+    width: 194px;
+    height: 40px;
+    margin: 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: var(--color-lazurit);
+    border-color: var(--color-lazurit);
+}
+
+/* Кнопка "Отменить" – 139×40 */
+#addHallModal .btn-outline-secondary {
+    width: 139px;
+    height: 40px;
+    margin: 0;
+    font-size: 14px;
+    text-transform: uppercase;
 }
