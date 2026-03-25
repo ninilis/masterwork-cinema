@@ -678,21 +678,30 @@ function initDrag() {
                 }
             },
             onAdd: async (evt) => {
-                // Логика добавления нового сеанса (перетаскивание карточки фильма из пула)
                 const filmId = evt.item.dataset.filmId;
                 const hallId = evt.target.closest('.hall-timeline').dataset.hallId;
 
-                // Если перетаскивается существующий сеанс (перемещение между таймлайнами), ничего не делаем
+                // Если перетаскивается существующий сеанс – не создаём новый
                 if (evt.item.classList.contains('seance-block')) {
                     return;
                 }
 
-                // Удаляем добавленный элемент (он будет создан через модалку)
                 evt.item.remove();
 
-                // Заполняем скрытые поля в модальном окне добавления сеанса
+                // Устанавливаем ID зала и фильма в скрытые поля
                 document.getElementById('seanceHallId').value = hallId;
                 document.getElementById('seanceFilmId').value = filmId;
+
+                // Находим названия зала и фильма для отображения в полях только для чтения
+                const hall = halls.find(h => h.id == hallId);
+                const film = films.find(f => f.id == filmId);
+
+                if (hall) {
+                    document.getElementById('seanceHallName').value = hall.hall_name;
+                }
+                if (film) {
+                    document.getElementById('seanceFilmName').value = film.film_name;
+                }
 
                 // Открываем модальное окно
                 const modal = new bootstrap.Modal(document.getElementById('addSeanceModal'));
@@ -856,6 +865,16 @@ function initEventListeners() {
             drawStepLines();
         });
     });
+// Очистка полей модального окна добавления сеанса при закрытии
+    const seanceModal = document.getElementById('addSeanceModal');
+    if (seanceModal) {
+        seanceModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('seanceHallName').value = '';
+            document.getElementById('seanceFilmName').value = '';
+            document.getElementById('seanceTime').value = '';
+            // Скрытые поля seanceHallId, seanceFilmId не трогаем – они перезапишутся при следующем перетаскивании
+        });
+    }
 }
 
 function drawStepLines() {

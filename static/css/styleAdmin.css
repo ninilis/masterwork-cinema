@@ -12,6 +12,7 @@
     --color-gray-super-light: #C4C4C4;
     --color-gray-dark: #171D24;
     --color-bg-admin: rgba(234, 233, 235, 0.95);
+    --color-bg-admin-modal: rgba(234, 233, 235, 0.80);
     --color-purple: #63536C;
     --color-purple-light: #BC95D6;
     --color-red: #ff4444;
@@ -895,15 +896,33 @@
 }
 */
 
-/* === Модальное окно «Добавление зала» === */
+/* ------Модальное окно «Добавление зала»------- */
 #addHallModal .modal-dialog {
     width: 960px;
     max-width: 960px;
-    height: 260px;
+    min-height: 260px;
     margin: 1.75rem auto;
 }
 
-#addHallModal .modal-content {
+/* ------Модальное окно «Добавление фильма»----- */
+#addFilmModal .modal-dialog {
+    width: 960px;
+    max-width: 960px;
+    min-height: 484px;
+    margin: 1.75rem auto;
+}
+
+/* === Модальное окно «Добавление сеанса» === */
+#addSeanceModal .modal-dialog {
+    width: 960px;
+    max-width: 960px;
+    min-height: 380px;
+    margin: 1.75rem auto;
+}
+
+#addHallModal .modal-content,
+#addFilmModal .modal-content,
+#addSeanceModal .modal-content {
     height: 100%;
     border-radius: 0;
     overflow: hidden;
@@ -912,7 +931,9 @@
 }
 
 /* Шапка 960×57 */
-#addHallModal .modal-header {
+#addHallModal .modal-header,
+#addFilmModal .modal-header,
+#addSeanceModal .modal-header {
     background: var(--color-purple);
     height: 57px;
     padding: 0 20px;
@@ -923,7 +944,9 @@
 }
 
 /* Заголовок: заглавные, по левому краю */
-#addHallModal .modal-title {
+#addHallModal .modal-title,
+#addFilmModal .modal-title,
+#addSeanceModal .modal-title {
     font-size: 24px;
     font-weight: bold;
     color: var(--color-white);
@@ -933,7 +956,9 @@
 }
 
 /* Белый жирный крестик */
-#addHallModal .btn-close {
+#addHallModal .btn-close,
+#addFilmModal .btn-close,
+#addSeanceModal .btn-close {
     background: transparent;
     opacity: 1;
     background-image: none;
@@ -945,28 +970,41 @@
     font-weight: bold;
     color: var(--color-white);
 }
-#addHallModal .btn-close::before {
+#addHallModal .btn-close::before,
+#addFilmModal .btn-close::before,
+#addSeanceModal .btn-close::before {
     content: "✕";
 }
 
 /* Тело окна – центрируем содержимое по вертикали */
-#addHallModal .modal-body {
+#addHallModal .modal-body,
+#addFilmModal .modal-body,
+#addSeanceModal .modal-body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0 100px;
+    /*ustify-content: center;
+    padding: 0 100px;*/
+    background: var(--color-bg-admin-modal);
+    justify-content: flex-start;
+    padding: 40px 100px 40px;
+    gap: 0;
 }
 
 /* Центрирующая обёртка для лейбла и поля */
-#addHallModal .hall-form-wrapper {
+#addHallModal .hall-form-wrapper,
+#addFilmModal .film-form-wrapper,
+#addSeanceModal .seance-form-wrapper {
     width: 750px;
     max-width: 100%;
     margin: 0 auto;
 }
 
+
 /* Лейбл "Название зала" */
-#addHallModal .form-label {
+#addHallModal .form-label,
+#addFilmModal .form-label,
+#addSeanceModal .form-label {
     font-size: 12px;
     color: var(--color-gray-light);
     margin-bottom: 5px;
@@ -975,25 +1013,40 @@
 }
 
 /* Поле ввода – занимает всю ширину обёртки */
-#addHallModal .form-control {
+#addHallModal .form-control,
+#addFilmModal .form-control,
+#addSeanceModal .form-control {
     width: 100%;
-    height: 35px;
-    border: 1px solid #b5b0b0;
+    min-height: 36px;
+    border: 1px solid var(--color-gray-super-light);
     border-radius: 0;
     font-size: 14px;
     padding: 0 10px;
 }
 
+/* Специально для textarea (описание) – высота auto, минимальная 80px */
+#addFilmModal textarea.form-control {
+    height: auto;
+    min-height: 80px;
+    padding: 8px 10px;
+    resize: vertical;
+}
+
 /* Футер с кнопками по центру */
-#addHallModal .modal-footer {
+#addHallModal .modal-footer,
+#addFilmModal .modal-footer,
+#addSeanceModal .modal-footer {
     justify-content: center;
     gap: 10px;
     border-top: none;
-    padding: 15px 20px;
+    padding: 0 20px 30px;
+    background: var(--color-bg-admin-modal);
 }
 
 /* Кнопка "Добавить зал" – 194×40 */
-#addHallModal .btn-primary {
+#addHallModal .btn-primary,
+#addFilmModal .btn-primary,
+#addSeanceModal .btn-primary {
     width: 194px;
     height: 40px;
     margin: 0;
@@ -1004,10 +1057,18 @@
 }
 
 /* Кнопка "Отменить" – 139×40 */
-#addHallModal .btn-outline-secondary {
+#addHallModal .btn-outline-secondary,
+#addFilmModal .btn-outline-secondary,
+#addSeanceModal .btn-outline-secondary {
     width: 139px;
     height: 40px;
     margin: 0;
     font-size: 14px;
     text-transform: uppercase;
 }
+
+.hidden-file-input {
+    display: none;
+}
+
+

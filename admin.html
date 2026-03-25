@@ -202,7 +202,7 @@
             </div>
             <div class="modal-body">
                 <form id="addHallForm">
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="hallName" class="form-label">Название зала</label>
                         <input type="text" class="form-control" id="hallName" placeholder="Например, «Зал 1»" required>
                     </div>
@@ -226,19 +226,19 @@
             </div>
             <div class="modal-body">
                 <form id="addFilmForm">
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="filmName" class="form-label">Название фильма</label>
                         <input type="text" class="form-control" id="filmName" placeholder="Например, «Обитель зла: Реквием»" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="filmDuration" class="form-label">Продолжительность фильма (мин.)</label>
                         <input type="number" class="form-control" id="filmDuration" min="1" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="filmDescription" class="form-label">Описание фильма</label>
                         <textarea class="form-control" id="filmDescription" rows="3"></textarea>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-1">
                         <label for="filmOrigin" class="form-label">Страна</label>
                         <input type="text" class="form-control" id="filmOrigin">
                     </div>
@@ -247,17 +247,18 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
                 <button type="button" class="btn btn-primary" id="uploadPosterBtn">Загрузить Постер</button>
                 <button type="submit" form="addFilmForm" class="btn btn-primary">Добавить фильм</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Модальное окно добавления сеанса -->
-<div class="modal fade" id="addSeanceModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Модальное окно добавления сеанса -->
+<div class="modal fade" id="addSeanceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Добавление сеанса</h3>
@@ -265,22 +266,38 @@
             </div>
             <div class="modal-body">
                 <form id="addSeanceForm">
-                    <!-- Скрытые поля для ID зала и фильма -->
-                    <input type="hidden" id="seanceHallId" name="hallId">
-                    <input type="hidden" id="seanceFilmId" name="filmId">
+                    <div class="seance-form-wrapper">
+                        <!-- Скрытые поля для ID -->
+                        <input type="hidden" id="seanceHallId" name="hallId">
+                        <input type="hidden" id="seanceFilmId" name="filmId">
 
-                    <div class="mb-3">
-                        <label for="seanceTime" class="form-label">Время начала (в формате 00:00)</label>
-                        <input type="time" class="form-control" id="seanceTime" required>
+                        <!-- Название зала (только для чтения) -->
+                        <div class="form-group">
+                            <label for="seanceHallName" class="form-label">Название зала</label>
+                            <input type="text" class="form-control" id="seanceHallName" readonly disabled>
+                        </div>
+
+                        <!-- Название фильма (только для чтения) -->
+                        <div class="form-group">
+                            <label for="seanceFilmName" class="form-label">Название фильма</label>
+                            <input type="text" class="form-control" id="seanceFilmName" readonly disabled>
+                        </div>
+
+                        <!-- Время начала -->
+                        <div class="form-group">
+                            <label for="seanceTime" class="form-label">Время начала</label>
+                            <input type="time" class="form-control" id="seanceTime" required>
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
                 <button type="submit" form="addSeanceForm" class="btn btn-primary">Добавить сеанс</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отменить</button>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>
