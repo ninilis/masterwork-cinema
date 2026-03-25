@@ -77,6 +77,7 @@ async function loadAdminData() {
         renderTimelines(); // ленты сеансов
         updateOpenButtonText();
         drawStepLines();
+        populateSeanceModalSelects();
     } catch (error) {
         alert('Ошибка загрузки данных: ' + error.message);
     }
@@ -452,8 +453,8 @@ async function createFilm() {
 
 // ---------- УПРАВЛЕНИЕ СЕАНСАМИ ----------
 async function createSeance() {
-    const hallId = document.getElementById('seanceHallId').value;
-    const filmId = document.getElementById('seanceFilmId').value;
+    const hallId = document.getElementById('seanceHallSelect').value;
+    const filmId = document.getElementById('seanceFilmSelect').value;
     const time = document.getElementById('seanceTime').value;
 
     if (!hallId || !filmId || !time) {
@@ -468,10 +469,10 @@ async function createSeance() {
         bootstrap.Modal.getInstance(modalEl).hide();
         // Очистка формы
         document.getElementById('seanceTime').value = '';
+        document.getElementById('seanceHallSelect').value = '';
+        document.getElementById('seanceFilmSelect').value = '';
         document.getElementById('seanceHallId').value = '';
         document.getElementById('seanceFilmId').value = '';
-        // Возврат фокуса (если есть кнопка, но её может не быть – опционально)
-        document.querySelector('[data-bs-target="#addSeanceModal"]')?.focus();
     } catch (error) {
         alert('Ошибка добавления сеанса: ' + error.message);
     }
@@ -681,27 +682,21 @@ function initDrag() {
                 const filmId = evt.item.dataset.filmId;
                 const hallId = evt.target.closest('.hall-timeline').dataset.hallId;
 
-                // Если перетаскивается существующий сеанс – не создаём новый
                 if (evt.item.classList.contains('seance-block')) {
                     return;
                 }
 
                 evt.item.remove();
 
-                // Устанавливаем ID зала и фильма в скрытые поля
+                // Устанавливаем ID в скрытые поля
                 document.getElementById('seanceHallId').value = hallId;
                 document.getElementById('seanceFilmId').value = filmId;
 
-                // Находим названия зала и фильма для отображения в полях только для чтения
-                const hall = halls.find(h => h.id == hallId);
-                const film = films.find(f => f.id == filmId);
-
-                if (hall) {
-                    document.getElementById('seanceHallName').value = hall.hall_name;
-                }
-                if (film) {
-                    document.getElementById('seanceFilmName').value = film.film_name;
-                }
+                // Устанавливаем выбранные значения в select
+                const hallSelect = document.getElementById('seanceHallSelect');
+                const filmSelect = document.getElementById('seanceFilmSelect');
+                if (hallSelect) hallSelect.value = hallId;
+                if (filmSelect) filmSelect.value = filmId;
 
                 // Открываем модальное окно
                 const modal = new bootstrap.Modal(document.getElementById('addSeanceModal'));
@@ -869,10 +864,27 @@ function initEventListeners() {
     const seanceModal = document.getElementById('addSeanceModal');
     if (seanceModal) {
         seanceModal.addEventListener('hidden.bs.modal', function () {
-            document.getElementById('seanceHallName').value = '';
-            document.getElementById('seanceFilmName').value = '';
+            document.getElementById('seanceHallSelect').value = '';
+            document.getElementById('seanceFilmSelect').value = '';
             document.getElementById('seanceTime').value = '';
-            // Скрытые поля seanceHallId, seanceFilmId не трогаем – они перезапишутся при следующем перетаскивании
+            // Также очистим скрытые поля
+            document.getElementById('seanceHallId').value = '';
+            document.getElementById('seanceFilmId').value = '';
+        });
+    }
+// Синхронизация выбора зала
+    const hallSelect = document.getElementById('seanceHallSelect');
+    if (hallSelect) {
+        hallSelect.addEventListener('change', () => {
+            document.getElementById('seanceHallId').value = hallSelect.value;
+        });
+    }
+
+// Синхронизация выбора фильма
+    const filmSelect = document.getElementById('seanceFilmSelect');
+    if (filmSelect) {
+        filmSelect.addEventListener('change', () => {
+            document.getElementById('seanceFilmId').value = filmSelect.value;
         });
     }
 }
@@ -912,4 +924,28 @@ function drawStepLines() {
         line.style.height = `${height}px`;
         canvas.appendChild(line);
     }
+}
+
+function populateSeanceModalSelects() {
+    const hallSelect = document.getElementById('seanceHallSelect');
+    const filmSelect = document.getElementById('seanceFilmSelect');
+    if (!hallSelect || !filmSelect) return;
+
+    // Заполняем залы
+    hallSelect.innerHTML = '<option value="">Выберите зал</option>';
+    halls.forEach(hall => {
+        const option = document.createElement('option');
+        option.value = hall.id;
+        option.textContent = hall.hall_name;
+        hallSelect.appendChild(option);
+    });
+
+    // Заполняем фильмы
+    filmSelect.innerHTML = '<option value="">Выберите фильм</option>';
+    films.forEach(film => {
+        const option = document.createElement('option');
+        option.value = film.id;
+        option.textContent = film.film_name;
+        filmSelect.appendChild(option);
+    });
 }

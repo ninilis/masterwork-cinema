@@ -1024,6 +1024,16 @@
     padding: 0 10px;
 }
 
+#addSeanceModal select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url('/static/img/modal-union.svg');
+    background-repeat: no-repeat;
+    background-position: right 20px center;  /* иконка слева */
+    background-size: 12px 7px;              /* точный размер иконки */
+    cursor: pointer;
+}
+
 /* Специально для textarea (описание) – высота auto, минимальная 80px */
 #addFilmModal textarea.form-control {
     height: auto;
@@ -1070,5 +1080,8 @@
 .hidden-file-input {
     display: none;
 }
+
+
+
 
 

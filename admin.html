@@ -255,7 +255,7 @@
     </div>
 </div>
 
-<!-- Модальное окно добавления сеанса -->
+
 <!-- Модальное окно добавления сеанса -->
 <div class="modal fade" id="addSeanceModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -271,16 +271,20 @@
                         <input type="hidden" id="seanceHallId" name="hallId">
                         <input type="hidden" id="seanceFilmId" name="filmId">
 
-                        <!-- Название зала (только для чтения) -->
+                        <!-- Выпадающий список залов -->
                         <div class="form-group">
-                            <label for="seanceHallName" class="form-label">Название зала</label>
-                            <input type="text" class="form-control" id="seanceHallName" readonly disabled>
+                            <label for="seanceHallSelect" class="form-label">Название зала</label>
+                            <select id="seanceHallSelect" class="form-control" required>
+                                <option value="">Выберите зал</option>
+                            </select>
                         </div>
 
-                        <!-- Название фильма (только для чтения) -->
+                        <!-- Выпадающий список фильмов -->
                         <div class="form-group">
-                            <label for="seanceFilmName" class="form-label">Название фильма</label>
-                            <input type="text" class="form-control" id="seanceFilmName" readonly disabled>
+                            <label for="seanceFilmSelect" class="form-label">Название фильма</label>
+                            <select id="seanceFilmSelect" class="form-control" required>
+                                <option value="">Выберите фильм</option>
+                            </select>
                         </div>
 
                         <!-- Время начала -->
