@@ -244,19 +244,20 @@
 
 .hall-screen {
     text-align: center;
-    border: 1px solid var(--color-gray-light);
-    color: var(--color-white);
-    border-radius: 20px 20px 20px 20px;
-    letter-spacing: 2px;
-    width: 50%;
     margin: 0 auto 20px auto;
+    width: 284px;
+}
+
+.hall-screen img {
+    max-width: 100%;
+    height: auto;
 }
 
 .hall-legend {
     padding: 0 14px;
     display: grid;
     grid-template-columns: repeat(2, auto);
-    gap: 20px 30px;
+    gap: 10px;
     justify-content: center;
     margin: 20px 0;
     color: var(--color-white);
