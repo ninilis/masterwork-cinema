@@ -661,6 +661,7 @@
     z-index: 1000;
     transition: opacity 0.3s;
 }
+
 .trash-bin.hidden {
     opacity: 0;
     pointer-events: none;
@@ -1076,12 +1077,5 @@
     font-size: 14px;
     text-transform: uppercase;
 }
-
-.hidden-file-input {
-    display: none;
-}
-
-
-
 
 
