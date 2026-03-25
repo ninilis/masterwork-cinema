@@ -1,4 +1,4 @@
-// ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
+//  ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 function formatDate(date) {
     const yyyy = date.getFullYear();
     const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -15,9 +15,9 @@ function getParamFromURL(param) {
     return urlParams.get(param);
 }
 
-// ---------- ГЛАВНАЯ СТРАНИЦА (index.html) ----------
+// ГЛАВНАЯ СТРАНИЦА (index.html)
 
-// ---------- КАЛЕНДАРЬ ----------
+// КАЛЕНДАРЬ
 // Состояние календаря
 let currentStartDate = null; // дата первого дня в текущем отображении (может быть null, если первый элемент - стрелка)
 let currentSelectedDate = null;
@@ -64,30 +64,39 @@ function getCalendarItems() {
 
     // Левая стрелка (появляется, если не первая неделя)
     if (!isFirstWeek) {
-        items.push({ type: 'arrow', direction: 'prev' });
+        items.push({
+            type: 'arrow',
+            direction: 'prev'
+        });
     } else {
         // Первая ячейка - сегодня (дата)
-        items.push({ type: 'date', date: new Date(today) });
+        items.push({
+            type: 'date',
+            date: new Date(today)
+        });
     }
 
     // Добавляем следующие 5 дней (если всего 7 ячеек, и мы уже добавили 1 или 2)
-    // Но нужно точно 7 элементов. Рассчитываем, сколько дат осталось после учета стрелок.
-        // Если первая ячейка - дата, то startDate уже today, и нужно добавить ещё 5 дат (всего 6 дат + стрелка вперёд = 7)
+    // Рассчитываем, сколько дат осталось после учета стрелок.
+    // Если первая ячейка - дата, то startDate уже today, и нужно добавить ещё 5 дат (всего 6 дат + стрелка вперёд = 7)
     // Если первая ячейка - стрелка, то startDate - это первый день после стрелки, и нужно добавить 5 дат (всего 1 стрелка + 5 дат + стрелка вперёд = 7)
-// Добавляем следующие 5 дней
+    // Добавляем следующие 5 дней
     const startDate = isFirstWeek ? new Date(today) : new Date(currentStartDate);
     for (let i = 1; i <= 5; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
-        items.push({ type: 'date', date });
+        items.push({
+            type: 'date',
+            date
+        });
     }
 
     // Правая стрелка (всегда есть, кроме случая, когда достигнут лимит в 10 дней?)
-    // По заданию: нельзя листать больше 10 дней. Значит, стрелка вперёд должна быть неактивна, если последний день календаря > today + 10.
-    // Но мы пока просто добавляем стрелку, а активность будем определять отдельно.
-    items.push({ type: 'arrow', direction: 'next' });
+    items.push({
+        type: 'arrow',
+        direction: 'next'
+    });
 
-    // Убедимся, что получилось 7 элементов
     if (items.length !== 7) {
         console.error('Ошибка: календарь должен содержать 7 элементов');
     }
@@ -127,7 +136,9 @@ function renderCalendar() {
             if (isWeekend) dayClasses += ' calendar__day--weekend';
             if (isToday) dayClasses += ' calendar__day--today';
 
-            const dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0, 2);
+            const dayName = date.toLocaleDateString('ru-RU', {
+                weekday: 'short'
+            }).slice(0, 2);
             const dayNumber = date.getDate();
 
             if (isToday) {
@@ -219,7 +230,7 @@ function onArrowClick(e) {
     const items = getCalendarItems();
     const dateItems = items.filter(item => item.type === 'date');
     const firstDate = dateItems[0].date;
-    const lastDate = dateItems[dateItems.length-1].date;
+    const lastDate = dateItems[dateItems.length - 1].date;
     if (currentSelectedDate < firstDate || currentSelectedDate > lastDate) {
         currentSelectedDate = new Date(firstDate);
     }
@@ -265,16 +276,8 @@ function handlePopState() {
     loadMoviesForDate(formatDate(currentSelectedDate));
 }
 
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.querySelector('.movies-list')) {
-        initCalendar();
-    }
-    // ... остальные инициализации
-});
 
-
-// ---------- ФИЛЬМЫ ----------
+// ФИЛЬМЫ
 // Загрузка фильмов для конкретной даты
 async function loadMoviesForDate(dateStr) {
     try {
@@ -379,7 +382,7 @@ function checkIfPast(time, dateStr) {
     return now > seanceDate;
 }
 
-// ---------- СТРАНИЦА ВЫБОРА МЕСТ (hall.html) ----------
+// СТРАНИЦА ВЫБОРА МЕСТ (hall.html)
 async function initHall() {
     const seanceId = getParamFromURL('seanceId');
     const date = getParamFromURL('date') || getTodayDate();
@@ -501,7 +504,7 @@ async function bookTickets() {
     }
 }
 
-// ---------- СТРАНИЦА ПОДТВЕРЖДЕНИЯ (payment.html) ----------
+// СТРАНИЦА ПОДТВЕРЖДЕНИЯ (payment.html)
 function initPayment() {
     const ticketsJson = localStorage.getItem('lastTickets');
     if (!ticketsJson || ticketsJson === 'undefined') {
@@ -537,7 +540,7 @@ function initPayment() {
     });
 }
 
-// ---------- СТРАНИЦА БИЛЕТА (ticket.html) ----------
+// СТРАНИЦА БИЛЕТА (ticket.html)
 function initTicket() {
     const ticketsJson = localStorage.getItem('lastTickets');
     if (!ticketsJson) {
@@ -587,7 +590,7 @@ function generateQRCode(tickets) {
     }, container);
 }
 
-// ---------- ЗАПУСК ----------
+// ЗАПУСК
 document.addEventListener('DOMContentLoaded', () => {
     if (document.querySelector('.movies-list')) {
         initCalendar();

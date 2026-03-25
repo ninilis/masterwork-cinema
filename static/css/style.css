@@ -48,9 +48,8 @@
     --spacing-lg: 30px;
 }
 
-/* -------------------- */
+
 /* Сброс и базовые стили */
-/* -------------------- */
 * {
     margin: 0;
     padding: 0;
@@ -132,9 +131,8 @@
 }
 
 
-/* -------------------- */
+
 /* Страница hall.html   */
-/* -------------------- */
 .hall-container {
     width: 990px;
     margin: var(--spacing-lg) auto;
@@ -298,9 +296,8 @@
     box-shadow: 0 0 2px 2px var(--color-lazurit);
 }
 
-/* -------------------- */
+
 /* Страница index.html  */
-/* -------------------- */
 /* Календарь */
 .calendar {
     display: flex;
@@ -336,7 +333,7 @@
     box-shadow: var(--shadow-default);
 }
 
-/* Ячейка-стрелка (текст по центру) */
+/* Ячейка-стрелка */
 .calendar__day--arrow {
     align-items: center;
     padding-left: 0;
@@ -490,9 +487,8 @@
     color: var(--color-gray-light);
 }
 
-/* -------------------- */
+
 /* Страница payment.html */
-/* -------------------- */
 .payment-card, .ticket-card {
     max-width: var(--container-max-width);
     margin: var(--spacing-lg) auto;
@@ -597,9 +593,8 @@
 }
 
 
-/* -------------------- */
+
 /* Страница ticket.html */
-/* -------------------- */
 .hall {
     background: var(--color-gray-dark);
     padding: var(--spacing-lg);
@@ -639,12 +634,10 @@
     width: 100%;
 }
 
-/* -------------------- */
+
 /* Адаптивность         */
-/* -------------------- */
-/* -------------------- */
 /* Планшеты (до 768px)  */
-/* -------------------- */
+
 @media (max-width: 768px) {
     :root {
         --container-max-width: 100%;
@@ -794,13 +787,13 @@
     .hall-info-wrapper {
         display: flex;
         justify-content: space-between;
-        align-items: center;        /* теперь по центру */
+        align-items: center;
         flex-wrap: nowrap;
     }
 
     .hall-info {
         flex: 1 1 auto;
-        min-width: 0; /* позволяет сжиматься */
+        min-width: 0;
     }
 
     .hall-info__hint {
@@ -846,9 +839,7 @@
     }
 
 
-/* -------------------- */
 /* Мобильные (до 390px) */
-/* -------------------- */
 @media (max-width: 390px) {
     :root {
         --poster-width: 70px;
@@ -913,7 +904,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        flex-wrap: nowrap; /* запрещаем перенос блока */
+        flex-wrap: nowrap;
     }
 
     .hall-info__main {
@@ -944,5 +935,3 @@
         gap: 5px;
     }
 }
-
-
