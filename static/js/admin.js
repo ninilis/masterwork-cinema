@@ -85,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('#hallConfigTabs .hall-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 loadHallConfig(tab.dataset.hallId);
+                syncHallSelection(tab.dataset.hallId);
             });
             container.append(tab);
         });
@@ -98,20 +99,25 @@ document.addEventListener('DOMContentLoaded', () => {
             halls = data.halls || [];
             films = data.films || [];
             seances = data.seances || [];
+
+            // Сохраняем выбранные залы до перерисовки
+            const savedPriceHallId = selectedPriceHallId;
+            const savedOpenHallId = selectedOpenHallId;
+
             renderHalls();
             renderFilms();
             renderHallSelects();
             renderHallConfigTabs();
-            renderPriceHallTabs();
-            renderOpenHallTabs();
+            renderPriceHallTabs(savedPriceHallId);
+            renderOpenHallTabs(savedOpenHallId);
             renderFilmsPool();
             renderTimelines();
             updateOpenButtonText();
             drawStepLines();
             populateSeanceModalSelects();
-            initTrashBin(); // инициализация корзины
+            initTrashBin();
         } catch (error) {
-            showMessage('Ошибка загрузки данных: ', error.message, true);
+            showMessage('Ошибка загрузки данных', error.message, true);
         }
     }
 
@@ -148,27 +154,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 // ВКЛАДКИ ЦЕН (блок 3)
-    function renderPriceHallTabs() {
+    function renderPriceHallTabs(savedHallId = null) {
         const container = document.getElementById('priceHallTabs');
         if (!container) return;
-
-        // Очищаем контейнер безопасно (innerHTML = '' допустимо)
         container.innerHTML = '';
-
         if (halls.length === 0) {
             container.textContent = 'Нет залов';
             return;
         }
-
-        // Создаём вкладки через DOM
+        let activeFound = false;
         halls.forEach((hall, index) => {
             const tab = document.createElement('div');
             tab.className = 'hall-tab';
-            if (index === 0) tab.classList.add('active');
+            if (savedHallId && hall.id == savedHallId) {
+                tab.classList.add('active');
+                activeFound = true;
+                selectedPriceHallId = hall.id;
+            } else if (!savedHallId && index === 0) {
+                tab.classList.add('active');
+                selectedPriceHallId = hall.id;
+            }
             tab.dataset.hallId = hall.id;
             tab.textContent = hall.hall_name;
-
-            // Обработчик клика
             tab.addEventListener('click', () => {
                 document.querySelectorAll('#priceHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
@@ -179,56 +186,59 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('vipPrice').value = selectedHall.hall_price_vip || 350;
                 }
             });
-
             container.append(tab);
         });
-
-        // Устанавливаем выбранный зал по умолчанию
-        if (halls.length > 0) {
+        // Если сохранённый зал не найден, активируем первый
+        if (!activeFound && halls.length > 0) {
+            const firstTab = container.querySelector('.hall-tab');
+            if (firstTab) firstTab.classList.add('active');
             selectedPriceHallId = halls[0].id;
-            const hall = halls[0];
+        }
+        // Загружаем цены для выбранного зала
+        const hall = halls.find(h => h.id == selectedPriceHallId);
+        if (hall) {
             document.getElementById('standartPrice').value = hall.hall_price_standart || 250;
             document.getElementById('vipPrice').value = hall.hall_price_vip || 350;
         }
     }
 
     //ВКЛАДКИ ОТКРЫТИЯ ПРОДАЖ (блок 5)
-    function renderOpenHallTabs() {
+    function renderOpenHallTabs(savedHallId = null) {
         const container = document.getElementById('openHallTabs');
         if (!container) return;
-
-        // Очищаем контейнер (безопасно)
         container.innerHTML = '';
-
         if (halls.length === 0) {
             container.textContent = 'Нет залов';
             return;
         }
-
-        // Создаём вкладки через DOM
+        let activeFound = false;
         halls.forEach((hall, index) => {
             const tab = document.createElement('div');
             tab.className = 'hall-tab';
-            if (index === 0) tab.classList.add('active');
+            if (savedHallId && hall.id == savedHallId) {
+                tab.classList.add('active');
+                activeFound = true;
+                selectedOpenHallId = hall.id;
+            } else if (!savedHallId && index === 0) {
+                tab.classList.add('active');
+                selectedOpenHallId = hall.id;
+            }
             tab.dataset.hallId = hall.id;
             tab.textContent = hall.hall_name;
-
-            // Обработчик клика
             tab.addEventListener('click', () => {
                 document.querySelectorAll('#openHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 selectedOpenHallId = tab.dataset.hallId;
                 updateOpenButtonText();
             });
-
             container.append(tab);
         });
-
-        // Устанавливаем выбранный зал по умолчанию
-        if (halls.length > 0) {
+        if (!activeFound && halls.length > 0) {
+            const firstTab = container.querySelector('.hall-tab');
+            if (firstTab) firstTab.classList.add('active');
             selectedOpenHallId = halls[0].id;
-            updateOpenButtonText();
         }
+        updateOpenButtonText();
     }
 
 // СПИСОК ФИЛЬМОВ (вспомогательная) – безопасная версия
@@ -362,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const hallId = activeTab.dataset.hallId;
         const hall = halls.find(h => h.id == hallId);
         if (!hall) return;
+
         const editor = document.getElementById('hallSchemeEditor');
         const rows = editor.querySelectorAll('.hall-scheme-editor__row');
         const newConfig = [];
@@ -372,18 +383,78 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             newConfig.push(rowConfig);
         });
+
         const newRows = parseInt(document.getElementById('rowsCount').value);
         const newCols = parseInt(document.getElementById('colsCount').value);
         if (isNaN(newRows) || isNaN(newCols) || newRows < 1 || newCols < 1) {
-            showMessage('', 'Некорректные размеры зала');
+            showMessage('Ошибка', 'Некорректные размеры зала', true);
             return;
         }
+
+        // Сохраняем выбранные залы в других блоках
+        const savedPriceHallId = selectedPriceHallId;
+        const savedOpenHallId = selectedOpenHallId;
+
         try {
             await api.updateHallConfig(hallId, newConfig, newRows, newCols);
             showMessage('Успех', 'Конфигурация сохранена');
-            await loadAdminData();
+
+            // Обновляем локальные данные о зале
+            const updatedHall = { ...hall, hall_config: newConfig, hall_rows: newRows, hall_places: newCols };
+            const index = halls.findIndex(h => h.id == hallId);
+            if (index !== -1) halls[index] = updatedHall;
+
+            // Перерисовываем только схему и связанные поля (без полной перезагрузки)
+            renderSchemeEditor(updatedHall);
+
+            // Восстанавливаем выбранные залы в других блоках
+            if (savedPriceHallId) {
+                selectedPriceHallId = savedPriceHallId;
+                const priceTab = document.querySelector(`#priceHallTabs .hall-tab[data-hall-id="${savedPriceHallId}"]`);
+                if (priceTab) {
+                    document.querySelectorAll('#priceHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+                    priceTab.classList.add('active');
+                    const hallForPrice = halls.find(h => h.id == savedPriceHallId);
+                    if (hallForPrice) {
+                        document.getElementById('standartPrice').value = hallForPrice.hall_price_standart || 250;
+                        document.getElementById('vipPrice').value = hallForPrice.hall_price_vip || 350;
+                    }
+                }
+            }
+            if (savedOpenHallId) {
+                selectedOpenHallId = savedOpenHallId;
+                const openTab = document.querySelector(`#openHallTabs .hall-tab[data-hall-id="${savedOpenHallId}"]`);
+                if (openTab) {
+                    document.querySelectorAll('#openHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+                    openTab.classList.add('active');
+                    updateOpenButtonText();
+                }
+            }
         } catch (error) {
             showMessage('Ошибка сохранения', error.message, true);
+        }
+    }
+
+    function syncHallSelection(hallId) {
+        // Синхронизация с блоком цен
+        const priceTab = document.querySelector(`#priceHallTabs .hall-tab[data-hall-id="${hallId}"]`);
+        if (priceTab) {
+            document.querySelectorAll('#priceHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+            priceTab.classList.add('active');
+            selectedPriceHallId = hallId;
+            const hall = halls.find(h => h.id == hallId);
+            if (hall) {
+                document.getElementById('standartPrice').value = hall.hall_price_standart || 250;
+                document.getElementById('vipPrice').value = hall.hall_price_vip || 350;
+            }
+        }
+        // Синхронизация с блоком открытия продаж
+        const openTab = document.querySelector(`#openHallTabs .hall-tab[data-hall-id="${hallId}"]`);
+        if (openTab) {
+            document.querySelectorAll('#openHallTabs .hall-tab').forEach(t => t.classList.remove('active'));
+            openTab.classList.add('active');
+            selectedOpenHallId = hallId;
+            updateOpenButtonText();
         }
     }
 
@@ -430,13 +501,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //УПРАВЛЕНИЕ ФИЛЬМАМИ
     async function deleteFilm(filmId) {
-        if (!confirm('Удалить фильм? Это также удалит все связанные сеансы.')) return;
-        try {
-            await api.deleteMovie(filmId);
-            await loadAdminData();
-        } catch (error) {
-            showMessage('Ошибка удаления: ', error.message, true);
-        }
+        showConfirm(
+            'Удалить фильм? Это также удалит все связанные сеансы.',
+            async () => {
+                try {
+                    await api.deleteMovie(filmId);
+                    await loadAdminData();
+                } catch (error) {
+                    showMessage('Ошибка удаления', error.message, true);
+                }
+            },
+            () => {} // отмена – ничего не делаем
+        );
     }
 
     async function createFilm() {
@@ -693,7 +769,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     await api.deleteSeance(seanceId);
                     await loadAdminData();
                 } catch (err) {
-                    showMessage('Ошибка удаления: ', error.message, true);
+                    showMessage('Ошибка удаления: ', err.message, true);
                 }
             }
         });
@@ -730,13 +806,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!hall) return;
         const newStatus = hall.hall_open === 1 ? 0 : 1;
         const action = newStatus === 1 ? 'открыть' : 'закрыть';
-        if (!confirm(`Вы уверены, что хотите ${action} продажи в зале "${hall.hall_name}"?`)) return;
-        try {
-            await api.toggleHallStatus(selectedOpenHallId, newStatus);
-            await loadAdminData();
-        } catch (error) {
-            showMessage('Ошибка изменения статуса: ', error.message, true);
-        }
+
+        showConfirm(
+            `Вы уверены, что хотите ${action} продажи в зале "${hall.hall_name}"?`,
+            async () => {
+                try {
+                    await api.toggleHallStatus(selectedOpenHallId, newStatus);
+                    await loadAdminData();
+                } catch (error) {
+                    showMessage('Ошибка изменения статуса', error.message, true);
+                }
+            },
+            () => {}
+        );
     }
 
     function updateOpenButtonText() {
