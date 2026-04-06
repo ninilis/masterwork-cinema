@@ -12,6 +12,58 @@ let seances = [];
 let selectedPriceHallId = null;
 let selectedOpenHallId = null;
 
+function showMessage(title, message, isError = false) {
+    const modal = document.getElementById('notificationModal');
+    if (!modal) return;
+    const titleEl = document.getElementById('notificationModalTitle');
+    const bodyEl = document.getElementById('notificationModalMessage');
+    if (titleEl) titleEl.textContent = title || (isError ? 'Ошибка' : 'Уведомление');
+    if (bodyEl) bodyEl.textContent = message;
+    // Опционально: изменить цвет кнопки или заголовка в зависимости от типа
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
+}
+
+function showConfirm(message, onConfirm, onCancel) {
+    const modal = document.getElementById('confirmModal');
+    if (!modal) {
+        // fallback
+        if (confirm(message)) onConfirm();
+        else if (onCancel) onCancel();
+        return;
+    }
+    const bodyEl = modal.querySelector('.modal-body');
+    if (bodyEl) bodyEl.textContent = message;
+    const confirmBtn = modal.querySelector('#confirmOkBtn');
+    const cancelBtn = modal.querySelector('#confirmCancelBtn');
+
+    const modalInstance = new bootstrap.Modal(modal);
+    const handleConfirm = () => {
+        modalInstance.hide();
+        onConfirm();
+        cleanup();
+    };
+    const handleCancel = () => {
+        modalInstance.hide();
+        if (onCancel) onCancel();
+        cleanup();
+    };
+    const cleanup = () => {
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+    };
+    confirmBtn.addEventListener('click', handleConfirm);
+    cancelBtn.addEventListener('click', handleCancel);
+    modalInstance.show();
+}
+
+document.getElementById('cancelHallConfigBtn')?.addEventListener('click', () => {
+    console.log('Отмена конфигурации зала');
+    const activeTab = document.querySelector('#hallConfigTabs .hall-tab.active');
+    if (activeTab) loadHallConfig(activeTab.dataset.hallId);
+    else console.warn('Активная вкладка не найдена');
+});
+
 // ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -823,21 +875,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateOpenButtonText() {
         const button = document.getElementById('toggleHallStatusBtn');
+        const statusParagraph = document.getElementById('openSalesStatus');
         if (!button) return;
         button.classList.remove('btn-primary', 'btn-danger');
+
         if (!selectedOpenHallId) {
             button.textContent = 'Открыть продажу билетов';
             button.classList.add('btn-primary');
+            if (statusParagraph) statusParagraph.textContent = 'Выберите зал';
             return;
         }
+
         const hall = halls.find(h => h.id == selectedOpenHallId);
         if (hall) {
             if (hall.hall_open === 1) {
                 button.textContent = 'Закрыть продажу билетов';
                 button.classList.add('btn-danger');
+                if (statusParagraph) statusParagraph.textContent = 'Продажи открыты';
             } else {
                 button.textContent = 'Открыть продажу билетов';
                 button.classList.add('btn-primary');
+                if (statusParagraph) statusParagraph.textContent = 'Всё готово к открытию';
             }
         }
     }
@@ -887,29 +945,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.querySelector('.step-lines-canvas');
         if (!canvas) return;
         canvas.innerHTML = '';
-        const circles = document.querySelectorAll('.admin-block .step-circle');
-        if (circles.length < 2) return;
-        const containerRect = canvas.parentElement.getBoundingClientRect();
-        const positions = [];
-        circles.forEach(circle => {
-            const rect = circle.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            positions.push({
-                left: centerX - containerRect.left,
-                top: rect.top + window.scrollY - (containerRect.top + window.scrollY),
-                bottom: rect.bottom + window.scrollY - (containerRect.top + window.scrollY)
+
+        const stepsContainer = document.querySelector('.admin-steps');
+        if (!stepsContainer) return;
+
+        setTimeout(() => {
+            const circles = document.querySelectorAll('.admin-block .step-circle');
+            if (circles.length < 2) return;
+
+            const containerRect = stepsContainer.getBoundingClientRect();
+            const positions = [];
+
+            circles.forEach(circle => {
+                const rect = circle.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                positions.push({
+                    left: centerX - containerRect.left,
+                    top: rect.top - containerRect.top,
+                    bottom: rect.bottom - containerRect.top
+                });
             });
-        });
-        for (let i = 0; i < positions.length - 1; i++) {
-            const height = positions[i + 1].top - positions[i].bottom;
-            if (height <= 0) continue;
-            const line = document.createElement('div');
-            line.className = 'step-vertical-line';
-            line.style.left = `${positions[i].left}px`;
-            line.style.top = `${positions[i].bottom}px`;
-            line.style.height = `${height}px`;
-            canvas.append(line);
-        }
+
+            for (let i = 0; i < positions.length - 1; i++) {
+                const startY = positions[i].bottom;
+                const endY = positions[i + 1].top;
+                const height = endY - startY;
+                if (height <= 0) continue;
+
+                const line = document.createElement('div');
+                line.className = 'step-vertical-line';
+                line.style.left = `${positions[i].left}px`;
+                line.style.top = `${startY}px`;
+                line.style.height = `${height}px`;
+                canvas.appendChild(line);
+            }
+        }, 20);
     }
 
     function populateSeanceModalSelects() {
@@ -948,49 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filmSelect.append(option);
         });
     }
-
-    function showMessage(title, message, isError = false) {
-        const modal = document.getElementById('notificationModal');
-        if (!modal) return;
-        const titleEl = document.getElementById('notificationModalTitle');
-        const bodyEl = document.getElementById('notificationModalMessage');
-        if (titleEl) titleEl.textContent = title || (isError ? 'Ошибка' : 'Уведомление');
-        if (bodyEl) bodyEl.textContent = message;
-        // Опционально: изменить цвет кнопки или заголовка в зависимости от типа
-        const modalInstance = new bootstrap.Modal(modal);
-        modalInstance.show();
-    }
-
-    function showConfirm(message, onConfirm, onCancel) {
-        const modal = document.getElementById('confirmModal');
-        if (!modal) {
-            // fallback
-            if (confirm(message)) onConfirm();
-            else if (onCancel) onCancel();
-            return;
-        }
-        const bodyEl = modal.querySelector('.modal-body');
-        if (bodyEl) bodyEl.textContent = message;
-        const confirmBtn = modal.querySelector('#confirmOkBtn');
-        const cancelBtn = modal.querySelector('#confirmCancelBtn');
-
-        const modalInstance = new bootstrap.Modal(modal);
-        const handleConfirm = () => {
-            modalInstance.hide();
-            onConfirm();
-            cleanup();
-        };
-        const handleCancel = () => {
-            modalInstance.hide();
-            if (onCancel) onCancel();
-            cleanup();
-        };
-        const cleanup = () => {
-            confirmBtn.removeEventListener('click', handleConfirm);
-            cancelBtn.removeEventListener('click', handleCancel);
-        };
-        confirmBtn.addEventListener('click', handleConfirm);
-        cancelBtn.addEventListener('click', handleCancel);
-        modalInstance.show();
-    }
+    window.addEventListener('resize', () => {
+        drawStepLines();
+    });
 });

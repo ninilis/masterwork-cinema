@@ -14,9 +14,8 @@
 <header class="page-header">
     <div class="container d-flex flex-column">
         <a href="index.html" class="logo">
-            <img src="static/img/logo.svg" alt="Идём в кино">
+            <img src="static/img/logoAdmin.svg" alt="Идём в кино">
         </a>
-        <img src="static/img/Администраторррская.svg" alt="Администраторррская" class="admin-subtitle">
     </div>
 </header>
 
@@ -80,9 +79,9 @@
                     <h3 class="halls-title">Теперь вы можете указать типы кресел на схеме зала:</h3>
                     <!-- Легенда кресел -->
                     <div class="seat-types mb-3">
-                        <span class="seat-type-demo seat-type-standart"> — обычные</span>
-                        <span class="seat-type-demo seat-type-vip"> — VIP</span>
-                        <span class="seat-type-demo seat-type-disabled"> — заблокировано</span>
+                        <span class="seat-type-demo seat-type-standart"> — обычные кресла</span>
+                        <span class="seat-type-demo seat-type-vip"> — VIP кресла</span>
+                        <span class="seat-type-demo seat-type-disabled"> — заблокированные (нет кресла)</span>
                     </div>
 
                     <p class="mb-2 hall-text">Чтобы изменить вид кресла, нажмите по нему левой кнопкой мыши</p>
@@ -182,9 +181,11 @@
                 <p class="mb-4">Выберите зал для открытия/закрытия продаж:</p>
                     <!-- Вкладки выбора зала -->
                     <div class="hall-tabs" id="openHallTabs"></div>
-                    <p class="text-center">Всё готово к открытию</p>
+                    <p class="text-center" id="openSalesStatus">Всё готово к открытию</p>
                     <!-- Кнопка изменения статуса -->
-                    <button class="btn btn-primary" id="toggleHallStatusBtn">Открыть продажу билетов</button>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-primary" id="toggleHallStatusBtn">Открыть продажу билетов</button>
+                    </div>
                 </div>
             </section>
         </div>
