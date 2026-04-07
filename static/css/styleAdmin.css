@@ -1171,6 +1171,11 @@ html, body {
     #films-pool-list {
         margin-bottom: 10px;
     }
+
+    .hall-scheme {
+        overflow-x: auto;
+        max-width: 100%;
+    }
 }
 
 
