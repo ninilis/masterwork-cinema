@@ -64,7 +64,7 @@ html, body { /* дублирование?*/
 }
 
 .page-body {
-    background: url('../img/background.jpg') no-repeat center center fixed;
+    background: url('../img/background.jpg') no-repeat center center;
     background-size: cover;
     min-height: 100vh;
     font-family: var(--font-family);
@@ -74,7 +74,7 @@ html, body { /* дублирование?*/
 }
 
 .page-body-admin {
-    background: url('../img/backgroundAdmin.jpg') no-repeat center center fixed;
+    background: url('../img/backgroundAdmin.jpg') no-repeat center center;
 }
 
 .container {

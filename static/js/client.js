@@ -19,7 +19,7 @@ function getParamFromURL(param) {
 
 // КАЛЕНДАРЬ
 // Состояние календаря
-let currentStartDate = null; // дата первого дня в текущем отображении (может быть null, если первый элемент - стрелка)
+let currentOffset = 0;            // количество дней от today, с которого начинается отображение (0 = сегодня)
 let currentSelectedDate = null;
 
 // Инициализация при загрузке
@@ -28,21 +28,26 @@ function initCalendar() {
     const startParam = urlParams.get('start');
     const dateParam = urlParams.get('date');
 
-    // Определяем начальную дату для отображения
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayStr = formatDate(today);
 
+    // Определяем смещение по параметру start
     if (startParam) {
-        currentStartDate = new Date(startParam + 'T00:00:00');
+        const startDate = new Date(startParam + 'T00:00:00');
+        const diffDays = Math.round((startDate - today) / (1000 * 60 * 60 * 24));
+        currentOffset = diffDays > 0 ? diffDays : 0;
     } else {
-        // По умолчанию показываем неделю, начиная с today (первая ячейка - сегодня)
-        currentStartDate = new Date(today);
+        currentOffset = 0;
     }
 
     // Выбранная дата
     if (dateParam) {
         currentSelectedDate = new Date(dateParam + 'T00:00:00');
+        // Если выбранная дата раньше today, корректируем
+        if (currentSelectedDate < today) {
+            currentSelectedDate = new Date(today);
+        }
     } else {
         currentSelectedDate = new Date(today);
     }
@@ -59,29 +64,31 @@ function getCalendarItems() {
     today.setHours(0, 0, 0, 0);
     const todayStr = formatDate(today);
 
-    // Проверяем, находимся ли мы на начальной неделе (первый день - сегодня)
-    const isFirstWeek = (formatDate(currentStartDate) === todayStr);
-
-    // Левая стрелка (появляется, если не первая неделя)
-    if (!isFirstWeek) {
+    // Левая стрелка (появляется, только если смещение > 0)
+    if (currentOffset > 0) {
         items.push({
             type: 'arrow',
             direction: 'prev'
         });
     } else {
-        // Первая ячейка - сегодня (дата)
+        // Первая ячейка - "Сегодня"
         items.push({
             type: 'date',
             date: new Date(today)
         });
     }
 
-    // Добавляем следующие 5 дней (если всего 7 ячеек, и мы уже добавили 1 или 2)
-    // Рассчитываем, сколько дат осталось после учета стрелок.
-    // Если первая ячейка - дата, то startDate уже today, и нужно добавить ещё 5 дат (всего 6 дат + стрелка вперёд = 7)
-    // Если первая ячейка - стрелка, то startDate - это первый день после стрелки, и нужно добавить 5 дат (всего 1 стрелка + 5 дат + стрелка вперёд = 7)
-    // Добавляем следующие 5 дней
-    const startDate = isFirstWeek ? new Date(today) : new Date(currentStartDate);
+    // Добавляем 5 дат
+    // Если offset === 0, первая дата уже добавлена, нужно добавить следующие 5 дней (today+1 ... today+5)
+    // Если offset > 0, добавляем 5 дней, начиная с today + currentOffset
+    let startDate;
+    if (currentOffset === 0) {
+        startDate = new Date(today);
+    } else {
+        startDate = new Date(today);
+        startDate.setDate(today.getDate() + currentOffset);
+    }
+
     for (let i = 1; i <= 5; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
@@ -91,7 +98,7 @@ function getCalendarItems() {
         });
     }
 
-    // Правая стрелка (всегда есть, кроме случая, когда достигнут лимит в 10 дней?)
+    // Правая стрелка (всегда активна, без ограничения вперёд)
     items.push({
         type: 'arrow',
         direction: 'next'
@@ -175,23 +182,12 @@ function renderCalendar() {
 
 // Проверка доступности стрелки
 function isArrowDisabled(direction) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayStr = formatDate(today);
-
     if (direction === 'prev') {
-        // Стрелка назад неактивна, если текущая начальная дата <= today
-        return currentStartDate <= today;
+        // Стрелка назад неактивна, если смещение 0 (тогда её и нет)
+        return currentOffset === 0;
     } else {
-        // Стрелка вперёд неактивна, если последний день календаря > today + 10
-        // Последний день календаря: зависит от currentStartDate
-        // Вычислим последний день (максимальную дату в календаре)
-        const items = getCalendarItems();
-        const lastDate = items.filter(item => item.type === 'date').pop()?.date;
-        if (!lastDate) return true; // если нет дат (странно)
-        const maxAllowed = new Date(today);
-        maxAllowed.setDate(today.getDate() + 10);
-        return lastDate > maxAllowed;
+        // Стрелка вперёд всегда активна (ограничение снято)
+        return false;
     }
 }
 
@@ -212,27 +208,24 @@ function onArrowClick(e) {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const todayStr = formatDate(today);
 
     if (direction === 'prev') {
-        // Сдвиг на неделю назад
-        const newStart = new Date(currentStartDate);
-        newStart.setDate(currentStartDate.getDate() - 7);
-        currentStartDate = newStart;
+        // Сдвиг на 5 дней назад, но не меньше 0
+        currentOffset = Math.max(0, currentOffset - 5);
     } else {
-        // Сдвиг на неделю вперёд
-        const newStart = new Date(currentStartDate);
-        newStart.setDate(currentStartDate.getDate() + 7);
-        currentStartDate = newStart;
+        // Сдвиг на 5 дней вперёд (без ограничения)
+        currentOffset += 5;
     }
 
-    // Корректируем выбранную дату: если она выпала из календаря, ставим первый день
+    // Корректируем выбранную дату: если она выпала из нового диапазона, ставим первую дату
     const items = getCalendarItems();
     const dateItems = items.filter(item => item.type === 'date');
-    const firstDate = dateItems[0].date;
-    const lastDate = dateItems[dateItems.length - 1].date;
-    if (currentSelectedDate < firstDate || currentSelectedDate > lastDate) {
-        currentSelectedDate = new Date(firstDate);
+    if (dateItems.length > 0) {
+        const firstDate = dateItems[0].date;
+        const lastDate = dateItems[dateItems.length - 1].date;
+        if (currentSelectedDate < firstDate || currentSelectedDate > lastDate) {
+            currentSelectedDate = new Date(firstDate);
+        }
     }
 
     updateURL();
@@ -243,7 +236,7 @@ function onArrowClick(e) {
 // Обновление URL
 function updateURL() {
     const url = new URL(window.location);
-    // Сохраняем start как первый день календаря (если первый элемент - дата, то это currentStartDate, иначе - следующая дата)
+    // Вычисляем start как первую дату в текущем отображении
     const items = getCalendarItems();
     const firstDateItem = items.find(item => item.type === 'date');
     const startParam = firstDateItem ? formatDate(firstDateItem.date) : '';
@@ -260,14 +253,21 @@ function handlePopState() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // Восстанавливаем смещение
     if (startParam) {
-        currentStartDate = new Date(startParam + 'T00:00:00');
+        const startDate = new Date(startParam + 'T00:00:00');
+        const diffDays = Math.round((startDate - today) / (1000 * 60 * 60 * 24));
+        currentOffset = diffDays > 0 ? diffDays : 0;
     } else {
-        currentStartDate = new Date(today);
+        currentOffset = 0;
     }
 
+    // Восстанавливаем выбранную дату
     if (dateParam) {
         currentSelectedDate = new Date(dateParam + 'T00:00:00');
+        if (currentSelectedDate < today) {
+            currentSelectedDate = new Date(today);
+        }
     } else {
         currentSelectedDate = new Date(today);
     }
