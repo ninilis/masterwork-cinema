@@ -303,6 +303,10 @@ html, body {
     display: none;
 }
 
+.admin-block__content .row {
+    margin-left: 0;
+    margin-right: 0;
+}
 
 .halls-title {
     color: var(--color-black);
@@ -333,12 +337,11 @@ html, body {
 
 .hall-scheme {
     border: 1px solid var(--color-gray-dark);
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 0;
-    margin-top: 0;
     padding: 30px;
+    margin-bottom: 25px;
 }
+
+
 
 .hall-scheme-editor {
     display: flex;
@@ -543,7 +546,6 @@ html, body {
     width: 30px;
     height: 30px;
     border-radius: 4px;
-    margin-right: 15px;
     flex-shrink: 0;
 }
 
@@ -699,7 +701,6 @@ html, body {
     font-weight: bold;
     font-size: 16px;
     text-transform: uppercase;
-    margin-top: 20px;
     margin-bottom: 0;
 }
 
@@ -773,7 +774,7 @@ html, body {
     bottom: 0;
     text-align: center;
     font-size: 10px;
-    color: var(--color-gray-dark);
+    color: var(--color-gray-light);
     white-space: nowrap;
     transform: translateX(-50%);
     min-width: 40px;
@@ -792,11 +793,7 @@ html, body {
 }
 
 #films-pool-list {
-    margin-bottom: 70px;
-}
-
-.admin-block__content .d-flex.gap-2.mt-3 {
-    margin-top: 70px !important;
+    margin-bottom: 50px;
 }
 
 .admin-block__content .btn:not(.add-film) {
@@ -847,7 +844,8 @@ html, body {
 }
 
 .admin-block__content {
-    padding-left: 70px;
+    padding-left: 75px;
+    padding-right: 15px;
 }
 
 /*------------------------ Модальные окна---------------------------- */
@@ -1106,13 +1104,13 @@ html, body {
 
 
 
-/* Адаптивность */
+/* -----------------------------Адаптивность----------------------------------- */
 /* Планшеты (до 768px) */
 @media (max-width: 768px) {
     /* Убираем отступы у контейнера и блоков */
     .container {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding-left: 0;
+        padding-right: 0;
         max-width: 100%;
     }
 
@@ -1126,21 +1124,18 @@ html, body {
         padding-left: 20px;
     }
 
-    .step-circle {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-        border-width: 3px;
-    }
+
     .admin-block__content {
-        padding-left: 50px;
+        padding-left: 75px;
+        padding-right: 20px;
     }
 
     .admin-block__title {
         font-size: 1.2rem;
-        padding: 10px 26px;
+        padding: 10px 35px;
         gap: 10px;
     }
+
 
     /* Отступы для таймлайна */
     .timeline-slots {
@@ -1164,13 +1159,20 @@ html, body {
         width: 220px;
         height: 48px;
     }
+
     .film-card-title {
         font-size: 11px;
     }
+
     .film-card-duration {
         font-size: 10px;
     }
+
+    #films-pool-list {
+        margin-bottom: 10px;
+    }
 }
+
 
 
 /* Мобильные устройства (до 390px) */
@@ -1189,21 +1191,25 @@ html, body {
 
     /* Заголовки и кружочки ещё меньше */
     .admin-block__title {
-        font-size: 1rem;
-        padding: 8px 12px;
+        padding: 8px 20px;
+        min-height: 65px;
     }
 
     .step-lines-canvas {
         display: none;          /* скрываем соединительные линии */
     }
+
     .step-circle {
         width: 22px;
         height: 22px;
         font-size: 12px;
         border-width: 4px;
     }
-    .admin-block__content {
-        padding-left: 35px;
+
+    .seat-types {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .admin-block__content {
@@ -1216,6 +1222,7 @@ html, body {
         width: 22px;
         height: 22px;
     }
+
     .hall-scheme-editor__row {
         gap: 5px;
     }
@@ -1227,24 +1234,39 @@ html, body {
         padding: 0 12px;
     }
 
+    .admin-block__content .btn:not(.add-film) {
+        display: block;
+        text-align: center;
+    }
+
+    /* Кнопка "Добавить фильм" остаётся слева */
+    .admin-block__content .btn.add-film {
+        margin-left: 0;
+        margin-right: auto;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
     .d-flex.gap-2 {
         flex-wrap: wrap;
         justify-content: center;
     }
 
+
     /* Таймлайн */
     .timeline-slots {
         min-height: 50px;
     }
+
     .seance-block {
         height: 36px;
         font-size: 8px;
         min-width: 35px;
         padding: 2px 4px;
     }
-    .seance-time-marker {
-        font-size: 7px;
-        min-width: 25px;
+
+    .films-pool-card {
+        gap: 14px;
     }
 }
 
