@@ -589,7 +589,74 @@ function generateQRCode(tickets) {
         radius: 0.5,
     }, container);
 
+    // Функция для создания перфорации на карточках оплаты и билета
+    function applyPerforationMask() {
+        // Выбираем обе карточки (на каждой странице только одна)
+        const cards = document.querySelectorAll('.payment-card, .ticket-card');
 
+        cards.forEach(card => {
+            // Защита от повторного применения
+            if (card.hasAttribute('data-perforated')) return;
+            card.setAttribute('data-perforated', 'true');
+
+            // Функция обновления маски при изменении размера карточки
+            const updateMask = () => {
+                const width = card.clientWidth;
+                const height = card.clientHeight;
+                if (width === 0 || height === 0) return;
+
+                const dotSize = 8;      // диаметр дырки (пиксели)
+                const step = 12;        // шаг между центрами (8px дырка + 4px перемычка)
+                const radius = dotSize / 2;
+
+                // Создаём canvas для маски
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+
+                // Заливаем всю карточку белым (видимая область)
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, width, height);
+
+                // Рисуем чёрные круги (вырезаемые области) по верхнему краю
+                // Центр круга находится на radius выше карточки, поэтому видна только нижняя половина – получается полукруг, направленный вверх (выпуклый наружу)
+                ctx.fillStyle = 'black';
+                for (let x = radius; x <= width - radius; x += step) {
+                    ctx.beginPath();
+                    ctx.arc(x, -radius, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Рисуем чёрные круги по нижнему краю (центр на radius ниже карточки – полукруг вниз)
+                for (let x = radius; x <= width - radius; x += step) {
+                    ctx.beginPath();
+                    ctx.arc(x, height + radius, radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Преобразуем canvas в dataURL и применяем как маску
+                const maskUrl = canvas.toDataURL();
+                card.style.maskImage = `url(${maskUrl})`;
+                card.style.webkitMaskImage = `url(${maskUrl})`;
+                card.style.maskMode = 'alpha';
+                card.style.maskRepeat = 'no-repeat';
+                card.style.maskSize = 'cover';
+            };
+
+            // Вызываем при загрузке
+            updateMask();
+
+            // Обновляем при изменении размера окна (чтобы маска адаптировалась)
+            window.addEventListener('resize', () => updateMask());
+
+            // Дополнительно: следим за изменением размера карточки (например, при загрузке изображений)
+            if (window.ResizeObserver) {
+                const ro = new ResizeObserver(() => updateMask());
+                ro.observe(card);
+            }
+        });
+    }
 }
 
 // ЗАПУСК
