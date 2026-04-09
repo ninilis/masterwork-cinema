@@ -419,6 +419,41 @@ async function initHall() {
     }
 }
 
+function initHallZoom() {
+    const schemeContainer = document.querySelector('.hall-scheme');
+    if (!schemeContainer) return;
+
+    // Удаляем старые обработчики, если они есть (чтобы не дублировать)
+    schemeContainer.removeEventListener('dblclick', toggleZoomHandler);
+    schemeContainer.removeEventListener('touchstart', touchHandler);
+
+    let lastTap = 0;
+
+    function toggleZoomHandler(e) {
+        e.preventDefault();
+        toggleZoom(schemeContainer);
+    }
+
+    function touchHandler(e) {
+        const now = Date.now();
+        const timeDiff = now - lastTap;
+        if (timeDiff < 300 && timeDiff > 0) {
+            e.preventDefault();
+            toggleZoom(schemeContainer);
+            lastTap = 0;
+        } else {
+            lastTap = now;
+        }
+    }
+
+    function toggleZoom(element) {
+        element.classList.toggle('hall-scheme--zoomed');
+    }
+
+    schemeContainer.addEventListener('dblclick', toggleZoomHandler);
+    schemeContainer.addEventListener('touchstart', touchHandler);
+}
+
 function renderHallScheme(matrix) {
     const container = document.querySelector('.hall-scheme');
     if (!container) return;
@@ -446,12 +481,17 @@ function renderHallScheme(matrix) {
         container.append(rowDiv);
     });
 
+    // Обновляем состояние кнопки бронирования (нет выбранных мест)
     const bookBtn = document.querySelector('.btn-booking');
     if (bookBtn) {
         const selected = document.querySelectorAll('.hall-scheme__place--selected');
         bookBtn.disabled = selected.length === 0;
     }
+
+    // Инициализация зума (двойной тап)
+    initHallZoom();
 }
+
 
 function onPlaceClick(e) {
     const place = e.currentTarget;
