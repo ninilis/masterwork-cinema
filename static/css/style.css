@@ -724,16 +724,6 @@ html, body { /* дублирование?*/
         flex-shrink: 0;
     }
 
-    .hall-scheme {
-        transition: transform 0.2s ease;
-        transform-origin: top left;
-    }
-
-    .hall-scheme--zoomed {
-        transform: scale(1.5);
-        cursor: zoom-out;
-    }
-
     /* Страницы payment.html и ticket.html */
     .payment-card, .ticket-card {
         width: 100%;
