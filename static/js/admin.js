@@ -723,12 +723,26 @@ document.addEventListener('DOMContentLoaded', () => {
         block.append(textSpan);
 
         block.style.backgroundColor = film.film_color || 'var(--color-lazurit)';
+
+        // Drag start: показываем корзину
         block.addEventListener('dragstart', (e) => {
             e.dataTransfer.setData('text/plain', seance.id);
             e.dataTransfer.effectAllowed = 'move';
+            const trash = document.getElementById('trashBin');
+            if (trash) {
+                trash.style.display = 'flex';   // или 'block' / добавляем класс
+            }
         });
 
-        // Создание метки времени (если нужна)
+        // Drag end: скрываем корзину
+        block.addEventListener('dragend', () => {
+            const trash = document.getElementById('trashBin');
+            if (trash) {
+                trash.style.display = 'none';
+            }
+        });
+
+        // Создание метки времени
         const marker = document.createElement('div');
         marker.className = 'seance-time-marker';
         marker.style.left = `${leftPercent}%`;
