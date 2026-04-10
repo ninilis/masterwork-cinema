@@ -507,6 +507,7 @@ html, body {
     box-shadow: var(--shadow-default);
 }
 
+
 .btn-outline-secondary {
     background-color: var(--color-white);
     border-color: var(--color-white);
@@ -664,11 +665,13 @@ html, body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 1000;
     transition: opacity 0.3s;
+    display: none
 }
 
-.trash-bin.hidden {
-    opacity: 0;
-    pointer-events: none;
+.trash-bin.visible {
+    display: flex; /* или block */
+    align-items: center;
+    justify-content: center;
 }
 
 #toggleHallStatusBtn {
