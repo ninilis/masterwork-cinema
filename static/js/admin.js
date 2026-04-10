@@ -11,6 +11,7 @@ let films = [];
 let seances = [];
 let selectedPriceHallId = null;
 let selectedOpenHallId = null;
+let initialSeances = [];
 
 function showMessage(title, message, isError = false) {
     const modal = document.getElementById('notificationModal');
@@ -151,6 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
             halls = data.halls || [];
             films = data.films || [];
             seances = data.seances || [];
+            //initialSeances = JSON.parse(JSON.stringify(seances));
+            if (initialSeances.length === 0) {
+                initialSeances = JSON.parse(JSON.stringify(seances));
+            }
 
             // Сохраняем выбранные залы до перерисовки
             const savedPriceHallId = selectedPriceHallId;
@@ -924,7 +929,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-        document.getElementById('cancelScheduleBtn')?.addEventListener('click', () => loadAdminData());
+        document.getElementById('cancelScheduleBtn')?.addEventListener('click', () => {
+            // Восстанавливаем сеансы из исходной копии
+            seances = JSON.parse(JSON.stringify(initialSeances));
+            // Перерисовываем только таймлайны
+            renderTimelines();
+            showMessage('Отмена', 'Расписание восстановлено до состояния на момент загрузки страницы');
+        });
         document.querySelectorAll('.admin-block__title').forEach(title => {
             title.addEventListener('click', (e) => {
                 const block = e.target.closest('.admin-block');
@@ -938,9 +949,24 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('seanceFilmSelect')?.addEventListener('change', () => {
             document.getElementById('seanceFilmId').value = document.getElementById('seanceFilmSelect').value;
         });
+
     }
 
     //ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+    async function refreshSeancesOnly() {
+        try {
+            // Загружаем свежие данные с сервера
+            const data = await api.getAllData();
+            // Обновляем только массив сеансов
+            seances = data.seances || [];
+            // Перерисовываем только блок расписания
+            renderTimelines();
+            showMessage('Успех', 'Расписание обновлено');
+        } catch (error) {
+            showMessage('Ошибка', error.message, true);
+        }
+    }
+
     function drawStepLines() {
         const canvas = document.querySelector('.step-lines-canvas');
         if (!canvas) return;
