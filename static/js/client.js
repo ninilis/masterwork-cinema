@@ -110,6 +110,9 @@ function getCalendarItems() {
     return items;
 }
 
+
+// Отрисовка календаря
+// Отрисовка календаря
 // Отрисовка календаря
 function renderCalendar() {
     const container = document.querySelector('.calendar__days');
@@ -130,7 +133,6 @@ function renderCalendar() {
                 </div>
             `;
         } else {
-            // Дата
             const date = item.date;
             const dateStr = formatDate(date);
             const isToday = (dateStr === todayStr);
@@ -143,17 +145,18 @@ function renderCalendar() {
             if (isWeekend) dayClasses += ' calendar__day--weekend';
             if (isToday) dayClasses += ' calendar__day--today';
 
-            const dayName = date.toLocaleDateString('ru-RU', {
-                weekday: 'short'
-            }).slice(0, 2);
+            let dayName = date.toLocaleDateString('ru-RU', { weekday: 'short' }).slice(0, 2);
+            // Делаем первую букву заглавной
+            dayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
             const dayNumber = date.getDate();
 
             if (isToday) {
+                // Добавляем запятую после дня недели
+                const dayNameNumber = `${dayName}, ${dayNumber}`;
                 html += `
                     <div class="${dayClasses}" data-date="${dateStr}">
                         <span class="day-today">Сегодня</span>
-                        <span class="day-name">${dayName}</span>
-                        <span class="day-number">${dayNumber}</span>
+                        <span class="day-name-number">${dayNameNumber}</span>
                     </div>
                 `;
             } else {
@@ -169,12 +172,10 @@ function renderCalendar() {
 
     container.innerHTML = html;
 
-    // Обработчики кликов на датах
     document.querySelectorAll('.calendar__day[data-date]').forEach(el => {
         el.addEventListener('click', onDateClick);
     });
 
-    // Обработчики кликов на стрелках (неотключённых)
     document.querySelectorAll('.calendar__day--arrow:not([disabled])').forEach(el => {
         el.addEventListener('click', onArrowClick);
     });

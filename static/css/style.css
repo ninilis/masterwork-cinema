@@ -82,7 +82,7 @@ html, body { /* дублирование?*/
     max-width: var(--container-max-width);
     width: 100%;
     margin: 0 auto;
-    padding: 14px 0 0 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -91,10 +91,15 @@ html, body { /* дублирование?*/
 .page-header {
     background: transparent;
     width: 100%;
-}
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    padding-right: 45px;
+    }
 
 .logo {
     width: var(--logo-width);
+    margin-left: 20px;
 }
 
 .header-container {
@@ -142,7 +147,7 @@ html, body { /* дублирование?*/
 /* Страница hall.html   */
 .hall-container {
     width: 990px;
-    margin: var(--spacing-lg) auto;
+    margin: 0 auto;
     padding: 0 0 5px 0;
     background: var(--color-bg-beige);
     border-radius: 2px;
@@ -313,7 +318,7 @@ html, body { /* дублирование?*/
     justify-content: center;
     width: 100%;
     max-width: var(--container-max-width);
-    padding-bottom: 50px;
+    padding-bottom: 45px;
     box-sizing: border-box;
 }
 
@@ -325,8 +330,8 @@ html, body { /* дублирование?*/
 }
 
 .calendar__day {
-    flex: 1 1 0;          /* все занимают равное место */
-    min-width: 60px;      /* минимальная ширина, чтобы текст не ломался */
+    flex: 1 1 0;
+    min-width: 60px;
     background: var(--color-bg-beige);
     border-radius: 2px;
     display: flex;
@@ -471,24 +476,26 @@ html, body { /* дублирование?*/
 .movie-card__right {
     grid-column: 2 / 3;
     grid-row: 1;
-    min-width: 0;           /* позволяет сужаться при переполнении */
+    min-width: 0;
     overflow-wrap: break-word;
+    position: relative;
 }
 
 .movie-card__title {
     font-size: 16px;
     font-weight: var(--font-weight-bold);
     margin: 0;
+    padding-left: 0;
 }
 
 .movie-card__title::before {
     content: "";
-    display: inline-block;
+    position: absolute;
+    left: -15px;
+    top: 0;
     width: 6px;
     height: 14px;
     background-color: var(--color-gray-dark);
-    flex-shrink: 0;
-    margin-right: 10px;
 }
 
 .movie-card__description {
@@ -512,7 +519,7 @@ html, body { /* дублирование?*/
 .payment-card,
 .ticket-card {
     max-width: var(--container-max-width);
-    margin: var(--spacing-lg) auto;
+    margin: 0 auto;
     padding: var(--spacing-lg);
     background: var(--color-bg-beige);
     border-left: none;
@@ -604,6 +611,7 @@ html, body { /* дублирование?*/
     margin-bottom: 20px;
 }
 
+
 .payment-card__divider, .ticket-card__divider {
     border-top: 6px dotted var(--color-orange);
     margin-left: calc(-1 * var(--spacing-lg));
@@ -611,6 +619,7 @@ html, body { /* дублирование?*/
     width: auto;
     opacity: 1;
 }
+
 
 .payment-card__details p, .ticket-card__details {
     font-size: 16px;
@@ -629,7 +638,8 @@ html, body { /* дублирование?*/
 }
 
 .btn-code {
-    width: 337px;
+    width: 100%;
+    max-width: 337px;
     height: var(--btn-height);
     background: var(--color-lazurit);
     border: none;
@@ -643,6 +653,7 @@ html, body { /* дублирование?*/
     display: block;
     cursor: pointer;
     transition: opacity 0.2s;
+    box-sizing: border-box;
 }
 
 .btn-code:hover {
@@ -719,8 +730,7 @@ html, body { /* дублирование?*/
     }
 
     .header-container {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-right: 30px;
     }
 
     .movie-card__title::before {
@@ -783,14 +793,17 @@ html, body { /* дублирование?*/
         font-size: 15px;
     }
 
-    .btn-code {
-        width: 280px;
-    }
-
     /* Верхняя линия – полукруги направлены вниз */
     .payment-card::before,
     .ticket-card::before {
         top: -3px;
+    }
+
+    .page-header {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        margin-left: 5px;
+        padding-right: 5px;
     }
 }
 
@@ -839,47 +852,13 @@ html, body { /* дублирование?*/
         min-width: auto;
     }
 
-    /* Карточка фильма — меняем только ширину постера и отступы */
-    .movie-card {
-        grid-template-columns: 100px 1fr;   /* вместо 125px */
-        gap: 12px;
-        padding: 12px;
-    }
-
-    /* Постер сам подстроится по ширине, высота auto — из универсальных правил */
-    .movie-card__poster {
-        width: 100%;
-        height: auto;
-    }
-
-    /* Правая колонка — уменьшаем промежутки между элементами */
-    .movie-card__right {
-        gap: 6px;
-    }
-
-    /* Блок залов — отступ сверху */
-    .movie-card__halls {
-        margin-top: 10px;
-    }
-
-    /* Стили текста под мобильные */
-    .movie-card__title {
-        font-size: 16px;
-        margin: 0;
-    }
-
-    .movie-card__title::before {
-        display: none;
-    }
 
     .movie-card__description {
-        font-size: 12px;
         padding-left: 0;
         margin: 0;
     }
 
     .movie-card__duration {
-        font-size: 12px;
         padding-left: 0;
         margin: 0;
     }
@@ -889,9 +868,6 @@ html, body { /* дублирование?*/
         margin-bottom: 8px;
     }
 
-    .hall-name {
-        font-size: 13px;
-    }
 
     .session-times {
         display: grid;
@@ -912,5 +888,19 @@ html, body { /* дублирование?*/
     .payment-card::after,
     .ticket-card::after {
         bottom: -3px;
+    }
+
+    .btn-code {
+        margin-bottom: 30px;
+        margin-top: 30px;
+    }
+
+    .page-header {
+        margin: 15px 0;
+        padding-right: 0;
+    }
+
+    .header-container{
+        padding-right: 15px;
     }
 }
