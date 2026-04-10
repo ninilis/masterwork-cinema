@@ -1062,3 +1062,5 @@ document.addEventListener('DOMContentLoaded', () => {
         drawStepLines();
     });
 });
+
+//10.04.2026
