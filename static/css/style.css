@@ -379,11 +379,11 @@ html, body { /* дублирование?*/
     background: var(--color-white);
     font-weight: var(--font-weight-bold);
     box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
-    margin-left: -2px;
-    margin-right: 5px;
+    margin-left: 0;
+    margin-right: 0;
     position: relative;
     z-index: 2;
-    transform: scale(1.05);
+    transform: scale(1, 1.1);  /* Увеличение только по вертикали */
 }
 
 .calendar__day--selected .day-name,
@@ -432,6 +432,11 @@ html, body { /* дублирование?*/
     grid-template-columns: 125px 1fr;
     gap: 15px;
     align-items: start;
+}
+
+/* Убираем отступ у последней карточки */
+.movies-list .movie-card:last-child {
+    margin-bottom: 0;
 }
 
 .movie-card__left {
