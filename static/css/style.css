@@ -91,15 +91,31 @@ html, body { /* дублирование?*/
 .page-header {
     background: transparent;
     width: 100%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 21px;
+    margin-bottom: 15px;
     margin-left: 20px;
     padding-right: 45px;
     }
 
+.page-header-hall {
+    background: transparent;
+    width: 100%;
+    margin-top: 21px;
+    margin-bottom: 13px;
+    margin-left: 20px;
+    padding-right: 45px;
+}
+
 .logo {
     width: var(--logo-width);
-    margin-left: 20px;
+    margin-left: 15px;
+    margin-top: 6px;
+}
+
+.logo-hall {
+    width: var(--logo-width);
+    margin-left: 15px;
+    margin-top: 8px;
 }
 
 .header-container {
@@ -128,6 +144,7 @@ html, body { /* дублирование?*/
     cursor: pointer;
     transition: opacity 0.2s;
     flex-shrink: 0;
+    margin-right: 11px;
 }
 
 .btn-login:hover {
@@ -148,17 +165,17 @@ html, body { /* дублирование?*/
 .hall-container {
     width: 990px;
     margin: 0 auto;
-    padding: 0 0 5px 0;
+    padding-bottom: 1px;
     background: var(--color-bg-beige);
     border-radius: 2px;
     box-sizing: border-box;
 }
 
 .hall-info {
-    margin-bottom: 20px;
+    margin-bottom: 11px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     padding: 14px 14px 0 14px;
 }
 
@@ -265,12 +282,11 @@ html, body { /* дублирование?*/
 }
 
 .hall-legend {
-    padding: 0 14px;
     display: grid;
     grid-template-columns: repeat(2, auto);
     gap: 10px;
     justify-content: center;
-    margin: 20px 0;
+    margin-top: 20px;
     color: var(--color-white);
 }
 
@@ -278,6 +294,7 @@ html, body { /* дублирование?*/
     display: flex;
     align-items: center;
     font-weight: var(--font-weight-thin);
+    font-size: 14px;
 }
 
 .legend-color {
@@ -318,7 +335,7 @@ html, body { /* дублирование?*/
     justify-content: center;
     width: 100%;
     max-width: var(--container-max-width);
-    padding-bottom: 45px;
+    padding-bottom: 40px;
     box-sizing: border-box;
 }
 
@@ -352,7 +369,7 @@ html, body { /* дублирование?*/
     flex: 1 1 0;
     align-items: center;
     padding-left: 0;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: var(--font-weight-regular);
 }
 
@@ -414,7 +431,7 @@ html, body { /* дублирование?*/
     display: grid;
     grid-template-columns: 125px 1fr;
     gap: 15px;
-    align-items: start
+    align-items: start;
 }
 
 .movie-card__left {
@@ -501,7 +518,8 @@ html, body { /* дублирование?*/
 .movie-card__description {
     font-size: 14px;
     margin: 0;
-    padding-left: 20px;
+    padding-left: 3px;
+    padding-top: 7px;
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
@@ -511,7 +529,8 @@ html, body { /* дублирование?*/
     font-size: 14px;
     margin: 0;
     color: var(--color-gray-light);
-    padding-left: 20px;
+    padding-left: 3px;
+    padding-top: 7px;
 }
 
 
@@ -520,12 +539,12 @@ html, body { /* дублирование?*/
 .ticket-card {
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: var(--spacing-lg);
     background: var(--color-bg-beige);
     border-left: none;
     border-right: none;
     position: relative;
     overflow-x: clip;
+    padding: 25px 14px;
 }
 
 
@@ -608,7 +627,7 @@ html, body { /* дублирование?*/
     line-height: 25px;
     text-transform: uppercase;
     color: var(--color-orange);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 
@@ -649,7 +668,7 @@ html, body { /* дублирование?*/
     font-weight: var(--font-weight-regular);
     text-transform: uppercase;
     box-shadow: var(--shadow-default);
-    margin: 20px auto;
+    margin: 30px auto;
     display: block;
     cursor: pointer;
     transition: opacity 0.2s;
@@ -668,7 +687,7 @@ html, body { /* дублирование?*/
 .ticket-card__wish {
     font-size: 14px;
     color: var(--color-gray-light);
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 
@@ -676,7 +695,8 @@ html, body { /* дублирование?*/
 /* Страница ticket.html */
 .hall {
     background: var(--color-gray-dark);
-    padding: var(--spacing-lg);
+    padding-top: 10px;
+    padding-bottom: 12px;
 }
 
 .ticket-card__qr {
@@ -698,7 +718,6 @@ html, body { /* дублирование?*/
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
     font-size: 14px;
     padding: 10px;
     box-sizing: border-box;
