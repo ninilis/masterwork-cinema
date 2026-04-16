@@ -107,7 +107,7 @@ html, body {
     background: var(--color-purple);
     color: var(--color-white);
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 22px;
     padding: 15px 20px;
     text-align: center;
     height: 60px;
@@ -115,7 +115,7 @@ html, body {
 }
 
 .login-card__body {
-    padding: 30px 20px;
+    padding: 20px 20px 33px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -148,10 +148,10 @@ html, body {
     width: 189px;
     height: 40px;
     display: block;
-    margin: 0 auto;
     line-height: 40px;
     text-align: center;
     padding: 0;
+    margin: 20px auto 0;
 }
 
 
@@ -202,6 +202,8 @@ html, body {
 .hall-text {
     color: var(--color-gray-light);
     font-size: 14px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 .admin-block {
@@ -212,7 +214,7 @@ html, body {
 }
 
 .admin-block__title {
-    font-size: 1.5rem;
+    font-size: 22px;
     font-weight: var(--font-weight-bold);
     color: var(--color-white);
     background: var(--color-purple);
@@ -265,19 +267,25 @@ html, body {
     height: 20px;
     border-radius: 2px;
     box-sizing: border-box;
+    box-shadow: var(--shadow-default);
 }
 
 .btn-delete-hall {
     width: 20px;
     height: 20px;
-    background-color: white; /* ??? */
-    border: none;
+    background-color: white;
     cursor: pointer;
     padding: 0;
     position: relative;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    border-radius: 2px;
+    box-shadow: var(--shadow-default);
+    margin-left: 4px;
 }
 
-.btn-delete-hall::before, .btn-delete-film::before {
+.btn-delete-hall::before,
+.btn-delete-film::before {
     content: "";
     position: absolute;
     top: 50%;
@@ -291,8 +299,9 @@ html, body {
     background-position: 0 0;
 }
 
-.btn-delete-hall:hover, .btn-delete-film:hover {
-    border: 1px solid var(--color-purple-light);
+.btn-delete-hall:hover,
+.btn-delete-film:hover {
+    border-color: var(--color-purple-light);
     box-sizing: border-box;
 }
 
@@ -313,15 +322,32 @@ html, body {
     color: var(--color-black);
     font-size: 16px;
     font-weight: var(--font-weight-regular);
-    margin-bottom: 20px;
-    margin-top: 40px;
+    margin-top: 15px;
 }
 
 .halls-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+    margin-bottom: 10px;
 }
+
+.halls-title-place {
+    color: var(--color-black);
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+.halls-title-scheme {
+    color: var(--color-black);
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
 
 .hall-name {
     font-weight: var(--font-weight-bold);
@@ -338,10 +364,10 @@ html, body {
 
 .hall-scheme {
     border: 1px solid var(--color-gray-dark);
-    padding: 30px;
+    padding: 15px;
     margin-bottom: 25px;
+    box-sizing: border-box;
 }
-
 
 
 .hall-scheme-editor {
@@ -428,9 +454,8 @@ html, body {
 .hall-screen-label {
     text-align: center;
     color: var(--color-black);
-    padding: 5px 0;
+    padding: 2px 0;
     border-radius: 4px;
-    margin-bottom: 15px;
     letter-spacing: 20px;
     font-weight: var(--font-weight-regular);
 }
@@ -831,7 +856,7 @@ html, body {
 
 
 .admin-block__content {
-    padding-left: 75px;
+    padding-left: 84px;
     padding-right: 15px;
 }
 
