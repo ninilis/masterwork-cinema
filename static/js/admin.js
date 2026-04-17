@@ -659,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = posterSrc;
             img.alt = film.film_name;
-            posterDiv.appendChild(img);
+            posterDiv.append(img);
             // Блок информации
             const infoDiv = document.createElement('div');
             infoDiv.className = 'film-card-info';
@@ -682,12 +682,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteFilm(filmId);
             });
 
-            infoDiv.appendChild(titleDiv);
-            infoDiv.appendChild(durationDiv);
-            infoDiv.appendChild(deleteBtn);
+            infoDiv.append(titleDiv);
+            infoDiv.append(durationDiv);
+            infoDiv.append(deleteBtn);
 
-            filmCard.appendChild(posterDiv);
-            filmCard.appendChild(infoDiv);
+            filmCard.append(posterDiv);
+            filmCard.append(infoDiv);
 
             // Drag & Drop для фильма
             filmCard.addEventListener('dragstart', (e) => {
@@ -695,7 +695,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.dataTransfer.effectAllowed = 'copy';
             });
 
-            pool.appendChild(filmCard);
+            pool.append(filmCard);
         });
     }
 
@@ -1017,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 line.style.left = `${positions[i].left}px`;
                 line.style.top = `${startY}px`;
                 line.style.height = `${height}px`;
-                canvas.appendChild(line);
+                canvas.append(line);
             }
         }, 20);
     }
