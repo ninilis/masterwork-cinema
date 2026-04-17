@@ -181,6 +181,10 @@ html, body {
     color: var(--color-gray-light);
 }
 
+.form-control price-input {
+    width: 50px;
+}
+
 .form-label {
     margin: 0;
     color: var(--color-gray-light);
@@ -325,6 +329,20 @@ html, body {
     margin-top: 15px;
 }
 
+.halls-title-price {
+    color: var(--color-black);
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    margin-bottom: 5px;
+}
+
+.halls-title-place-price {
+    color: var(--color-black);
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    margin-bottom: 9px;
+}
+
 .halls-list {
     display: flex;
     flex-direction: column;
@@ -365,7 +383,7 @@ html, body {
 .hall-scheme {
     border: 1px solid var(--color-gray-dark);
     padding: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 29px;
     box-sizing: border-box;
 }
 
@@ -469,13 +487,13 @@ html, body {
 .hall-tabs {
     display: flex;
     gap: 0;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
     text-transform: uppercase;
 }
 
 .hall-tab {
-    padding: 8px 16px;
+    padding: 8px 18px;
     font-size: 1rem;
     border-radius: var(--btn-border-radius);
     background-color: var(--color-bg-admin);
@@ -491,7 +509,7 @@ html, body {
     box-shadow: var(--shadow-accent);
     font-size: 1.2rem;
     font-weight:var(--font-weight-bold);
-    padding: 9px 21px;
+    padding: 9px 18px;
 }
 
 .hall-tab:hover {
@@ -513,11 +531,18 @@ html, body {
     cursor: grabbing;
 }
 
+.admin-btn {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 
 .btn-primary {
     background-color: var(--color-lazurit);
     border-color: var(--color-lazurit);
-    width: 159px;
+    width: 146px;
     height: 40px;
     margin: 0;
     box-shadow: var(--shadow-default);
@@ -561,17 +586,16 @@ html, body {
 .price-item {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-    padding: 10px;
 }
 
 .seat-price {
     color: var(--color-gray-light);
+    font-size: 12px;
 }
 
 .seat-color {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
     border-radius: 4px;
     flex-shrink: 0;
 }
@@ -588,7 +612,7 @@ html, body {
 
 
 .seat-label {
-    font-size: 1rem;
+    font-size: 14px;
     color: var(--color-gray-light);
     font-weight: var(--font-weight-regular);
     margin-right: 5px;
@@ -596,7 +620,7 @@ html, body {
 }
 
 .price-input {
-    width: 120px;
+    width: 100px;
 }
 
 /*-----------------------СЕТКА СЕАНСОВ------------------------*/
@@ -742,7 +766,8 @@ html, body {
 .timeline-slots {
     position: relative;
     width: 100%;
-    min-height: 70px;
+    min-height: 60px;
+    max-width: 720px;
     background: var(--color-bg-admin);
     border: 1px solid var(--color-gray-super-light);
     border-radius: 4px;
@@ -751,7 +776,7 @@ html, body {
 /* Блок сеанса (абсолютное позиционирование) */
 .seance-block {
     position: absolute;
-    height: 50px;
+    min-height: 40px;
     top: 10px;
     background-color: var(--color-lazurit);
     color: var(--color-black);
@@ -817,16 +842,22 @@ html, body {
 }
 
 /* Остальные стили для админки (не связанные с таймлайном) */
-.halls-timelines {
+#halls-timelines {
     margin-top: 20px;
+    margin-left: 30px;
 }
 
+
+
 #films-pool-list {
-    margin-bottom: 50px;
+    margin-bottom: 95px;
+    gap: 7px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .admin-block__content .btn:not(.add-film) {
-    margin-bottom: 20px;
+    margin-bottom: 19px;
 }
 
 
