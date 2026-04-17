@@ -863,9 +863,11 @@ html, body {
 
 .text-center {
     text-align: center;
-    margin-top: 40px;
 }
 
+.open-tittle {
+    margin-bottom: 25px;
+}
 
 /*-----------------------------------СТЕППЕР-----------------------------*/
 /* Кружки степпера */
