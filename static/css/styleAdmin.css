@@ -950,7 +950,7 @@ html, body {
 #confirmModal .modal-header {
     background: var(--color-purple);
     height: 57px;
-    padding: 0 20px;
+    padding: 0 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -963,7 +963,7 @@ html, body {
 #addSeanceModal .modal-title,
 #notificationModal .modal-title,
 #confirmModal .modal-title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     color: var(--color-white);
     text-transform: uppercase;
@@ -993,7 +993,22 @@ html, body {
 #addSeanceModal .btn-close::before,
 #notificationModal .btn-close::before,
 #confirmModal .btn-close::before{
-    content: "✕";
+    content: none;
+}
+
+#addHallModal .btn-close,
+#addFilmModal .btn-close,
+#addSeanceModal .btn-close,
+#notificationModal .btn-close,
+#confirmModal .btn-close {
+    background-image: url('../img/close.png.png') !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 24px;
+    height: 24px;
+    opacity: 1;
+    filter: none;
 }
 
 /* Тело окна – центрируем содержимое по вертикали */
@@ -1005,7 +1020,7 @@ html, body {
     flex-direction: column;
     background: var(--color-bg-admin-modal);
     justify-content: flex-start;
-    padding: 40px 100px 40px;
+    padding: 30px 100px 40px;
     gap: 0;
 }
 
@@ -1042,7 +1057,6 @@ html, body {
 #confirmModal .form-label{
     font-size: 12px;
     color: var(--color-gray-light);
-    margin-bottom: 5px;
     display: block;
     text-align: left;
 }
@@ -1218,6 +1232,38 @@ html, body {
         overflow-x: auto;
         max-width: 100%;
     }
+
+    /* Модальные окна */
+    #addHallModal .modal-dialog,
+    #addFilmModal .modal-dialog,
+    #addSeanceModal .modal-dialog,
+    #notificationModal .modal-dialog,
+    #confirmModal .modal-dialog {
+        width: 95%;
+        max-width: 95%;
+        margin: 1rem auto;
+    }
+
+    #addHallModal .modal-body,
+    #addFilmModal .modal-body,
+    #addSeanceModal .modal-body {
+        padding: 30px 20px;
+    }
+
+    #addHallModal .hall-form-wrapper,
+    #addFilmModal .film-form-wrapper,
+    #addSeanceModal .seance-form-wrapper {
+        width: 100%;
+        padding: 0;
+    }
+
+    /* Поля ввода на всю ширину */
+    #addHallModal .form-control,
+    #addFilmModal .form-control,
+    #addSeanceModal .form-control {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
 
 
@@ -1315,6 +1361,39 @@ html, body {
 
     .films-pool-card {
         gap: 14px;
+    }
+
+    /* Центрирование кнопки "Создать зал" */
+    .admin-block:first-child .admin-block__content .btn-primary {
+        display: block;
+        margin: 20px auto 0;
+        width: fit-content;
+    }
+
+    /* Модальные окна */
+    #addHallModal .modal-body,
+    #addFilmModal .modal-body,
+    #addSeanceModal .modal-body {
+        padding: 20px 15px;
+    }
+
+    /* Кнопки в футере — в колонку или с меньшим отступом */
+    #addHallModal .modal-footer,
+    #addFilmModal .modal-footer,
+    #addSeanceModal .modal-footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    #addHallModal .btn-primary,
+    #addFilmModal .btn-primary,
+    #addSeanceModal .btn-primary,
+    #addHallModal .btn-outline-secondary,
+    #addFilmModal .btn-outline-secondary,
+    #addSeanceModal .btn-outline-secondary {
+        width: auto;
+        min-width: 120px;
     }
 }
 
