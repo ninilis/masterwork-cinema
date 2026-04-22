@@ -553,7 +553,7 @@ html, body { /* дублирование?*/
 
 /*  Перфорация краев */
 /* Верхний край */
-/*.payment-card::before,
+.payment-card::before,
 .ticket-card::before {
     content: '';
     position: absolute;
@@ -565,10 +565,10 @@ html, body { /* дублирование?*/
     background-size: 20px 8px;
     pointer-events: none;
     z-index: 2;
-}*/
+}
 
 /* Нижний край */
-/*.payment-card::after,
+.payment-card::after,
 .ticket-card::after {
     content: '';
     position: absolute;
@@ -580,11 +580,11 @@ html, body { /* дублирование?*/
     background-size: 20px 8px;
     pointer-events: none;
     z-index: 2;
-}*/
+}
 
 
 /* Верхняя линия – полукруги направлены вниз */
-.payment-card::before,
+/*.payment-card::before,
 .ticket-card::before {
     content: '';
     position: absolute;
@@ -603,10 +603,10 @@ html, body { /* дублирование?*/
     background-repeat: repeat-x;
     pointer-events: none;
     z-index: 2;
-}
+}*/
 
 /* Нижняя линия – полукруги направлены вверх */
-.payment-card::after,
+/*.payment-card::after,
 .ticket-card::after {
     content: '';
     position: absolute;
@@ -625,7 +625,7 @@ html, body { /* дублирование?*/
     background-repeat: repeat-x;
     pointer-events: none;
     z-index: 2;
-}
+}*/
 
 
 .payment-card__title, .ticket-card__title {
