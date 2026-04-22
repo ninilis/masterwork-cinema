@@ -76,6 +76,15 @@ html, body {
 .logo {
     display: flex;
     align-items: center;
+    margin-top: 35px;
+    margin-left: 105px;
+}
+
+.logoAdmin {
+    display: flex;
+    align-items: center;
+    margin-bottom: 38px;
+    margin-left: 105px;
 }
 
 
@@ -767,7 +776,7 @@ html, body {
     position: relative;
     width: 100%;
     min-height: 60px;
-    max-width: 720px;
+    /*max-width: 720px;*/
     background: var(--color-bg-admin);
     border: 1px solid var(--color-gray-super-light);
     border-radius: 4px;
@@ -1169,6 +1178,18 @@ html, body {
 /* -----------------------------Адаптивность----------------------------------- */
 /* Планшеты (до 768px) */
 @media (max-width: 768px) {
+
+    /* Логотип */
+    .logo {
+        margin-top: 20px;
+        margin-left: 14px;
+    }
+
+    .logoAdmin {
+        margin-bottom: 20px;
+        margin-left: 14px;
+    }
+
     .container {
         padding-left: 0;
         padding-right: 0;
@@ -1239,8 +1260,8 @@ html, body {
     #addSeanceModal .modal-dialog,
     #notificationModal .modal-dialog,
     #confirmModal .modal-dialog {
-        width: 95%;
-        max-width: 95%;
+        width: 100%;
+        max-width: 100%;
         margin: 1rem auto;
     }
 
@@ -1264,8 +1285,8 @@ html, body {
         width: 100%;
         box-sizing: border-box;
     }
-}
 
+}
 
 
 /* Мобильные устройства (до 390px) */
