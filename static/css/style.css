@@ -342,12 +342,12 @@ html, body { /* дублирование?*/
 
 .calendar__days {
     display: flex;
-    gap: 2px;
+    gap: 1px;
     width: 100%;
 }
 
 .calendar__day {
-    flex: 1 1 0;
+    flex: 0.9 1 0;
     min-width: 60px;
     background: var(--color-bg-beige);
     border-radius: 2px;
@@ -355,13 +355,17 @@ html, body { /* дублирование?*/
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-left: 8px;
-    font-size: 14px;
+    padding-left: 20px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.2s;
     box-sizing: border-box;
     /*flex-shrink: 0;*/
     box-shadow: var(--shadow-default);
+}
+
+.calendar__day span {
+    line-height: 1.15;
 }
 
 /* Ячейка-стрелка */
@@ -375,7 +379,7 @@ html, body { /* дублирование?*/
 
 
 .calendar__day--selected {
-    flex: 1.8 1 0;
+    flex: 1.86 1 0;
     background: var(--color-white);
     font-weight: var(--font-weight-bold);
     box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
@@ -468,6 +472,10 @@ html, body { /* дублирование?*/
     position: relative;
 }
 
+/* Убираем отступ у последней карточки для всех экранов */
+.movies-list .movie-card:last-child {
+    margin-bottom: 0;
+}
 
 .hall-name {
     font-weight: var(--font-weight-bold);
@@ -688,13 +696,20 @@ html, body { /* дублирование?*/
     color: var(--color-white);
 }
 
-.payment-card__footnote,
-.ticket-card__footnote,
+
 .payment-card__wish,
 .ticket-card__wish {
     font-size: 14px;
     color: var(--color-gray-light);
     margin-bottom: 2px;
+}
+
+.payment-card__footnote,
+.ticket-card__footnote {
+    line-height: 1;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: var(--color-gray-light);
 }
 
 
@@ -709,7 +724,7 @@ html, body { /* дублирование?*/
 .ticket-card__qr {
     display: flex;
     justify-content: center;
-    margin: var(--spacing-lg) 0;
+    margin: 30px 0;
 }
 
 .ticket-card__details p {
@@ -763,10 +778,6 @@ html, body { /* дублирование?*/
         background-color: var(--color-brown);
     }
 
-    .calendar__day--selected {
-        margin-right: 4px;
-    }
-
     /* Подсказка "Тапните дважды…" на планшетах */
     .hall-info-wrapper {
         display: flex;
@@ -817,6 +828,11 @@ html, body { /* дублирование?*/
         margin-left: 5px;
         padding-right: 5px;
     }
+
+    .btn-login {
+        margin-right: -13px;
+    }
+
 }
 
 
@@ -829,24 +845,31 @@ html, body { /* дублирование?*/
         --calendar-day-width: calc((100vw - 10px) / 7);
     }
 
-    .calendar {
-        padding-bottom: 30px;
+    .page-header {
+        margin-top: 10px;   /* было 15px */
+    }
+    .logo {
+        margin-top: 0;
     }
 
-    .calendar__days {
-        gap: 2px;
+    .header-container{
+        padding-right: 15px;
+    }
+
+
+    .calendar {
+        padding-bottom: 40px;
     }
 
     .calendar__day {
         min-width: 38px;
         height: var(--calendar-day-height);
-        font-size: 12px;
-        padding-left: 4px;
-        padding-right: 0;
+        padding-left: 6px;
+        padding-right: 4px;
     }
 
     .calendar__day .day-today {
-        font-size: 12px;
+        font-size: 11px;
         line-height: 0.9;
     }
 
@@ -855,9 +878,9 @@ html, body { /* дублирование?*/
         min-width: 50px;
         height: 46px;
         top: -2px;
-        padding-left: 4px;
-        margin-right: 1px;
+        padding-left: 6px;
     }
+
 
     .calendar__day--arrow {
         flex: 1 1 0;
@@ -899,15 +922,6 @@ html, body { /* дублирование?*/
         margin-top: 30px;
     }
 
-    .page-header {
-        margin: 15px 0;
-        padding-right: 0;
-    }
-
-    .header-container{
-        padding-right: 15px;
-    }
-
     .movie-card {
         background: var(--color-bg-beige);
         border-radius: 2px;
@@ -919,11 +933,6 @@ html, body { /* дублирование?*/
         grid-template-columns: 125px 1fr;
         /*gap: 15px;*/
         align-items: start;
-    }
-
-    /* Убираем отступ у последней карточки */
-    .movies-list .movie-card:last-child {
-        margin-bottom: 0;
     }
 
     .movie-card__left {
@@ -953,6 +962,11 @@ html, body { /* дублирование?*/
         flex-direction: column;
         gap: 5px;
     }
+
+    .btn-login {
+        margin-right: 0;
+    }
+
 }
 
-/* 17.04 */
+/* 22.04 */
